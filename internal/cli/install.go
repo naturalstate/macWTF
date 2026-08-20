@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/naturalstate/macWTF/internal/backend"
+	"github.com/naturalstate/macWTF/internal/bootstrap"
 	"github.com/naturalstate/macWTF/internal/install"
 	"github.com/naturalstate/macWTF/internal/manifest"
 	"github.com/naturalstate/macWTF/internal/resolve"
@@ -25,6 +26,7 @@ func runInstall(args []string) error {
 	var tools stringList
 	fs.Var(&tools, "tool", "install a single tool (repeatable)")
 	dryRun := fs.Bool("dry-run", false, "print every command without executing anything")
+	assumeYes := fs.Bool("yes", false, "do not ask for confirmation")
 	allowQuarantine := fs.Bool("allow-quarantine-strip", false,
 		"permit removing com.apple.quarantine from unsigned apps (waives a Gatekeeper malware check)")
 	if err := fs.Parse(args); err != nil {
@@ -37,6 +39,17 @@ func runInstall(args []string) error {
 	}
 	if err := cat.Validate(); err != nil {
 		return fmt.Errorf("catalogue is invalid, refusing to install:\n%w", err)
+	}
+
+	// A dry run only describes what would happen, so it must not require or
+	// trigger an install of anything. A real run brings the machine up to
+	// scratch first, asking before anything privileged happens.
+	if !*dryRun {
+		if err := ensurePrerequisites(*assumeYes); err != nil {
+			return err
+		}
+	} else if prefix, adopted := backendAdoptBrew(); adopted {
+		fmt.Printf("note: using Homebrew found at %s (not on PATH)\n", prefix)
 	}
 
 	ctx, err := backend.NewCtx()
@@ -78,3 +91,6 @@ func runInstall(args []string) error {
 
 	return fmt.Errorf("real installs are not wired up yet — re-run with --dry-run")
 }
+
+// backendAdoptBrew exposes PATH adoption to the install flow.
+func backendAdoptBrew() (string, bool) { return bootstrap.AdoptBrewPath() }

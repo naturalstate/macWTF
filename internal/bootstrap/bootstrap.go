@@ -7,6 +7,7 @@ package bootstrap
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
 	"runtime"
 	"strings"
@@ -136,4 +137,50 @@ func (r *Report) Render(w *strings.Builder) {
 	}
 	w.WriteString("Homebrew's installer needs an administrator password and will\n")
 	w.WriteString("install the Command Line Tools itself if they are missing.\n")
+}
+
+// InstallHomebrew runs Homebrew's official installer.
+//
+// This is a genuinely privileged action: it downloads and executes a shell
+// script as root. It therefore never runs without explicit consent, and the
+// exact command is shown first so the user can read it or run it themselves.
+//
+// NONINTERACTIVE suppresses the installer's "press RETURN" prompt but not its
+// sudo prompt, so this needs a terminal the user can type into.
+func InstallHomebrew() error {
+	cmd := exec.Command("/bin/bash", "-c",
+		`curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash`)
+	cmd.Env = append(os.Environ(), "NONINTERACTIVE=1")
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
+
+// ShellEnvHint returns the line a user must add to their shell profile so brew
+// is on PATH in future sessions. Apple Silicon installs to /opt/homebrew, which
+// is not on the default PATH.
+func ShellEnvHint(prefix string) string {
+	if prefix == "" {
+		prefix = "/opt/homebrew"
+	}
+	return fmt.Sprintf(`eval "$(%s/bin/brew shellenv)"`, prefix)
+}
+
+// AdoptBrewPath finds a Homebrew that is installed but not yet on PATH — the
+// state immediately after installation — and adds it to this process's PATH so
+// the run can continue without the user restarting their shell.
+func AdoptBrewPath() (string, bool) {
+	if _, err := exec.LookPath("brew"); err == nil {
+		return "", false
+	}
+	for _, prefix := range []string{"/opt/homebrew", "/usr/local"} {
+		bin := prefix + "/bin/brew"
+		if _, err := os.Stat(bin); err != nil {
+			continue
+		}
+		os.Setenv("PATH", prefix+"/bin:"+os.Getenv("PATH"))
+		return prefix, true
+	}
+	return "", false
 }
