@@ -79,24 +79,25 @@ func TestChoosingProfilePreselects(t *testing.T) {
 	}
 }
 
-// The resolver excludes aircrack-ng on macOS, so the tree must not show it as
-// selected after applying a profile.
-func TestLinuxOnlyNotPreselected(t *testing.T) {
-	m := press(newModel(t), "enter") // Baseline
-	if m.(Model).selected["aircrack-ng"] {
-		t.Error("aircrack-ng must never be pre-selected on macOS")
-	}
-}
-
-// "select all" must still refuse to bulk-select tools that cannot work.
-func TestSelectAllSkipsLinuxOnly(t *testing.T) {
-	m := press(newModel(t), "enter", "a")
+// Tools with no macOS block must never appear in the tree at all, so the user
+// is never offered something macWTF cannot install.
+func TestNonMacOSToolsAreNotInTheTree(t *testing.T) {
+	m := press(newModel(t), "enter", "a") // baseline, then select everything
 	mm := m.(Model)
+
+	for _, r := range mm.rows {
+		if r.kind == rowTool && r.tool.ID == "aircrack-ng" {
+			t.Fatal("aircrack-ng has no macOS block and must not be displayed")
+		}
+	}
 	if mm.selected["aircrack-ng"] {
-		t.Error("select-all must not include linux-only tools")
+		t.Error("select-all reached a tool that is not in the catalogue")
 	}
 	if !mm.selected["nmap"] {
 		t.Error("select-all should have selected nmap")
+	}
+	if !strings.Contains(mm.View(), "nmap") {
+		t.Error("expected nmap to be visible in the tree")
 	}
 }
 

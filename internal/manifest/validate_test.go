@@ -100,8 +100,19 @@ func TestCategoryMustMatchFilename(t *testing.T) {
 
 func TestUnknownBackend(t *testing.T) {
 	tl := ok("nmap")
-	tl.Backend = "apt"
+	tl.Backend = "yum"
 	requireProblem(t, build([]Tool{tl}, nil), "unknown backend")
+}
+
+// apt is a legitimate backend in the shared catalogue, but only inside a
+// sibling platform block. Naming it under [tool.macos] means macWTF would load
+// a tool it cannot possibly install.
+func TestSiblingPlatformBackendRejectedForMacOS(t *testing.T) {
+	for _, b := range []Backend{BackendApt, BackendWinget, BackendPacman} {
+		tl := ok("nmap")
+		tl.Backend = b
+		requireProblem(t, build([]Tool{tl}, nil), "cannot run on macOS")
+	}
 }
 
 func TestBackendNeedsPackage(t *testing.T) {
@@ -186,7 +197,7 @@ func TestEmptyProfile(t *testing.T) {
 // contributor fixes one typo, re-runs, and finds another — repeatedly.
 func TestReportsAllProblems(t *testing.T) {
 	a, b := ok("a"), ok("b")
-	a.Backend = "apt"
+	a.Backend = "yum"
 	b.Requires = []string{"nope"}
 	err := build([]Tool{a, b}, nil).Validate()
 	if err == nil {

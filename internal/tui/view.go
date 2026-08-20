@@ -111,9 +111,6 @@ func (m Model) viewProfile() string {
 // toolChips renders the flag badges for a tool.
 func toolChips(t *manifest.Tool) string {
 	var parts []string
-	if t.LinuxOnly {
-		parts = append(parts, chipLinux.Render("LINUX"))
-	}
 	if t.QuarantineStrip {
 		parts = append(parts, chipQ.Render("Q"))
 	}
@@ -216,9 +213,6 @@ func (m Model) treePane(width, height int) string {
 				check = checkOnStyle.Render("◉")
 				nameStyle = itemStyle
 			}
-			if t.LinuxOnly {
-				nameStyle = itemDimStyle
-			}
 			chips := toolChips(t)
 			name := nameStyle.Render(t.ID)
 			avail := inner - 4 - lipgloss.Width(chips) - 1
@@ -280,9 +274,12 @@ func (m Model) detailPane(width, height int) string {
 		b.WriteString("\n" + chips + "\n")
 	}
 
-	if t.LinuxOnly {
-		b.WriteString("\n" + dangerStyle.Render("Does not work on macOS.") + "\n")
-		b.WriteString(wrap(itemMuted.Render("Routed to the lab bridge instead of installed."), inner) + "\n")
+	if len(t.AlsoOn) > 0 {
+		var names []string
+		for _, p := range t.AlsoOn {
+			names = append(names, string(p))
+		}
+		b.WriteString("\n" + itemMuted.Render("also on: "+strings.Join(names, ", ")) + "\n")
 	}
 	if t.QuarantineStrip {
 		b.WriteString("\n" + warnStyle.Render("Unsigned binary") + "\n")

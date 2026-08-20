@@ -82,25 +82,32 @@ func TestTransitiveDependencies(t *testing.T) {
 	}
 }
 
-// aircrack-ng installs fine but cannot capture on macOS. Silently installing
-// it would be worse than refusing: the user would discover the limitation
-// mid-engagement.
-func TestLinuxOnlyIsSkippedNotInstalled(t *testing.T) {
+// A catalogue entry with no macOS block is not part of the macOS catalogue at
+// all — not hidden, not skipped, simply absent. aircrack-ng exists in the
+// shared manifests for KaliWTF and WindowsWTF and must be invisible here.
+func TestEntryWithoutMacOSBlockIsAbsent(t *testing.T) {
 	cat := realCatalogue(t)
-	res, err := Resolve(cat, Request{Tools: []string{"aircrack-ng"}})
-	if err != nil {
-		t.Fatal(err)
+
+	if _, found := cat.Tool("aircrack-ng"); found {
+		t.Fatal("aircrack-ng has no macOS block and must not be in the catalogue")
 	}
-	if len(res.Install) != 0 {
-		t.Fatalf("aircrack-ng must not be installed on macOS, got %v", ids(res.Install))
+	for _, tl := range cat.Tools {
+		if tl.ID == "aircrack-ng" {
+			t.Fatal("aircrack-ng leaked into the tool list")
+		}
 	}
-	if len(res.Skipped) != 1 || res.Skipped[0].Reason != SkipLinuxOnly {
-		t.Fatalf("expected one linux-only skip, got %+v", res.Skipped)
+	if cat.OtherPlatform == 0 {
+		t.Error("expected the skipped entry to be counted")
+	}
+
+	// Asking for it by name is an unknown-tool error, not a skip.
+	if _, err := Resolve(cat, Request{Tools: []string{"aircrack-ng"}}); err == nil ||
+		!strings.Contains(err.Error(), "unknown tool") {
+		t.Fatalf("expected an unknown-tool error, got %v", err)
 	}
 }
 
-// The whole sec-network category contains a conflicting pair and a linux-only
-// tool, so it exercises both filters at once.
+// sec-network contains a conflicting pair, so it exercises conflict handling.
 func TestConflictsAreResolvedDeterministically(t *testing.T) {
 	cat := realCatalogue(t)
 	res, err := Resolve(cat, Request{Category: "sec-network"})
@@ -126,6 +133,11 @@ func TestConflictsAreResolvedDeterministically(t *testing.T) {
 	}
 	if !sawConflict {
 		t.Errorf("expected a conflict skip to be reported, got %+v", res.Skipped)
+	}
+	for _, id := range got {
+		if id == "aircrack-ng" {
+			t.Error("aircrack-ng must not appear: it has no macOS block")
+		}
 	}
 }
 

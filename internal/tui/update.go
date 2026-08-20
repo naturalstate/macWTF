@@ -134,11 +134,10 @@ func (m Model) updateTree(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.buildRows()
 
 	case "a":
-		// Select everything installable.
+		// Everything in the catalogue is installable on this platform:
+		// entries without a macOS block are never loaded.
 		for _, t := range m.cat.Tools {
-			if !t.LinuxOnly {
-				m.selected[t.ID] = true
-			}
+			m.selected[t.ID] = true
 		}
 
 	case "n":

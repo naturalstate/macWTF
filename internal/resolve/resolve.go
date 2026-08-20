@@ -19,10 +19,6 @@ import (
 type SkipReason string
 
 const (
-	// SkipLinuxOnly covers tools that install cleanly but cannot do their
-	// job on macOS — chiefly anything needing wireless monitor mode.
-	SkipLinuxOnly SkipReason = "linux-only"
-
 	// SkipConflict covers a tool excluded because something else in the
 	// selection conflicts with it.
 	SkipConflict SkipReason = "conflict"
@@ -81,14 +77,11 @@ func Resolve(cat *manifest.Catalogue, req Request) (*Result, error) {
 
 	res := &Result{}
 
-	// Filter before ordering: a tool excluded for being linux-only should
-	// not drag its dependencies in.
+	// Filter before ordering: an excluded tool should not drag its
+	// dependencies in.
 	var kept []*manifest.Tool
 	for _, t := range selected {
 		switch {
-		case t.LinuxOnly:
-			res.Skipped = append(res.Skipped, Skipped{t, SkipLinuxOnly,
-				"does not work on macOS; use the lab bridge"})
 		case !t.SupportsArch(arch):
 			res.Skipped = append(res.Skipped, Skipped{t, SkipArch,
 				fmt.Sprintf("supports %s, this machine is %s", strings.Join(t.Arch, "/"), arch)})

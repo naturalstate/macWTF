@@ -140,11 +140,16 @@ func TestNoQuarantineForSignedApps(t *testing.T) {
 	}
 }
 
+// Excluded tools must always be reported with a reason rather than silently
+// dropped. sec-network contains a conflicting pair that exercises this.
 func TestSkippedToolsAppearInOutput(t *testing.T) {
 	p := testPlan(t, resolve.Request{Category: "sec-network"}, nil, nil, false)
 	out := render(p)
-	if !strings.Contains(out, "aircrack-ng") || !strings.Contains(out, "linux-only") {
-		t.Fatalf("linux-only skip must be reported, got:\n%s", out)
+	if !strings.Contains(out, "skipped") || !strings.Contains(out, "conflict") {
+		t.Fatalf("conflict skip must be reported, got:\n%s", out)
+	}
+	if strings.Contains(out, "aircrack-ng") {
+		t.Fatalf("aircrack-ng has no macOS block and must not appear:\n%s", out)
 	}
 }
 

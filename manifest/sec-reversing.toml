@@ -1,43 +1,58 @@
 # Security: reverse engineering.
 #
 # The canonical home of the Gatekeeper problem. Reverse engineering tools are
-# overwhelmingly unsigned or ad-hoc signed, because the people building them
-# are not paying Apple $99/year to notarize a disassembler.
+# overwhelmingly unsigned or ad-hoc signed, because the people building them are
+# not paying Apple $99/year to notarize a disassembler.
 
 [[tool]]
 id = "ghidra"
 name = "Ghidra"
 description = "Software reverse engineering framework from the NSA"
 category = "sec-reversing"
+license = "free"
+homepage = "https://ghidra-sre.org"
+[tool.macos]
 backend = "brew"
 package = "ghidra"
 verify_cmd = "command -v ghidraRun"
-license = "free"
-homepage = "https://ghidra-sre.org"
 notes = "Packaged as a formula rather than a cask, so Homebrew handles the JDK dependency and the launcher shim. Launch with ghidraRun."
+[tool.kali]
+backend = "apt"
+package = "ghidra"
+[tool.windows]
+backend = "winget"
+package = "NationalSecurityAgency.Ghidra"
 
 [[tool]]
 id = "cutter"
 name = "Cutter"
 description = "Reverse engineering platform powered by Rizin"
 category = "sec-reversing"
+license = "free"
+homepage = "https://cutter.re"
+[tool.macos]
 backend = "cask"
 package = "cutter"
 app_path = "/Applications/Cutter.app"
 quarantine_strip = true
 verify_cmd = "test -d '/Applications/Cutter.app'"
-license = "free"
-homepage = "https://cutter.re"
 notes = "Upstream ships ad-hoc signed builds that are not notarized, so Gatekeeper blocks the first launch with a dialog whose only button is 'Move to Trash'. Stripping the quarantine attribute is what makes it launch — macWTF will always ask before doing that."
+[tool.kali]
+backend = "apt"
+package = "cutter"
 
 [[tool]]
 id = "imhex"
 name = "ImHex"
 description = "Hex editor built for reverse engineers, with a pattern language"
 category = "sec-reversing"
+license = "free"
+homepage = "https://imhex.werwolv.net"
+[tool.macos]
 backend = "cask"
 package = "imhex"
 app_path = "/Applications/ImHex.app"
 verify_cmd = "test -d '/Applications/ImHex.app'"
-license = "free"
-homepage = "https://imhex.werwolv.net"
+[tool.windows]
+backend = "winget"
+package = "WerWolv.ImHex"

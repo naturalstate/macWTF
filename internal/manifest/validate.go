@@ -104,10 +104,13 @@ func (c *Catalogue) validateTools() Problems {
 		}
 
 		// Backend and package.
-		if t.Backend == "" {
+		switch {
+		case t.Backend == "":
 			bad("missing backend")
-		} else if !t.Backend.Valid() {
+		case !t.Backend.Valid():
 			bad("unknown backend %q", t.Backend)
+		case !t.Backend.ValidForMacOS():
+			bad("backend %q cannot run on macOS; it belongs in a sibling platform block, not [tool.macos]", t.Backend)
 		}
 		needsPackage := t.Backend != BackendBuiltin && t.Backend != BackendManual && t.Backend != BackendDefaults
 		if needsPackage && t.Package == "" {

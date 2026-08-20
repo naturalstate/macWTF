@@ -1,63 +1,96 @@
 # CLI quality of life.
 #
-# Modern replacements for the BSD userland macOS ships. Deliberately boring:
-# these are small, fast, universally useful, and safe to install first, which
-# makes them the baseline every other profile builds on.
+# Shared catalogue format: identity at the top level, one block per platform.
+# A tool with no [tool.macos] block is not part of the macOS catalogue at all.
 
 [[tool]]
 id = "ripgrep"
 name = "ripgrep"
 description = "Recursive line search, respects .gitignore by default"
 category = "cli"
-backend = "brew"
-package = "ripgrep"
-verify_cmd = "command -v rg"
 license = "free"
 homepage = "https://github.com/BurntSushi/ripgrep"
 notes = "Drop-in grep replacement. Orders of magnitude faster on large trees."
+[tool.macos]
+backend = "brew"
+package = "ripgrep"
+verify_cmd = "command -v rg"
+[tool.kali]
+backend = "apt"
+package = "ripgrep"
+[tool.windows]
+backend = "winget"
+package = "BurntSushi.ripgrep.MSVC"
 
 [[tool]]
 id = "fd"
 name = "fd"
 description = "User-friendly alternative to find"
 category = "cli"
+license = "free"
+homepage = "https://github.com/sharkdp/fd"
+[tool.macos]
 backend = "brew"
 package = "fd"
 verify_cmd = "command -v fd"
-license = "free"
-homepage = "https://github.com/sharkdp/fd"
+[tool.kali]
+backend = "apt"
+package = "fd-find"
+notes = "Installs as fdfind on Debian to avoid a name clash; alias it to fd."
+[tool.windows]
+backend = "winget"
+package = "sharkdp.fd"
 
 [[tool]]
 id = "bat"
 name = "bat"
 description = "cat with syntax highlighting and Git integration"
 category = "cli"
+license = "free"
+homepage = "https://github.com/sharkdp/bat"
+[tool.macos]
 backend = "brew"
 package = "bat"
 verify_cmd = "command -v bat"
-license = "free"
-homepage = "https://github.com/sharkdp/bat"
+[tool.kali]
+backend = "apt"
+package = "bat"
+notes = "Installs as batcat on Debian."
+[tool.windows]
+backend = "winget"
+package = "sharkdp.bat"
 
 [[tool]]
 id = "jq"
 name = "jq"
 description = "Command-line JSON processor"
 category = "cli"
-backend = "brew"
-package = "jq"
-verify_cmd = "command -v jq"
 license = "free"
 homepage = "https://jqlang.github.io/jq/"
 notes = "Effectively a hard dependency of every recon workflow that touches an API."
+[tool.macos]
+backend = "brew"
+package = "jq"
+verify_cmd = "command -v jq"
+[tool.kali]
+backend = "apt"
+package = "jq"
+[tool.windows]
+backend = "winget"
+package = "jqlang.jq"
 
 [[tool]]
 id = "eza"
 name = "eza"
 description = "Modern, maintained replacement for ls"
 category = "cli"
-backend = "brew"
-package = "eza"
-verify_cmd = "command -v eza"
 license = "free"
 homepage = "https://github.com/eza-community/eza"
 notes = "Successor to exa, which is unmaintained. Do not install exa."
+[tool.macos]
+backend = "brew"
+package = "eza"
+verify_cmd = "command -v eza"
+[tool.kali]
+backend = "apt"
+package = "eza"

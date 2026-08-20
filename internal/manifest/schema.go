@@ -23,6 +23,16 @@ const (
 	BackendDefaults Backend = "defaults"
 	BackendBuiltin  Backend = "builtin"
 	BackendManual   Backend = "manual"
+
+	// Sibling-platform backends. macWTF never executes these, but the
+	// catalogue is shared, so the schema must accept them for entries that
+	// also target Kali, Windows or Android.
+	BackendApt    Backend = "apt"
+	BackendWinget Backend = "winget"
+	BackendChoco  Backend = "choco"
+	BackendScoop  Backend = "scoop"
+	BackendPacman Backend = "pacman"
+	BackendAPK    Backend = "apk"
 )
 
 var backends = map[Backend]bool{
@@ -30,9 +40,25 @@ var backends = map[Backend]bool{
 	BackendCargo: true, BackendGo: true, BackendNPM: true, BackendGem: true,
 	BackendCurl: true, BackendGit: true, BackendDefaults: true,
 	BackendBuiltin: true, BackendManual: true,
+	BackendApt: true, BackendWinget: true, BackendChoco: true,
+	BackendScoop: true, BackendPacman: true, BackendAPK: true,
 }
 
 func (b Backend) Valid() bool { return backends[b] }
+
+// macOSBackends is the subset this engine can actually execute. The shared
+// catalogue accepts apt, winget and friends for sibling platforms, but a
+// [tool.macos] block naming one of those is a data error: macWTF would load the
+// tool and then be unable to install it.
+var macOSBackends = map[Backend]bool{
+	BackendBrew: true, BackendCask: true, BackendMAS: true, BackendPipx: true,
+	BackendCargo: true, BackendGo: true, BackendNPM: true, BackendGem: true,
+	BackendCurl: true, BackendGit: true, BackendDefaults: true,
+	BackendBuiltin: true, BackendManual: true,
+}
+
+// ValidForMacOS reports whether this backend can run on macOS.
+func (b Backend) ValidForMacOS() bool { return macOSBackends[b] }
 
 // TCC names a privacy permission that macOS will not let any installer grant
 // programmatically. Every one of these costs the user a manual trip to System
@@ -122,15 +148,33 @@ const (
 	ArchAMD64 = "x86_64"
 )
 
-// Tool is one catalogue entry. Every field that could vary between tools lives
-// here rather than in code: if installing something new would require a change
-// to the engine, this struct is missing a field.
-type Tool struct {
-	ID          string  `toml:"id"`
-	Name        string  `toml:"name"`
-	Description string  `toml:"description"`
-	Category    string  `toml:"category"`
-	Backend     Backend `toml:"backend"`
+// Platform names an operating system in the shared catalogue.
+//
+// The catalogue is shared across the WTF family — macWTF, KaliWTF, WindowsWTF,
+// AndroidWTF — because a tool's identity, description and category are the same
+// everywhere, and curating that four times is how sibling projects drift apart.
+// Only the installation mechanism differs, so only that is per-platform.
+//
+// Shared data, not shared code: each engine stays independent.
+type Platform string
+
+const (
+	PlatformMacOS   Platform = "macos"
+	PlatformKali    Platform = "kali"
+	PlatformWindows Platform = "windows"
+	PlatformAndroid Platform = "android"
+)
+
+// ThisPlatform is the platform this engine installs for. A catalogue entry with
+// no block for it is not loaded at all: macWTF never shows a tool it cannot
+// install, rather than listing it as unavailable.
+const ThisPlatform = PlatformMacOS
+
+// PlatformSpec is how one operating system installs a tool. Every field here
+// is genuinely platform-specific — a cask token means nothing to apt, and
+// Gatekeeper quarantine is a macOS concept.
+type PlatformSpec struct {
+	Backend Backend `toml:"backend"`
 
 	// Package is the backend-specific identifier: a formula name, a cask
 	// token, a numeric App Store id, a PyPI name, a Go module path, a URL.
@@ -155,28 +199,104 @@ type Tool struct {
 
 	// ManualSteps are anything else a human must do by hand: kernel
 	// extension approval, license activation, a helper tool install.
-	// These join the TCC entries in the end-of-run report.
 	ManualSteps []string `toml:"manual_steps"`
 
 	VerifyCmd   string   `toml:"verify_cmd"`
 	PostInstall []string `toml:"post_install"`
 
-	ConflictsWith []string `toml:"conflicts_with"`
-	Requires      []string `toml:"requires"`
+	// Notes adds platform-specific detail to the shared description.
+	Notes string `toml:"notes"`
+}
+
+// entry is the on-disk shape of a catalogue item: shared identity at the top
+// level, one optional block per platform beneath it.
+type entry struct {
+	ID          string `toml:"id"`
+	Name        string `toml:"name"`
+	Description string `toml:"description"`
+	Category    string `toml:"category"`
 
 	License  License `toml:"license"`
 	Homepage string  `toml:"homepage"`
 	Notes    string  `toml:"notes"`
 
-	// LinuxOnly marks tools that install cleanly but cannot actually do
-	// their job on macOS — chiefly anything needing wireless monitor mode,
-	// which has not worked on the internal card since Big Sur. Surfaced as
-	// unavailable and routed to the lab bridge instead of installed.
-	LinuxOnly bool `toml:"linux_only"`
+	ConflictsWith []string `toml:"conflicts_with"`
+	Requires      []string `toml:"requires"`
+
+	MacOS   *PlatformSpec `toml:"macos"`
+	Kali    *PlatformSpec `toml:"kali"`
+	Windows *PlatformSpec `toml:"windows"`
+	Android *PlatformSpec `toml:"android"`
+}
+
+// spec returns the block for a platform, or nil if the tool has none.
+func (e *entry) spec(p Platform) *PlatformSpec {
+	switch p {
+	case PlatformMacOS:
+		return e.MacOS
+	case PlatformKali:
+		return e.Kali
+	case PlatformWindows:
+		return e.Windows
+	case PlatformAndroid:
+		return e.Android
+	}
+	return nil
+}
+
+// platforms lists every platform this entry supports, in stable order.
+func (e *entry) platforms() []Platform {
+	var out []Platform
+	for _, p := range []Platform{PlatformMacOS, PlatformKali, PlatformWindows, PlatformAndroid} {
+		if e.spec(p) != nil {
+			out = append(out, p)
+		}
+	}
+	return out
+}
+
+// Tool is a catalogue entry resolved for this platform: shared identity
+// flattened together with this platform's installation details.
+//
+// Downstream code — the resolver, the backends, the TUI — works with this and
+// never has to know the catalogue is multi-platform.
+type Tool struct {
+	ID          string
+	Name        string
+	Description string
+	Category    string
+
+	Backend Backend
+	Package string
+	Tap     string
+
+	Arch            []string
+	RequiresRosetta bool
+
+	QuarantineStrip bool
+	AppPath         string
+
+	TCCPermissions []TCC
+	ManualSteps    []string
+
+	VerifyCmd   string
+	PostInstall []string
+
+	ConflictsWith []string
+	Requires      []string
+
+	License  License
+	Homepage string
+	Notes    string
+
+	// AlsoOn lists the other platforms this tool is available on. Carried
+	// through for the website and for the lab bridge, which needs to know
+	// what a Kali guest could run.
+	AlsoOn []Platform
 
 	// SourceFile records which manifest file this came from, for error
 	// messages. Populated by the loader, never present in TOML.
-	SourceFile string `toml:"-"`
+	SourceFile string
 }
 
 // NeedsManualSteps reports whether this tool contributes anything to the
@@ -202,7 +322,7 @@ func (t *Tool) String() string { return fmt.Sprintf("%s (%s)", t.ID, t.Backend) 
 
 // toolFile is the on-disk shape of a manifest file.
 type toolFile struct {
-	Tool []Tool `toml:"tool"`
+	Tool []entry `toml:"tool"`
 }
 
 // Profile is a named list of tool ids, optionally composed from other profiles.
@@ -225,6 +345,11 @@ type profileFile struct {
 type Catalogue struct {
 	Tools    []*Tool
 	Profiles []*Profile
+
+	// OtherPlatform counts entries skipped because they have no block for
+	// this platform. Reported by validate so a contributor can tell the
+	// difference between "not in the catalogue" and "not for macOS".
+	OtherPlatform int
 
 	byID        map[string]*Tool
 	profileByID map[string]*Profile

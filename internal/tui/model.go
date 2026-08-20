@@ -198,11 +198,6 @@ func (m *Model) toggleCategory(cat string) {
 	sel, total := m.countSelected(cat)
 	want := sel < total
 	for _, t := range m.cat.InCategory(cat) {
-		// Never bulk-select something that cannot work on macOS; the
-		// user can still tick it individually and see it reported.
-		if want && t.LinuxOnly {
-			continue
-		}
 		m.selected[t.ID] = want
 	}
 }

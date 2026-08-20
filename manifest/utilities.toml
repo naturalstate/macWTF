@@ -10,13 +10,14 @@ id = "rectangle"
 name = "Rectangle"
 description = "Move and resize windows with keyboard shortcuts and snap areas"
 category = "utilities"
+license = "free"
+homepage = "https://rectangleapp.com"
+[tool.macos]
 backend = "cask"
 package = "rectangle"
 app_path = "/Applications/Rectangle.app"
 tcc_permissions = ["accessibility"]
 verify_cmd = "test -d '/Applications/Rectangle.app'"
-license = "free"
-homepage = "https://rectangleapp.com"
 notes = "Cannot move a single window until Accessibility is granted. It will prompt on first launch, but the toggle still has to be flipped by hand."
 
 [[tool]]
@@ -24,13 +25,14 @@ id = "alt-tab"
 name = "AltTab"
 description = "Windows-style alt-tab window switcher with live previews"
 category = "utilities"
+license = "free"
+homepage = "https://alt-tab-macos.netlify.app"
+[tool.macos]
 backend = "cask"
 package = "alt-tab"
 app_path = "/Applications/AltTab.app"
 tcc_permissions = ["accessibility", "screen-recording"]
 verify_cmd = "test -d '/Applications/AltTab.app'"
-license = "free"
-homepage = "https://alt-tab-macos.netlify.app"
 notes = "Needs Accessibility to switch windows and Screen Recording to draw the thumbnail previews. With only Accessibility granted it works but shows blank tiles, which looks like a bug and is not."
 
 [[tool]]
@@ -38,9 +40,10 @@ id = "maccy"
 name = "Maccy"
 description = "Lightweight clipboard history manager"
 category = "utilities"
+license = "free"
+homepage = "https://maccy.app"
+[tool.macos]
 backend = "cask"
 package = "maccy"
 app_path = "/Applications/Maccy.app"
 verify_cmd = "test -d '/Applications/Maccy.app'"
-license = "free"
-homepage = "https://maccy.app"

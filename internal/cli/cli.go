@@ -99,6 +99,10 @@ func runValidate(args []string) error {
 	if !*quiet {
 		fmt.Printf("✓ catalogue is valid — %d tools across %d categories, %d profiles\n",
 			len(cat.Tools), len(cat.Categories()), len(cat.Profiles))
+		if cat.OtherPlatform > 0 {
+			fmt.Printf("  %d shared entries have no macOS block and are not part of this catalogue\n",
+				cat.OtherPlatform)
+		}
 	}
 	return nil
 }
@@ -171,9 +175,6 @@ func listTools(cat *manifest.Catalogue, only string) error {
 // something beyond a plain install.
 func toolFlags(t *manifest.Tool) string {
 	var f []string
-	if t.LinuxOnly {
-		f = append(f, "!linux-only")
-	}
 	if t.QuarantineStrip {
 		f = append(f, "Q")
 	}

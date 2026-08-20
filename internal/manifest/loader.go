@@ -76,13 +76,23 @@ func (c *Catalogue) loadTools(fsys fs.FS) error {
 		}
 
 		for i := range tf.Tool {
-			t := tf.Tool[i]
-			t.SourceFile = name
-			c.Tools = append(c.Tools, &t)
+			e := tf.Tool[i]
+
+			// A tool with no block for this platform is not part of this
+			// platform's catalogue at all. macWTF never shows something
+			// it cannot install; the entry exists for a sibling project.
+			spec := e.spec(ThisPlatform)
+			if spec == nil {
+				c.OtherPlatform++
+				continue
+			}
+
+			t := flatten(&e, spec, name)
+			c.Tools = append(c.Tools, t)
 			// Duplicate ids are a validation error, not a load error, so
 			// that Validate can report every one rather than the first.
 			if _, exists := c.byID[t.ID]; !exists {
-				c.byID[t.ID] = &t
+				c.byID[t.ID] = t
 			}
 		}
 	}
@@ -153,4 +163,56 @@ func decodeHint(err error) error {
 		return fmt.Errorf("line %d col %d: %s\n%s", row, col, derr.Error(), derr.String())
 	}
 	return err
+}
+
+// flatten merges a catalogue entry's shared identity with one platform's
+// installation details into the Tool the rest of the engine works with.
+func flatten(e *entry, spec *PlatformSpec, sourceFile string) *Tool {
+	notes := e.Notes
+	if spec.Notes != "" {
+		if notes != "" {
+			notes += " "
+		}
+		notes += spec.Notes
+	}
+
+	var alsoOn []Platform
+	for _, p := range e.platforms() {
+		if p != ThisPlatform {
+			alsoOn = append(alsoOn, p)
+		}
+	}
+
+	return &Tool{
+		ID:          e.ID,
+		Name:        e.Name,
+		Description: e.Description,
+		Category:    e.Category,
+
+		Backend: spec.Backend,
+		Package: spec.Package,
+		Tap:     spec.Tap,
+
+		Arch:            spec.Arch,
+		RequiresRosetta: spec.RequiresRosetta,
+
+		QuarantineStrip: spec.QuarantineStrip,
+		AppPath:         spec.AppPath,
+
+		TCCPermissions: spec.TCCPermissions,
+		ManualSteps:    spec.ManualSteps,
+
+		VerifyCmd:   spec.VerifyCmd,
+		PostInstall: spec.PostInstall,
+
+		ConflictsWith: e.ConflictsWith,
+		Requires:      e.Requires,
+
+		License:  e.License,
+		Homepage: e.Homepage,
+		Notes:    notes,
+
+		AlsoOn:     alsoOn,
+		SourceFile: sourceFile,
+	}
 }
