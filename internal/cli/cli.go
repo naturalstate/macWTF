@@ -19,6 +19,7 @@ usage:
 
 commands:
   tui         launch the interactive interface (default with no arguments)
+  doctor      check that the prerequisites macwtf needs are present
   validate    check the catalogue for schema and referential integrity errors
   list        list tools, categories and profiles
   install     install a profile, a category, or individual tools
@@ -48,6 +49,8 @@ func Run(args []string, version string) error {
 		return runInstall(rest)
 	case "tui":
 		return runTUI(rest)
+	case "doctor":
+		return runDoctor(rest)
 	case "version", "--version", "-v":
 		fmt.Printf("macwtf %s (%s/%s)\n", version, runtime.GOOS, runtime.GOARCH)
 		return nil

@@ -151,9 +151,22 @@ func (p *Plan) Render(w *strings.Builder, dryRun bool) {
 	}
 	fmt.Fprintf(w, "\n%s\n%s\n\n", header, strings.Repeat("─", len(header)))
 
+	// A backend that failed preflight would otherwise repeat the same error
+	// once per tool. Say it once, at the top, where it can be acted on.
+	if len(p.BackendErrs) > 0 {
+		for b, err := range p.BackendErrs {
+			fmt.Fprintf(w, "  %s backend unavailable: %v\n", b, err)
+		}
+		fmt.Fprintf(w, "  run `macwtf doctor` to see what is missing\n\n")
+	}
+
 	for _, tp := range p.Tools {
 		switch {
 		case tp.PlanErr != nil:
+			if _, dead := p.BackendErrs[tp.Tool.Backend]; dead {
+				fmt.Fprintf(w, "  %-14s  blocked (%s unavailable)\n", tp.Tool.ID, tp.Tool.Backend)
+				continue
+			}
 			fmt.Fprintf(w, "  %-14s  cannot plan: %v\n", tp.Tool.ID, tp.PlanErr)
 		case tp.AlreadyInstalled:
 			fmt.Fprintf(w, "  %-14s  already installed, skipping\n", tp.Tool.ID)
