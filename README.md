@@ -1,115 +1,266 @@
+<div align="center">
+
 # macWTF
 
-**Automates installing the pentesting, InfoSec, dev, and utility tooling that doesn't ship with macOS.**
+**The tooling macOS leaves out — installed properly, in one pass.**
 
-You pick categories. macWTF installs them through whichever backend each tool actually needs — Homebrew formulae, casks, Mac App Store, pipx, cargo, go, direct binary downloads — and then tells you, in one consolidated report, every manual step macOS still requires you to do by hand.
+Pentesting, InfoSec, dev and utility tooling, through whichever backend each tool actually needs.
 
-Apple Silicon only. macOS 14+.
+<br>
 
-```bash
-macwtf                              # launch the TUI
-macwtf install --profile pentest    # or go straight to it
+[![License](https://img.shields.io/badge/license-MIT-2ea44f?style=for-the-badge)](LICENSE)
+[![Go](https://img.shields.io/badge/Go-1.26-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev)
+[![Platform](https://img.shields.io/badge/macOS-Apple_Silicon-000000?style=for-the-badge&logo=apple&logoColor=white)](https://support.apple.com/en-us/HT211814)
+[![Status](https://img.shields.io/badge/status-alpha-orange?style=for-the-badge)](#roadmap)
+
+[![Catalogue](https://img.shields.io/badge/catalogue-24_tools-6E56CF?style=flat-square)](#the-catalogue)
+[![Categories](https://img.shields.io/badge/categories-6-6E56CF?style=flat-square)](#the-catalogue)
+[![Profiles](https://img.shields.io/badge/profiles-4-6E56CF?style=flat-square)](#profiles)
+[![Backends](https://img.shields.io/badge/backends-brew_·_cask-FBB040?style=flat-square)](#backends)
+[![Dry run](https://img.shields.io/badge/dry--run-first_class-0969DA?style=flat-square)](#dry-run)
+
+<sub>Part of the WTF family · <a href="https://github.com/naturalstate/KaliWTF">KaliWTF</a> · macWTF · WindowsWTF · AndroidWTF</sub>
+
+</div>
+
+---
+
+```console
+$ macwtf install --profile recon --dry-run
+
+  nmap          brew install --formula nmap
+  masscan       brew install --formula masscan
+  rustscan      brew install --formula rustscan
+  ffuf          brew install --formula ffuf
+
+  skipped
+  aircrack-ng   linux-only — capture needs monitor mode; use the lab bridge
 ```
+
+You pick categories. macWTF resolves them into an ordered plan, installs through the right backend for each tool, and then tells you — in one consolidated report — every manual step macOS still requires you to do by hand.
 
 ---
 
 ## Why this exists
 
-You can get most of a pentest toolkit onto a Mac with a Brewfile gist. What you can't get from a Brewfile is the part that actually costs you an afternoon:
+You can get most of a toolkit onto a Mac with a Brewfile gist. What a Brewfile cannot do is the part that actually costs you an afternoon.
 
-- **Half the security tooling is unsigned.** Ghidra, Cutter, Maltego, Burp, SDR++ — Gatekeeper blocks them on first launch with a dialog whose only button is *Move to Trash*. macWTF knows which tools need `xattr -d com.apple.quarantine` and asks you before doing it.
-- **TCC permissions cannot be scripted.** Full Disk Access, Screen Recording, Accessibility, Input Monitoring — without MDM, a human has to click these. Wireshark, Karabiner, AltTab, Rectangle, and bandwhich all need them. macWTF collects every one during the run and prints a numbered checklist at the end naming the exact System Settings pane per tool.
-- **A meaningful chunk of the Linux toolkit is a lie on macOS.** Monitor mode on the internal wireless card has been dead since Big Sur. `aircrack-ng`, `kismet`, `hcxdumptool`, and Responder are marked as such and routed to the lab bridge instead of installing and letting you find out.
-- **Homebrew is not enough.** A large share of the catalogue installs via pipx, go, cargo, mas, or a direct release download. Some entries aren't packages at all — they're `defaults write` calls.
+### Gatekeeper blocks half the security tooling
 
-The end-of-run manual-steps report is the single highest-value thing here. Everything else is plumbing around it.
+Reverse engineering and RF tools are overwhelmingly unsigned or ad-hoc signed — the people writing a disassembler are not paying Apple $99/year to notarize it. macOS tags anything downloaded by a quarantine-aware app with `com.apple.quarantine`, and Gatekeeper then refuses to launch it behind a dialog whose only real button is **Move to Trash**.
 
-## Design
+macWTF knows which tools carry that problem, and offers to clear it:
 
-**The tool registry is data. The execution engine is code. They never mix.**
+```bash
+xattr -d -r com.apple.quarantine /Applications/Cutter.app
+```
 
-Adding a tool is a TOML edit, never a code change. If a new tool would require touching Go source, the manifest schema is missing a field, and the fix is to extend the schema — not to special-case the tool.
+Never silently. That command waives a malware check on a specific binary, so it is opt-in and stated plainly before it runs.
+
+### TCC permissions cannot be scripted at all
+
+Full Disk Access, Screen Recording, Accessibility, Input Monitoring — without MDM, no installer on earth can grant these. A human has to click them.
+
+So macWTF collects every permission its run requires and prints one numbered checklist at the end, naming the exact System Settings pane per tool, with a deep link. **This is the highest-value thing the project does.** Everything else is plumbing around it.
+
+### Some of the Linux toolkit is a lie on macOS
+
+Wireless monitor mode on the internal card has been dead since Big Sur, and no third-party adapter has working monitor-mode drivers on Apple Silicon. `aircrack-ng`, `kismet`, `hcxdumptool` and Responder install perfectly and then cannot do the job.
+
+Marking them `linux_only` and routing them to the [lab bridge](#the-lab-bridge) is more useful than letting you discover it mid-engagement.
+
+### Homebrew is not enough
+
+A large share of the catalogue installs via `pipx`, `go`, `cargo`, `mas`, or a direct release download. Some entries are not packages at all — they are `defaults write` calls. Designing for that from day one is why the backend layer is an interface, not a Brewfile generator with things bolted on.
+
+---
+
+## Install
+
+> **Alpha.** No binary releases yet. Build from source:
+
+```bash
+git clone https://github.com/naturalstate/macWTF.git
+cd macWTF
+go build -o macwtf ./cmd/macwtf
+./macwtf validate
+```
+
+Requires Go 1.26+ and macOS on Apple Silicon.
+
+---
+
+## Usage
+
+| Command | What it does |
+|---|---|
+| `macwtf` | Launch the TUI |
+| `macwtf validate` | Schema and referential integrity checks, fully offline |
+| `macwtf check` | Verify every manifest package name still resolves upstream |
+| `macwtf list` | List tools by category |
+| `macwtf list --profiles` | List available profiles |
+| `macwtf install --profile pentest` | Install a whole profile |
+| `macwtf install --category sdr` | Install one category |
+| `macwtf install --tool nmap` | Install a single tool and its dependencies |
+| `macwtf install ... --dry-run` | Print every command, execute nothing |
+| `macwtf status` | What is installed, per `state.toml` |
+| `macwtf remove --tool nmap` | Remove a tool |
+| `macwtf export` | Dump the current selection as a profile TOML |
+
+### Dry run
+
+`--dry-run` is not an afterthought bolted on for safety theatre. Backends **build plans; they never execute** — every backend returns a list of commands, and a separate executor decides whether to spawn anything.
+
+That means dry-run is not a parallel code path that can drift out of sync with a real install. It is the same plan, with execution declined.
+
+---
+
+## The catalogue
+
+**The catalogue is the product. The engine is plumbing.**
+
+Adding a tool is a TOML edit, never a code change. If installing something new would require touching Go source, the schema is missing a field — and the fix is to extend the schema, not to special-case the tool.
 
 ```toml
 [[tool]]
-id          = "burp-suite"
-name        = "Burp Suite Community"
-description = "Web proxy and application security testing platform"
-category    = "sec-web"
+id          = "cutter"
+name        = "Cutter"
+description = "Reverse engineering platform powered by Rizin"
+category    = "sec-reversing"
 backend     = "cask"
-package     = "burp-suite"
+package     = "cutter"
+app_path    = "/Applications/Cutter.app"
 quarantine_strip = true
-tcc_permissions  = []
-verify_cmd  = "test -d '/Applications/Burp Suite Community Edition.app'"
+verify_cmd  = "test -d '/Applications/Cutter.app'"
 license     = "free"
+notes       = "Upstream ships ad-hoc signed builds that are not notarized."
 ```
 
-Two consequences worth stating plainly:
+Manifests are parsed strictly. A one-character typo in a key name is a hard failure, not a silently ignored field:
 
-1. **Homebrew is a backend, not the backend.** The backend layer is an interface with many implementations from day one — `brew`, `cask`, `mas`, `pipx`, `cargo`, `go`, `curl`, `git`, `defaults`. This is not a Brewfile generator with things bolted on.
-2. **Backends produce plans; an executor runs them.** Every backend returns a list of commands rather than executing anything itself. `--dry-run` is therefore not a separate code path — it's the executor declining to spawn. It cannot silently drift out of sync with what a real install does.
-
-## Commands
-
-```
-macwtf                          # launch TUI
-macwtf validate                 # schema + referential integrity, offline
-macwtf check                    # verify every manifest package name still resolves
-macwtf install --profile pentest
-macwtf install --category sdr
-macwtf install --tool nmap
-macwtf install ... --dry-run    # print every command, execute nothing
-macwtf status                   # what's installed, per state.toml
-macwtf remove --tool nmap
-macwtf export                   # dump current selection as a profile TOML
+```console
+$ macwtf validate
+error: manifest/sec-reversing.toml: unknown field(s)
+26| app_path = "/Applications/Cutter.app"
+27| quarantine_stripp = true
+  | ~~~~~~~~~~~~~~~~~ unknown field
 ```
 
-`--dry-run` is the primary debugging affordance, not an afterthought.
+That typo would otherwise silently disable a security-relevant flag.
+
+### Current coverage
+
+| Category | Tools | Notes |
+|---|---|---|
+| `cli` | ripgrep, fd, bat, jq, eza | Modern userland, safe baseline |
+| `sec-recon` | nmap, masscan, rustscan, ffuf, gobuster | All fully functional on macOS |
+| `sec-web` | burp-suite, caido, mitmproxy, sqlmap | Intercepting proxies |
+| `sec-network` | wireshark, tshark, bettercap, aircrack-ng | Conflicts and a linux-only entry |
+| `sec-reversing` | ghidra, cutter, imhex | Where quarantine bites |
+| `utilities` | rectangle, alt-tab, maccy | Where TCC bites |
+
+Seeded from [`macwtf-catalogue.md`](macwtf-catalogue.md), which drafts the full ~400-entry target across 20 categories.
+
+### Flags
+
+| Flag | Meaning |
+|---|---|
+| `[Q]` | Needs a quarantine strip to launch |
+| `[T]` | Needs a TCC permission granted by hand |
+| `[R]` | Needs Rosetta 2 |
+| `[!]` | Linux-only or crippled on macOS |
+
+---
+
+## Backends
+
+Homebrew is *a* backend, not *the* backend.
+
+| Backend | Status | For |
+|---|---|---|
+| `brew` | Implemented | Formulae — CLI tools and libraries |
+| `cask` | Implemented | GUI apps and pre-built binaries |
+| `mas` | Planned | Mac App Store |
+| `pipx` | Planned | Isolated Python CLIs |
+| `cargo` · `go` · `npm` · `gem` | Planned | Language package managers |
+| `curl` | Planned | Direct binary and release downloads |
+| `git` | Planned | Clone-and-build, wordlist repos |
+| `defaults` | Planned | macOS system preference writes |
+
+---
 
 ## Profiles
 
+Profiles compose — they include other profiles — and every selection stays individually toggleable in the TUI.
+
 | Profile | Contents |
 |---|---|
-| **Baseline** | Terminal, shell, CLI quality-of-life, browsers, password manager, editor, system tweaks |
-| **Pentest** | Baseline + recon + web + passwords + network + reporting + lab bridge |
-| **Blue Team** | Baseline + Objective-See suite + Santa + forensics + Wireshark + cloud posture |
-| **Web Hacking** | Baseline + web + recon subset + API tooling |
-| **Cloud** | Baseline + cloud CLIs + cloud security + containers + IaC |
-| **SDR & RF** | Baseline + SDR/RF + hardware + serial |
-| **Hardware** | Baseline + serial + esptool + PlatformIO + KiCad + logic analyzer |
-| **Dev** | Baseline + editors + languages + containers + databases |
+| **Baseline** | Modern CLI userland and desktop essentials |
+| **Recon** | Baseline + scanning, enumeration, content discovery |
+| **Web Hacking** | Baseline + intercepting proxies, injection testing |
+| **Desktop** | Baseline + window management and clipboard |
 
-Profiles compose — they can include other profiles — and every selection stays individually toggleable in the TUI.
+Planned: Pentest, Blue Team, Cloud, SDR & RF, Hardware, Dev, Everything.
+
+---
 
 ## The lab bridge
 
-Rather than pretending macOS is a complete offensive platform, the `lab-bridge` category installs a hypervisor or container runtime (OrbStack, UTM, Lima), pulls a Kali ARM64 image, sorts out USB passthrough for Proxmark/HackRF/wireless adapters, and offers to stage [KaliWTF](https://github.com/naturalstate/KaliWTF) inside the guest.
+Rather than pretending macOS is a complete offensive platform, the `lab-bridge` category installs a hypervisor or container runtime (OrbStack, UTM, Lima), pulls a Kali ARM64 image, sorts out USB passthrough for Proxmark, HackRF and wireless adapters, and offers to stage [KaliWTF](https://github.com/naturalstate/KaliWTF) inside the guest.
 
-This is a clean seam between two projects, not a limitation being hidden.
+A clean seam between two projects, not a limitation being hidden.
+
+---
 
 ## Principles
 
-- Tool `id` values are permanent. Renaming one breaks user state files.
-- Never hardcode `/opt/homebrew` or `/usr/local`. Query `brew --prefix`.
-- Every install is idempotent. Re-running a profile on a configured machine is a no-op.
-- Failures are non-fatal. Log, continue, and report everything at the end. One dead cask must not abort a 60-tool run.
-- Nothing privileged happens silently. `sudo`, quarantine stripping, and security-setting changes are surfaced and confirmed.
-- Wordlists and payloads go to `~/.local/share/macwtf/`, not `/opt`.
-- `validate` makes no network calls.
+- **Tool ids are permanent.** Renaming one breaks existing user state files.
+- **Never hardcode `/opt/homebrew` or `/usr/local`.** Query `brew --prefix`.
+- **Every install is idempotent.** Re-running a profile on a configured machine is a no-op, not a reinstall.
+- **Failures are non-fatal.** Log, continue, report at the end. One dead cask must not abort a 60-tool run.
+- **Nothing privileged happens silently.** `sudo`, quarantine stripping and security-setting changes are always surfaced and confirmed.
+- **`validate` makes no network calls.** It must work on a plane.
+- **Wordlists go to `~/.local/share/macwtf/`.** `/opt` is a Linux convention that clutters macOS.
+
+---
+
+## Contributing
+
+Adding a tool means editing one TOML file and nothing else.
+
+1. Add a `[[tool]]` block to the right file in `manifest/`.
+2. Run `macwtf validate` — it will catch a bad category, a dangling dependency, a typo'd key, or a conflict that does not resolve.
+3. Run `macwtf install --tool <id> --dry-run` and read the commands.
+4. Open a PR.
+
+If your tool cannot be expressed without a code change, that is a schema gap worth raising as an issue.
+
+Package names rot — casks get renamed, formulae get deprecated, tools move between the two. Four of the first twenty entries had already drifted from the draft catalogue. `macwtf check` exists to catch that automatically.
+
+---
+
+## Roadmap
+
+- [x] Manifest schema, strict parsing, offline validation
+- [x] Catalogue seeded across six categories
+- [ ] Backend interface with brew and cask, `--dry-run`
+- [ ] Real install path with state tracking in `~/.macwtf/state.toml`
+- [ ] Quarantine consent flow and the consolidated TCC report
+- [ ] TUI: profile picker and category tree
+- [ ] Remaining backends: mas, pipx, cargo, go, curl, git, defaults
+- [ ] `macwtf check` in CI, on a schedule
+- [ ] Lab bridge
+- [ ] Full ~400-entry catalogue
+
+---
 
 ## Non-goals
 
 Cross-platform support · Intel Macs · Nix-style declarative purity · replacing Homebrew · managing your dotfiles · silent privilege escalation.
 
-## Status
+Sibling projects handle other platforms. Each picks the language that fits its target — they share a name, a brand and a manifest schema, but no code.
 
-Early. Building toward an MVP: manifest schema and validation, brew + cask backends, dry-run, real installs with state tracking, and the quarantine/TCC report. TUI and the remaining backends follow. The catalogue is being seeded from [`macwtf-catalogue.md`](macwtf-catalogue.md).
-
-## Family
-
-Platform-native setup tools sharing a name, a brand, and a manifest schema — but zero code. Each picks the language that fits its platform.
-
-**KaliWTF** · **macWTF** · **WindowsWTF** · **AndroidWTF**
+---
 
 ## License
 
