@@ -1,0 +1,7 @@
+# The floor. Everything else includes this.
+
+[profile]
+id = "baseline"
+name = "Baseline"
+description = "Modern CLI userland and desktop essentials. Safe on any Mac, installs fast, no manual steps."
+tools = ["ripgrep", "fd", "bat", "jq", "eza", "maccy"]

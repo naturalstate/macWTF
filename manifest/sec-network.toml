@@ -1,0 +1,65 @@
+# Security: network and internal.
+#
+# This is where macOS stops being a general-purpose pentest platform and starts
+# being honest about it. Anything requiring wireless monitor mode on the
+# internal card is marked linux_only: Apple removed that capability after Big
+# Sur and no amount of tooling brings it back.
+
+[[tool]]
+id = "wireshark"
+name = "Wireshark"
+description = "Graphical network protocol analyzer"
+category = "sec-network"
+backend = "cask"
+package = "wireshark-app"
+app_path = "/Applications/Wireshark.app"
+conflicts_with = ["tshark"]
+verify_cmd = "test -d '/Applications/Wireshark.app'"
+license = "free"
+homepage = "https://www.wireshark.org"
+manual_steps = [
+  "The cask installs ChmodBPF, which needs an admin password during install and sets up the access_bpf group that grants packet-capture rights.",
+  "Log out and back in after installing so your membership of access_bpf takes effect — without it Wireshark will list no capture interfaces.",
+  "Verify with: dscl . -read /Groups/access_bpf GroupMembership",
+]
+notes = "Homebrew renamed this cask from 'wireshark' to 'wireshark-app'; the 'wireshark' formula is now the CLI-only build. Also installs tshark and dumpcap, which is why it conflicts with the tshark entry."
+
+[[tool]]
+id = "tshark"
+name = "tshark"
+description = "Wireshark's command-line analyzer, without the GUI"
+category = "sec-network"
+backend = "brew"
+package = "wireshark"
+conflicts_with = ["wireshark"]
+verify_cmd = "command -v tshark"
+license = "free"
+homepage = "https://www.wireshark.org"
+notes = "Pick this or the Wireshark cask, not both — they ship the same binaries and will fight over the symlinks."
+
+[[tool]]
+id = "bettercap"
+name = "bettercap"
+description = "Network attack and monitoring framework"
+category = "sec-network"
+backend = "brew"
+package = "bettercap"
+verify_cmd = "command -v bettercap"
+license = "free"
+homepage = "https://www.bettercap.org"
+manual_steps = [
+  "Requires sudo for raw socket and packet injection access.",
+]
+notes = "Ethernet and Bluetooth modules work. The WiFi module needs monitor mode and is therefore effectively unusable on the internal card."
+
+[[tool]]
+id = "aircrack-ng"
+name = "aircrack-ng"
+description = "WiFi security auditing suite — capture requires Linux"
+category = "sec-network"
+backend = "brew"
+package = "aircrack-ng"
+linux_only = true
+license = "free"
+homepage = "https://www.aircrack-ng.org"
+notes = "The cracking half (aircrack-ng against an existing .cap) runs fine on macOS. Capture does not: airodump-ng needs monitor mode, which Apple removed from the internal card after Big Sur, and no third-party USB adapter has working monitor-mode drivers for Apple Silicon. Use the lab bridge and capture from the Kali guest with a supported adapter."

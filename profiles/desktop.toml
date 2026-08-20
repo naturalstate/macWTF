@@ -1,0 +1,10 @@
+# Desktop quality of life. Exists in the MVP mainly because these are the tools
+# that exercise the TCC report — every one needs a permission macOS will not
+# let an installer grant.
+
+[profile]
+id = "desktop"
+name = "Desktop"
+description = "Window management and clipboard tooling"
+includes = ["baseline"]
+tools = ["rectangle", "alt-tab"]

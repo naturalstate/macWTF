@@ -1,0 +1,60 @@
+# Security: web application testing.
+#
+# Note that mitmproxy is a cask, not a formula — it moved. This is exactly the
+# kind of drift `macwtf check` exists to catch before a user hits it.
+
+[[tool]]
+id = "burp-suite"
+name = "Burp Suite Community"
+description = "Intercepting web proxy and application security testing platform"
+category = "sec-web"
+backend = "cask"
+package = "burp-suite"
+app_path = "/Applications/Burp Suite.app"
+verify_cmd = "test -d '/Applications/Burp Suite.app'"
+license = "freemium"
+homepage = "https://portswigger.net/burp"
+manual_steps = [
+  "To intercept HTTPS, export Burp's CA certificate from http://burp while the proxy is running, then trust it in Keychain Access (System keychain → Always Trust).",
+]
+notes = "Community edition throttles the scanner and disables saved projects. PortSwigger signs and notarizes the cask, so no quarantine strip is needed."
+
+[[tool]]
+id = "caido"
+name = "Caido"
+description = "Web security auditing toolkit, lighter alternative to Burp"
+category = "sec-web"
+backend = "cask"
+package = "caido"
+app_path = "/Applications/Caido.app"
+verify_cmd = "test -d '/Applications/Caido.app'"
+license = "freemium"
+homepage = "https://caido.io"
+notes = "Rust-based. Noticeably lower memory footprint than Burp on large scopes. Ships a caido-cli binary alongside the app."
+
+[[tool]]
+id = "mitmproxy"
+name = "mitmproxy"
+description = "Intercept, modify, replay and save HTTP/S traffic from the terminal"
+category = "sec-web"
+backend = "cask"
+package = "mitmproxy"
+verify_cmd = "command -v mitmproxy"
+license = "free"
+homepage = "https://mitmproxy.org"
+manual_steps = [
+  "On first run mitmproxy writes a CA cert to ~/.mitmproxy. Trust it via Keychain Access, or visit http://mitm.it with the proxy active.",
+]
+notes = "Was a Homebrew formula historically; it is now distributed as a cask that installs the mitmproxy, mitmweb and mitmdump binaries."
+
+[[tool]]
+id = "sqlmap"
+name = "sqlmap"
+description = "Automated SQL injection detection and exploitation"
+category = "sec-web"
+backend = "brew"
+package = "sqlmap"
+verify_cmd = "command -v sqlmap"
+license = "free"
+homepage = "https://sqlmap.org"
+notes = "Aggressive by default. Use --level and --risk deliberately against anything you do not own."

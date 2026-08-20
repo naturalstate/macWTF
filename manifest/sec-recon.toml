@@ -1,0 +1,70 @@
+# Security: recon and enumeration.
+#
+# The scanning and content-discovery spine. All of these work properly on macOS
+# — nothing here is crippled by platform restrictions, which is why the recon
+# category is the honest starting point for a Mac pentest setup.
+
+[[tool]]
+id = "nmap"
+name = "Nmap"
+description = "Network discovery and port scanning"
+category = "sec-recon"
+backend = "brew"
+package = "nmap"
+verify_cmd = "command -v nmap"
+license = "free"
+homepage = "https://nmap.org"
+manual_steps = [
+  "SYN scans (-sS), OS detection (-O) and traceroute need root: run them with sudo. Unprivileged nmap falls back to TCP connect scans, which are slower and noisier.",
+]
+notes = "Installs the NSE script library alongside the binary."
+
+[[tool]]
+id = "masscan"
+name = "masscan"
+description = "Asynchronous TCP port scanner for very large address ranges"
+category = "sec-recon"
+backend = "brew"
+package = "masscan"
+verify_cmd = "command -v masscan"
+license = "free"
+homepage = "https://github.com/robertdavidgraham/masscan"
+manual_steps = [
+  "Requires sudo for raw socket access on macOS.",
+]
+notes = "Rate-limit deliberately. Default rates will saturate a link and trip IDS."
+
+[[tool]]
+id = "rustscan"
+name = "RustScan"
+description = "Fast port scanner that hands open ports to nmap for service detection"
+category = "sec-recon"
+backend = "brew"
+package = "rustscan"
+requires = ["nmap"]
+verify_cmd = "command -v rustscan"
+license = "free"
+homepage = "https://github.com/bee-san/RustScan"
+notes = "Pipes results into nmap, so nmap is a genuine dependency rather than a suggestion."
+
+[[tool]]
+id = "ffuf"
+name = "ffuf"
+description = "Fast web fuzzer for content and parameter discovery"
+category = "sec-recon"
+backend = "brew"
+package = "ffuf"
+verify_cmd = "command -v ffuf"
+license = "free"
+homepage = "https://github.com/ffuf/ffuf"
+
+[[tool]]
+id = "gobuster"
+name = "gobuster"
+description = "Directory, DNS and vhost brute forcing"
+category = "sec-recon"
+backend = "brew"
+package = "gobuster"
+verify_cmd = "command -v gobuster"
+license = "free"
+homepage = "https://github.com/OJ/gobuster"

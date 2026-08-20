@@ -1,0 +1,9 @@
+# Web application testing: an intercepting proxy plus the discovery tooling
+# that feeds it.
+
+[profile]
+id = "web"
+name = "Web Hacking"
+description = "Intercepting proxies, injection testing and content discovery"
+includes = ["baseline"]
+tools = ["burp-suite", "caido", "mitmproxy", "sqlmap", "ffuf", "gobuster", "nmap"]

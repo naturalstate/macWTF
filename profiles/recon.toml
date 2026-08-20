@@ -1,0 +1,8 @@
+# Scanning and enumeration. Everything here works properly on macOS.
+
+[profile]
+id = "recon"
+name = "Recon"
+description = "Port scanning, content discovery and enumeration"
+includes = ["baseline"]
+tools = ["nmap", "masscan", "rustscan", "ffuf", "gobuster"]

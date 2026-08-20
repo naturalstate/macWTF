@@ -1,0 +1,63 @@
+# CLI quality of life.
+#
+# Modern replacements for the BSD userland macOS ships. Deliberately boring:
+# these are small, fast, universally useful, and safe to install first, which
+# makes them the baseline every other profile builds on.
+
+[[tool]]
+id = "ripgrep"
+name = "ripgrep"
+description = "Recursive line search, respects .gitignore by default"
+category = "cli"
+backend = "brew"
+package = "ripgrep"
+verify_cmd = "command -v rg"
+license = "free"
+homepage = "https://github.com/BurntSushi/ripgrep"
+notes = "Drop-in grep replacement. Orders of magnitude faster on large trees."
+
+[[tool]]
+id = "fd"
+name = "fd"
+description = "User-friendly alternative to find"
+category = "cli"
+backend = "brew"
+package = "fd"
+verify_cmd = "command -v fd"
+license = "free"
+homepage = "https://github.com/sharkdp/fd"
+
+[[tool]]
+id = "bat"
+name = "bat"
+description = "cat with syntax highlighting and Git integration"
+category = "cli"
+backend = "brew"
+package = "bat"
+verify_cmd = "command -v bat"
+license = "free"
+homepage = "https://github.com/sharkdp/bat"
+
+[[tool]]
+id = "jq"
+name = "jq"
+description = "Command-line JSON processor"
+category = "cli"
+backend = "brew"
+package = "jq"
+verify_cmd = "command -v jq"
+license = "free"
+homepage = "https://jqlang.github.io/jq/"
+notes = "Effectively a hard dependency of every recon workflow that touches an API."
+
+[[tool]]
+id = "eza"
+name = "eza"
+description = "Modern, maintained replacement for ls"
+category = "cli"
+backend = "brew"
+package = "eza"
+verify_cmd = "command -v eza"
+license = "free"
+homepage = "https://github.com/eza-community/eza"
+notes = "Successor to exa, which is unmaintained. Do not install exa."
