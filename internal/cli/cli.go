@@ -18,6 +18,7 @@ usage:
   macwtf <command> [flags]
 
 commands:
+  tui         launch the interactive interface (default with no arguments)
   validate    check the catalogue for schema and referential integrity errors
   list        list tools, categories and profiles
   install     install a profile, a category, or individual tools
@@ -34,8 +35,7 @@ Run "macwtf <command> -h" for command-specific flags.
 // main owns the process lifecycle and tests can call it directly.
 func Run(args []string, version string) error {
 	if len(args) == 0 {
-		fmt.Printf(usage, manifest.ManifestDirEnv)
-		return nil
+		return runTUI(nil)
 	}
 
 	cmd, rest := args[0], args[1:]
@@ -46,6 +46,8 @@ func Run(args []string, version string) error {
 		return runList(rest)
 	case "install":
 		return runInstall(rest)
+	case "tui":
+		return runTUI(rest)
 	case "version", "--version", "-v":
 		fmt.Printf("macwtf %s (%s/%s)\n", version, runtime.GOOS, runtime.GOARCH)
 		return nil
