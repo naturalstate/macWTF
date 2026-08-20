@@ -54,6 +54,7 @@ func (r *Report) OK() bool { return len(r.Blocking()) == 0 }
 func Check() *Report {
 	return &Report{Statuses: []Status{
 		checkArch(),
+		checkAdmin(),
 		checkCLT(),
 		checkBrew(),
 	}}
@@ -142,19 +143,70 @@ func (r *Report) Render(w *strings.Builder) {
 // InstallHomebrew runs Homebrew's official installer.
 //
 // This is a genuinely privileged action: it downloads and executes a shell
-// script as root. It therefore never runs without explicit consent, and the
-// exact command is shown first so the user can read it or run it themselves.
+// script that calls sudo. It never runs without explicit consent, and the exact
+// command is shown first so the user can read it or run it themselves.
 //
-// NONINTERACTIVE suppresses the installer's "press RETURN" prompt but not its
-// sudo prompt, so this needs a terminal the user can type into.
+// Two details matter and are easy to get wrong:
+//
+// The command substitution form is required. Piping curl into bash makes the
+// script's stdin the pipe rather than the terminal, so sudo cannot read a
+// password and the install dies. `bash -c "$(curl ...)"` keeps stdin attached
+// to the terminal.
+//
+// NONINTERACTIVE must only be set when there is genuinely no terminal. It does
+// not merely skip the "press RETURN" prompt: Homebrew's have_sudo_access uses
+// `sudo -n -v` under it, which fails outright unless the user has passwordless
+// sudo. On a normal account that surfaces as "Need sudo access on macOS", which
+// looks like an account problem and is not.
 func InstallHomebrew() error {
-	cmd := exec.Command("/bin/bash", "-c",
-		`curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | /bin/bash`)
-	cmd.Env = append(os.Environ(), "NONINTERACTIVE=1")
+	script := `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+
+	cmd := exec.Command("/bin/bash", "-c", script)
+	cmd.Env = os.Environ()
+	if !isTerminal(os.Stdin) {
+		// No terminal to type a password into. Homebrew will need
+		// passwordless sudo; if it is unavailable the error explains why.
+		cmd.Env = append(cmd.Env, "NONINTERACTIVE=1")
+	}
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
+}
+
+// isTerminal reports whether a file is attached to a terminal, which decides
+// whether an interactive password prompt is possible.
+func isTerminal(f *os.File) bool {
+	info, err := f.Stat()
+	if err != nil {
+		return false
+	}
+	return info.Mode()&os.ModeCharDevice != 0
+}
+
+// checkAdmin reports whether the user can obtain administrator rights.
+// Membership of the admin group is checked rather than running `sudo -v`,
+// because probing sudo would itself prompt for a password.
+func checkAdmin() Status {
+	s := Status{
+		Name:     "Administrator rights",
+		Required: true,
+		Fix:      "Have an admin user run: dseditgroup -o edit -a $USER -t user admin",
+	}
+	out, err := exec.Command("id", "-Gn").Output()
+	if err != nil {
+		s.Detail = "could not determine group membership"
+		return s
+	}
+	for _, g := range strings.Fields(string(out)) {
+		if g == "admin" {
+			s.OK = true
+			s.Detail = "member of the admin group"
+			return s
+		}
+	}
+	s.Detail = "not an administrator — Homebrew and any sudo step will fail"
+	return s
 }
 
 // ShellEnvHint returns the line a user must add to their shell profile so brew
