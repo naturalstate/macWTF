@@ -20,6 +20,7 @@ usage:
 commands:
   validate    check the catalogue for schema and referential integrity errors
   list        list tools, categories and profiles
+  install     install a profile, a category, or individual tools
   version     print the version
 
 global flags:
@@ -43,6 +44,8 @@ func Run(args []string, version string) error {
 		return runValidate(rest)
 	case "list":
 		return runList(rest)
+	case "install":
+		return runInstall(rest)
 	case "version", "--version", "-v":
 		fmt.Printf("macwtf %s (%s/%s)\n", version, runtime.GOOS, runtime.GOARCH)
 		return nil

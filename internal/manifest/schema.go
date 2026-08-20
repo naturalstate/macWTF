@@ -260,3 +260,30 @@ func (c *Catalogue) InCategory(cat string) []*Tool {
 	}
 	return out
 }
+
+// NewCatalogue assembles a catalogue from tools and profiles directly, without
+// reading TOML. Used by tests and by any caller synthesising a selection —
+// notably the TUI's export path.
+//
+// Duplicate ids keep the first occurrence, matching the loader, so that
+// Validate reports the duplication rather than the index silently disagreeing
+// with the slice.
+func NewCatalogue(tools []*Tool, profiles []*Profile) *Catalogue {
+	c := &Catalogue{
+		Tools:       tools,
+		Profiles:    profiles,
+		byID:        make(map[string]*Tool, len(tools)),
+		profileByID: make(map[string]*Profile, len(profiles)),
+	}
+	for _, t := range tools {
+		if _, dup := c.byID[t.ID]; !dup {
+			c.byID[t.ID] = t
+		}
+	}
+	for _, p := range profiles {
+		if _, dup := c.profileByID[p.ID]; !dup {
+			c.profileByID[p.ID] = p
+		}
+	}
+	return c
+}
