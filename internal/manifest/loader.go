@@ -1,8 +1,8 @@
 package manifest
 
 import (
-	"fmt"
 	"errors"
+	"fmt"
 	"io/fs"
 	"os"
 	"path"

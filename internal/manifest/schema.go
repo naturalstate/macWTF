@@ -93,20 +93,20 @@ var tccPanes = map[TCC]Pane{
 	},
 }
 
-func (t TCC) Valid() bool      { _, ok := tccPanes[t]; return ok }
-func (t TCC) Pane() Pane       { return tccPanes[t] }
-func (t TCC) String() string   { return string(t) }
+func (t TCC) Valid() bool    { _, ok := tccPanes[t]; return ok }
+func (t TCC) Pane() Pane     { return tccPanes[t] }
+func (t TCC) String() string { return string(t) }
 
 // License records how a tool is licensed, so the TUI can warn before installing
 // something that will demand payment or a key before it does anything useful.
 type License string
 
 const (
-	LicenseFree      License = "free"
-	LicensePaid      License = "paid"
-	LicenseFreemium  License = "freemium"
-	LicenseTrial     License = "trial"
-	LicenseUnknown   License = ""
+	LicenseFree     License = "free"
+	LicensePaid     License = "paid"
+	LicenseFreemium License = "freemium"
+	LicenseTrial    License = "trial"
+	LicenseUnknown  License = ""
 )
 
 var licenses = map[License]bool{
