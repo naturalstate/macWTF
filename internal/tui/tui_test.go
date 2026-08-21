@@ -152,12 +152,52 @@ func TestPlanScreenShowsRealCommands(t *testing.T) {
 	}
 }
 
-// Nothing in the TUI may install: the plan is always rendered in dry-run mode.
-func TestPlanScreenIsAlwaysDryRun(t *testing.T) {
-	m := press(newModel(t), "enter", "enter")
-	joined := strings.Join(m.(Model).planLines, "\n")
-	if !strings.Contains(joined, "nothing will be executed") {
-		t.Fatalf("plan preview must state that nothing runs:\n%s", joined)
+// Installing must never be reachable without passing through the confirmation
+// screen, so browsing the catalogue cannot modify the machine by accident.
+func TestInstallRequiresConfirmation(t *testing.T) {
+	m := press(newModel(t), "enter", "enter") // profile -> tree -> plan
+	if m.(Model).screen != screenPlan {
+		t.Fatalf("expected the plan screen, got %v", m.(Model).screen)
+	}
+
+	m = press(m, "i")
+	if got := m.(Model).screen; got != screenConfirm {
+		t.Fatalf("i on the plan screen must reach confirmation, got %v", got)
+	}
+
+	// Backing out must not start anything.
+	m = press(m, "esc")
+	if got := m.(Model).screen; got != screenPlan {
+		t.Fatalf("esc must return to the plan, got %v", got)
+	}
+}
+
+// Quarantine consent is a separate decision from agreeing to install, and
+// defaults to off.
+func TestQuarantineConsentDefaultsOffAndToggles(t *testing.T) {
+	m := press(newModel(t), "enter", "enter", "i")
+	if m.(Model).allowQuarantine {
+		t.Fatal("quarantine stripping must default to off")
+	}
+	m = press(m, "t")
+	if !m.(Model).allowQuarantine {
+		t.Fatal("t should toggle quarantine consent on")
+	}
+	m = press(m, "t")
+	if m.(Model).allowQuarantine {
+		t.Fatal("t should toggle it back off")
+	}
+}
+
+// The confirmation screen must state plainly that it will change the machine.
+func TestConfirmScreenStatesConsequence(t *testing.T) {
+	m := press(newModel(t), "enter", "enter", "i")
+	out := m.(Model).View()
+	if !strings.Contains(out, "About to install") {
+		t.Fatalf("confirm screen must say what it will do:\n%s", out)
+	}
+	if !strings.Contains(out, "modify your system") {
+		t.Fatalf("confirm screen must state the consequence:\n%s", out)
 	}
 }
 

@@ -4,13 +4,17 @@
 // review the resolved plan. The plan screen reuses the same renderer as
 // --dry-run, so what you see here is what a real install would execute.
 //
-// Nothing in this package installs anything. The TUI resolves and previews;
-// executing is a separate, deliberate step.
+// Installing is reached only through an explicit confirmation screen that
+// states what will change, so browsing the catalogue can never install
+// anything by accident.
 package tui
 
 import (
+	"context"
+	"errors"
 	"sort"
 	"strings"
+	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
 
@@ -26,6 +30,9 @@ const (
 	screenProfile screen = iota
 	screenTree
 	screenPlan
+	screenConfirm
+	screenProgress
+	screenDone
 )
 
 // rowKind distinguishes a category header from a tool within it, so one flat
@@ -70,9 +77,29 @@ type Model struct {
 	// chosenProfile records which profile seeded the selection, for display.
 	chosenProfile string
 
+	// Install run.
+	plan            *install.Plan
+	allowQuarantine bool
+	events          <-chan install.Event
+	doneCh          chan doneMsg
+	cancelRun       context.CancelFunc
+	runTotal        int
+	runDone         int
+	runCurrent      string
+	runStatus       string
+	runRecent       []string
+	runLog          []logEntry
+	runResult       *install.Result
+	runErr          error
+	startedAt       time.Time
+	cancelled       bool
+	spin            int
+
 	quitting bool
 	err      error
 }
+
+var errNothingSelected = errors.New("nothing selected")
 
 // New builds the initial model.
 func New(cat *manifest.Catalogue, ctx *backend.Ctx) Model {
@@ -94,6 +121,7 @@ func New(cat *manifest.Catalogue, ctx *backend.Ctx) Model {
 		profiles:  profiles,
 		selected:  map[string]bool{},
 		collapsed: map[string]bool{},
+		doneCh:    make(chan doneMsg, 1),
 		width:     100,
 		height:    30,
 	}
@@ -208,4 +236,14 @@ func (m *Model) toggleCategory(cat string) {
 	for _, t := range m.cat.InCategory(cat) {
 		m.selected[t.ID] = want
 	}
+}
+
+// resolveSelection resolves the current selection, optionally filtered to
+// backends that are implemented.
+func resolveSelection(m *Model, supported map[manifest.Backend]bool) (*resolve.Result, error) {
+	return resolve.Resolve(m.cat, resolve.Request{
+		Tools:             m.selectedIDs(),
+		Arch:              m.ctx.Arch,
+		SupportedBackends: supported,
+	})
 }

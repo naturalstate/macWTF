@@ -2,6 +2,8 @@ package tui
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
+
+	"github.com/naturalstate/macWTF/internal/install"
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -10,9 +12,34 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.width, m.height = msg.Width, msg.Height
 		return m, nil
 
+	case eventMsg:
+		m.handleEvent(install.Event(msg))
+		return m, waitForEvent(m.events)
+
+	case tickMsg:
+		if m.screen == screenProgress {
+			m.spin++
+			return m, tick()
+		}
+		return m, nil
+
+	case doneMsg:
+		m.runResult = msg.result
+		m.runErr = msg.err
+		m.screen = screenDone
+		return m, nil
+
 	case tea.KeyMsg:
-		// ctrl+c always exits, from any screen.
+		// ctrl+c cancels a running install rather than killing the
+		// program outright, so the run can stop cleanly and report what
+		// it managed to do. State is saved after every tool, so the
+		// work already done is never lost.
 		if msg.String() == "ctrl+c" {
+			if m.screen == screenProgress && m.cancelRun != nil && !m.cancelled {
+				m.cancelled = true
+				m.cancelRun()
+				return m, nil
+			}
 			m.quitting = true
 			return m, tea.Quit
 		}
@@ -23,7 +50,48 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m.updateTree(msg)
 		case screenPlan:
 			return m.updatePlan(msg)
+		case screenConfirm:
+			return m.updateConfirm(msg)
+		case screenProgress:
+			return m, nil
+		case screenDone:
+			return m.updateDone(msg)
 		}
+	}
+	return m, nil
+}
+
+func (m Model) updateConfirm(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	switch msg.String() {
+	case "esc", "n", "q":
+		m.screen = screenPlan
+		return m, nil
+
+	case "t":
+		// Toggle the quarantine decision. Separate from the install
+		// confirmation on purpose: agreeing to install a tool is not
+		// agreeing to waive a Gatekeeper malware check on it.
+		m.allowQuarantine = !m.allowQuarantine
+		return m, nil
+
+	case "y", "enter":
+		cmd := m.startInstall()
+		return m, cmd
+	}
+	return m, nil
+}
+
+func (m Model) updateDone(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	switch msg.String() {
+	case "q", "esc", "enter":
+		m.quitting = true
+		return m, tea.Quit
+	case "up", "k":
+		if m.planScroll > 0 {
+			m.planScroll--
+		}
+	case "down", "j":
+		m.planScroll++
 	}
 	return m, nil
 }
@@ -158,6 +226,20 @@ func (m Model) updatePlan(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 
 	case "esc", "left", "h", "backspace":
 		m.screen = screenTree
+
+	case "i", "enter":
+		// Move to the confirmation screen. Installing is never one
+		// keypress away from browsing.
+		p, err := m.resolvePlan()
+		if err != nil {
+			m.runErr = err
+			return m, nil
+		}
+		m.plan = p
+		if todo, _, _ := p.Counts(); todo == 0 {
+			return m, nil
+		}
+		m.screen = screenConfirm
 
 	case "up", "k":
 		if m.planScroll > 0 {

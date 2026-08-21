@@ -21,6 +21,12 @@ func (m Model) View() string {
 		return m.viewTree()
 	case screenPlan:
 		return m.viewPlan()
+	case screenConfirm:
+		return m.viewConfirm()
+	case screenProgress:
+		return m.viewProgress()
+	case screenDone:
+		return m.viewDone()
 	}
 	return ""
 }
@@ -460,9 +466,202 @@ func (m Model) viewPlan() string {
 		title + "\n" + strings.TrimRight(b.String(), "\n"))
 
 	return m.chrome(
-		"plan preview · "+warnStyle.Render("nothing will be executed"),
+		"plan preview",
 		m.statusRight(),
 		"\n"+pane+"\n",
-		help("↑/↓", "scroll", "esc", "back to selection", "q", "quit"),
+		help("i", "install", "↑/↓", "scroll", "esc", "back", "q", "quit"),
 	)
 }
+
+// ---------------------------------------------------------------- confirm
+
+func (m Model) viewConfirm() string {
+	w := m.width
+	if w < 60 {
+		w = 60
+	}
+	inner := w - 6
+
+	todo, already, failed := m.plan.Counts()
+	pending := m.plan.PendingQuarantine()
+
+	var tcc []*manifest.Tool
+	for _, tp := range m.plan.Tools {
+		if tp.AlreadyInstalled || tp.PlanErr != nil {
+			continue
+		}
+		if len(tp.Tool.TCCPermissions) > 0 {
+			tcc = append(tcc, tp.Tool)
+		}
+	}
+
+	var b strings.Builder
+	b.WriteString(boldStyle.Render(fmt.Sprintf("About to install %d tool(s)", todo)) + "\n\n")
+	if already > 0 {
+		b.WriteString(itemMuted.Render(fmt.Sprintf("%d already present and will be skipped.", already)) + "\n")
+	}
+	if failed > 0 {
+		b.WriteString(warnStyle.Render(fmt.Sprintf("%d cannot be planned and will be reported.", failed)) + "\n")
+	}
+	b.WriteString("\n")
+
+	if len(tcc) > 0 {
+		b.WriteString(infoStyle.Render("Will need permissions granted by hand afterwards:") + "\n")
+		for _, t := range tcc {
+			var panes []string
+			for _, p := range t.TCCPermissions {
+				panes = append(panes, p.Pane().Name)
+			}
+			b.WriteString(itemMuted.Render("  "+t.ID+" — "+strings.Join(panes, ", ")) + "\n")
+		}
+		b.WriteString(itemMuted.Render("  macOS does not allow an installer to grant these.") + "\n\n")
+	}
+
+	if len(pending) > 0 {
+		box := warnStyle.Render(fmt.Sprintf("%d unsigned tool(s): Gatekeeper will block first launch", len(pending))) + "\n"
+		for _, t := range pending {
+			box += itemMuted.Render("  "+t.ID+" — "+t.AppPath) + "\n"
+		}
+		box += "\n"
+		if m.allowQuarantine {
+			box += okStyle.Render("  [x] remove quarantine") +
+				itemMuted.Render("   waives the malware check for these apps") + "\n"
+		} else {
+			box += itemMuted.Render("  [ ] remove quarantine") +
+				itemMuted.Render("   they will install, but not launch until you allow them") + "\n"
+		}
+		box += descStyle.Render("  press ") + keyStyle.Render("t") + descStyle.Render(" to change")
+		b.WriteString(paneStyle.Width(inner).Render(box) + "\n\n")
+	}
+
+	b.WriteString(boldStyle.Render("Proceed?") + itemMuted.Render("   this will modify your system") + "\n")
+
+	return m.chrome(
+		"confirm",
+		m.statusRight(),
+		"\n  "+strings.ReplaceAll(b.String(), "\n", "\n  ")+"\n",
+		help("y", "install", "t", "quarantine", "esc", "back", "ctrl+c", "quit"),
+	)
+}
+
+// --------------------------------------------------------------- progress
+
+func (m Model) viewProgress() string {
+	w := m.width
+	if w < 60 {
+		w = 60
+	}
+	inner := w - 6
+
+	var b strings.Builder
+
+	const barWidth = 34
+	filled := 0
+	if m.runTotal > 0 {
+		filled = m.runDone * barWidth / m.runTotal
+	}
+	if filled > barWidth {
+		filled = barWidth
+	}
+	bar := okStyle.Render(strings.Repeat("█", filled)) +
+		itemDimStyle.Render(strings.Repeat("░", barWidth-filled))
+
+	spinner := " "
+	if m.runDone < m.runTotal && !m.cancelled {
+		spinner = keyStyle.Render(spinFrames[m.spin%len(spinFrames)])
+	}
+
+	pct := 0
+	if m.runTotal > 0 {
+		pct = m.runDone * 100 / m.runTotal
+	}
+	fmt.Fprintf(&b, "%s  %s  %d/%d  %d%%\n\n", spinner, bar, m.runDone, m.runTotal, pct)
+
+	if m.cancelled {
+		b.WriteString(warnStyle.Render("Cancelling — finishing the current step…") + "\n\n")
+	} else if m.runCurrent != "" && m.runDone < m.runTotal {
+		fmt.Fprintf(&b, "%s %s\n", boldStyle.Render(m.runCurrent),
+			itemMuted.Render(truncate(m.runStatus, inner-lipgloss.Width(m.runCurrent)-2)))
+		b.WriteString("\n")
+	}
+
+	// Completed tools, newest last, trimmed to fit.
+	maxLog := m.height - 14
+	if maxLog < 3 {
+		maxLog = 3
+	}
+	log := m.runLog
+	if len(log) > maxLog {
+		log = log[len(log)-maxLog:]
+	}
+	for _, e := range log {
+		if e.err != nil {
+			fmt.Fprintf(&b, "  %s %-16s %s\n", dangerStyle.Render("✗"), e.tool,
+				itemMuted.Render(truncate(e.err.Error(), inner-22)))
+			continue
+		}
+		fmt.Fprintf(&b, "  %s %-16s %s\n", okStyle.Render("✓"), e.tool,
+			itemMuted.Render(fmt.Sprintf("%.1fs", e.elapsed.Seconds())))
+	}
+
+	return m.chrome(
+		"installing",
+		m.statusRight(),
+		"\n  "+strings.ReplaceAll(b.String(), "\n", "\n  ")+"\n",
+		help("ctrl+c", "cancel"),
+	)
+}
+
+// ------------------------------------------------------------------- done
+
+func (m Model) viewDone() string {
+	w := m.width
+	if w < 60 {
+		w = 60
+	}
+
+	var b strings.Builder
+	if m.runErr != nil {
+		b.WriteString(dangerStyle.Render("Run ended: "+m.runErr.Error()) + "\n\n")
+	}
+	if m.runResult != nil {
+		var sb strings.Builder
+		m.runResult.RenderSummary(&sb)
+		b.WriteString(sb.String())
+	}
+
+	lines := strings.Split(b.String(), "\n")
+	height := m.height - 8
+	if height < 6 {
+		height = 6
+	}
+	if m.planScroll > len(lines)-1 {
+		m.planScroll = len(lines) - 1
+	}
+	if m.planScroll < 0 {
+		m.planScroll = 0
+	}
+	end := m.planScroll + height
+	if end > len(lines) {
+		end = len(lines)
+	}
+
+	var out strings.Builder
+	for i := m.planScroll; i < end; i++ {
+		out.WriteString(truncate(lines[i], w-4) + "\n")
+	}
+	if len(lines) > height {
+		out.WriteString(itemDimStyle.Render(fmt.Sprintf("  … %d–%d of %d lines",
+			m.planScroll+1, end, len(lines))) + "\n")
+	}
+
+	ctx := "finished"
+	if m.runResult != nil && len(m.runResult.Failed) > 0 {
+		ctx = warnStyle.Render(fmt.Sprintf("finished with %d failure(s)", len(m.runResult.Failed)))
+	}
+
+	return m.chrome(ctx, m.statusRight(), "\n"+out.String(),
+		help("↑/↓", "scroll", "q", "quit"))
+}
+
+var spinFrames = []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
