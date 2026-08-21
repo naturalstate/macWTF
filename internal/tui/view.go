@@ -7,6 +7,7 @@ import (
 	"github.com/charmbracelet/lipgloss"
 
 	"github.com/naturalstate/macWTF/internal/manifest"
+	"github.com/naturalstate/macWTF/internal/resolve"
 )
 
 func (m Model) View() string {
@@ -58,52 +59,143 @@ func (m Model) statusRight() string {
 
 func (m Model) viewProfile() string {
 	w := m.width
-	if w < 40 {
-		w = 40
-	}
-	inner := w - 4
-
-	var b strings.Builder
-	b.WriteString("\n")
-	b.WriteString("  " + boldStyle.Render("Choose a starting point") + "\n")
-	b.WriteString("  " + descStyle.Render("Everything stays editable afterwards.") + "\n\n")
-
-	for i, p := range m.profiles {
-		selected := i == m.profCursor
-
-		marker := "  "
-		name := itemStyle.Render(p.Name)
-		if selected {
-			marker = keyStyle.Render("▸ ")
-			name = boldStyle.Render(p.Name)
-		}
-
-		count := len(p.Tools)
-		meta := countChip.Render(fmt.Sprintf("%d tools", count))
-		if len(p.Includes) > 0 {
-			meta += countChip.Render(" + " + strings.Join(p.Includes, ", "))
-		}
-
-		line := fmt.Sprintf("%s%s  %s", marker, padTo(name, 16), meta)
-		desc := "     " + itemMuted.Render(truncate(p.Description, inner-5))
-
-		if selected {
-			b.WriteString(rowSelStyle.Render(padTo(" "+line, inner)) + "\n")
-		} else {
-			b.WriteString(" " + padTo(line, inner) + "\n")
-		}
-		b.WriteString(desc + "\n\n")
+	if w < 60 {
+		w = 60
 	}
 
-	b.WriteString("  " + descStyle.Render("or press ") + keyStyle.Render("c") +
-		descStyle.Render(" to start empty and pick tools by hand") + "\n\n")
+	// Same two-pane language as the catalogue screen: choose on the left,
+	// see the consequence on the right. Answering "what is actually in
+	// Recon?" before committing is the point.
+	twoCol := w >= 90
+	leftW := w - 2
+	rightW := 0
+	if twoCol {
+		leftW = w*40/100 - 2
+		rightW = w - leftW - 6
+	}
+
+	height := m.height - 8
+	if height < 8 {
+		height = 8
+	}
+
+	left := m.profileListPane(leftW, height)
+	body := left
+	if twoCol {
+		body = lipgloss.JoinHorizontal(lipgloss.Top, left,
+			"  ", m.profilePreviewPane(rightW, height+1))
+	}
 
 	return m.chrome(
 		"the tooling macOS leaves out",
 		m.statusRight(),
-		b.String(),
-		help("↑/↓", "move", "enter", "choose", "c", "custom", "q", "quit"),
+		"\n"+body+"\n",
+		help("↑/↓", "move", "enter", "choose", "c", "start empty", "q", "quit"),
 	)
+}
+
+func (m Model) profileListPane(width, height int) string {
+	inner := width - 2
+	var b strings.Builder
+
+	for i, p := range m.profiles {
+		cursored := i == m.profCursor
+
+		count := len(p.Tools)
+		meta := countChip.Render(fmt.Sprintf("%d", count))
+		if len(p.Includes) > 0 {
+			meta = countChip.Render(fmt.Sprintf("%d+", count))
+		}
+
+		name := itemStyle.Render(p.Name)
+		if cursored {
+			name = boldStyle.Render(p.Name)
+		}
+		line := " " + padTo(name, inner-lipgloss.Width(meta)-2) + " " + meta
+
+		if cursored {
+			b.WriteString(rowSelStyle.Render(padTo(line, inner)))
+		} else {
+			b.WriteString(padTo(line, inner))
+		}
+		b.WriteString("\n")
+	}
+
+	b.WriteString(padTo("", inner) + "\n")
+	b.WriteString(padTo(" "+descStyle.Render("c")+itemMuted.Render("  start empty"), inner) + "\n")
+
+	for i := len(m.profiles) + 2; i < height; i++ {
+		b.WriteString(padTo("", inner) + "\n")
+	}
+
+	return paneFocusStyle.Width(width).Render(
+		paneTitleStyle.Render(" profiles ") + "\n" + strings.TrimRight(b.String(), "\n"))
+}
+
+// profilePreviewPane shows what the highlighted profile resolves to, grouped by
+// category. This is the resolver's real output, not the raw tool list, so
+// dependencies pulled in and conflicts dropped are already accounted for.
+func (m Model) profilePreviewPane(width, height int) string {
+	inner := width - 2
+	if len(m.profiles) == 0 {
+		return paneStyle.Width(width).Height(height).Render("")
+	}
+	p := m.profiles[m.profCursor]
+
+	var b strings.Builder
+	b.WriteString(boldStyle.Render(p.Name) + "\n")
+	b.WriteString(wrap(itemMuted.Render(p.Description), inner) + "\n\n")
+
+	res, err := resolve.Resolve(m.cat, resolve.Request{Profile: p.ID, Arch: m.ctx.Arch})
+	if err != nil {
+		b.WriteString(dangerStyle.Render(err.Error()))
+		return paneStyle.Width(width).Height(height).Render(b.String())
+	}
+
+	// Group by category, preserving catalogue order.
+	byCat := map[string][]string{}
+	var order []string
+	var needsTCC, needsQ int
+	for _, t := range res.Install {
+		if _, seen := byCat[t.Category]; !seen {
+			order = append(order, t.Category)
+		}
+		byCat[t.Category] = append(byCat[t.Category], t.ID)
+		if len(t.TCCPermissions) > 0 {
+			needsTCC++
+		}
+		if t.QuarantineStrip {
+			needsQ++
+		}
+	}
+
+	b.WriteString(okStyle.Render(fmt.Sprintf("%d tools", len(res.Install))))
+	if needsTCC > 0 {
+		b.WriteString(itemMuted.Render(fmt.Sprintf("  ·  %d need permissions", needsTCC)))
+	}
+	if needsQ > 0 {
+		b.WriteString(itemMuted.Render(fmt.Sprintf("  ·  %d unsigned", needsQ)))
+	}
+	b.WriteString("\n\n")
+
+	labelW := 14
+	for _, cat := range order {
+		names := strings.Join(byCat[cat], " ")
+		label := categoryText.Render(padTo(cat, labelW))
+		b.WriteString(label + wrapIndent(itemStyle.Render(names), inner-labelW, labelW) + "\n")
+	}
+
+	return paneStyle.Width(width).Height(height).Render(strings.TrimRight(b.String(), "\n"))
+}
+
+// wrapIndent wraps text to a width and indents every line after the first, so
+// a wrapped list stays aligned under its label.
+func wrapIndent(s string, w, indent int) string {
+	lines := strings.Split(wrap(s, w), "\n")
+	for i := 1; i < len(lines); i++ {
+		lines[i] = repeat(" ", indent) + lines[i]
+	}
+	return strings.Join(lines, "\n")
 }
 
 // ------------------------------------------------------------------- tree

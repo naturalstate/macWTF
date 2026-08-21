@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"strings"
@@ -10,6 +11,7 @@ import (
 	"github.com/naturalstate/macWTF/internal/install"
 	"github.com/naturalstate/macWTF/internal/manifest"
 	"github.com/naturalstate/macWTF/internal/resolve"
+	"github.com/naturalstate/macWTF/internal/state"
 )
 
 // stringList collects a repeatable flag, so --tool can be passed more than once.
@@ -89,7 +91,57 @@ func runInstall(args []string) error {
 		return nil
 	}
 
-	return fmt.Errorf("real installs are not wired up yet — re-run with --dry-run")
+	todo, _, _ := plan.Counts()
+	if todo == 0 {
+		fmt.Println("Nothing to do.")
+		return nil
+	}
+
+	// Quarantine stripping waives a Gatekeeper malware check, so it is
+	// confirmed separately from the install itself, immediately before
+	// anything runs, and never inferred from the user having said yes to
+	// installing.
+	if pending := plan.PendingQuarantine(); len(pending) > 0 && !*allowQuarantine {
+		if !confirmQuarantine(pending, *assumeYes) {
+			fmt.Println("Continuing without stripping quarantine.")
+			fmt.Println("Those apps will install but Gatekeeper will block first launch.")
+		} else {
+			ctx.AllowQuarantineStrip = true
+			plan, err = install.BuildPlan(res, reg, ctx)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	if !*assumeYes && !confirm(fmt.Sprintf("Install %d tool(s)?", todo)) {
+		return fmt.Errorf("cancelled")
+	}
+
+	st, err := state.Load("")
+	if err != nil {
+		return err
+	}
+
+	runner := newRunner(todo)
+	ex := &install.Executor{Ctx: ctx, State: st, Emit: runner.handle}
+
+	result, err := ex.Run(context.Background(), plan)
+	runner.finish()
+	if err != nil {
+		return err
+	}
+
+	var summary strings.Builder
+	result.RenderSummary(&summary)
+	fmt.Print(summary.String())
+
+	fmt.Printf("\nState written to %s\n", st.Path())
+
+	if len(result.Failed) > 0 {
+		return fmt.Errorf("%d tool(s) failed", len(result.Failed))
+	}
+	return nil
 }
 
 // backendAdoptBrew exposes PATH adoption to the install flow.

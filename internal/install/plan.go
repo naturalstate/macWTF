@@ -201,7 +201,9 @@ func (p *Plan) Render(w *strings.Builder, dryRun bool) {
 	}
 	w.WriteString("\n")
 
-	if pending := p.PendingQuarantine(); len(pending) > 0 {
+	// Only in dry-run. An interactive run prompts for this instead, and
+	// saying it twice trains the user to skim past a security decision.
+	if pending := p.PendingQuarantine(); dryRun && len(pending) > 0 {
 		fmt.Fprintf(w, "\n%d tool(s) are unsigned and will not launch until the Gatekeeper\n", len(pending))
 		w.WriteString("quarantine attribute is removed:\n")
 		for _, t := range pending {
