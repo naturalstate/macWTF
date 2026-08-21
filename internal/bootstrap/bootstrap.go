@@ -23,8 +23,14 @@ type Status struct {
 	// Detail describes what was found, or what is missing.
 	Detail string
 
-	// Fix is the command a user can run to satisfy it, if there is one.
+	// Fix is the command that satisfies an unmet prerequisite.
 	Fix string
+
+	// Advice is guidance for a prerequisite that is satisfied but not
+	// ideal — chiefly Homebrew installed outside PATH, which works for this
+	// run but will confuse every future shell. Distinct from Fix, which
+	// answers "how do I make this work at all".
+	Advice string
 
 	// Required marks a prerequisite that blocks installs entirely, as
 	// opposed to one that only limits some backends.
@@ -72,14 +78,11 @@ func checkArch() Status {
 }
 
 func checkCLT() Status {
-	s := Status{
-		Name:     "Xcode Command Line Tools",
-		Required: true,
-		Fix:      "xcode-select --install",
-	}
+	s := Status{Name: "Xcode Command Line Tools", Required: true}
 	out, err := exec.Command("xcode-select", "-p").Output()
 	if err != nil {
 		s.Detail = "not installed — required by Homebrew and by anything that compiles"
+		s.Fix = "xcode-select --install"
 		return s
 	}
 	s.OK = true
@@ -87,23 +90,43 @@ func checkCLT() Status {
 	return s
 }
 
+// BrewPrefixes are the standard Homebrew locations. Apple Silicon uses
+// /opt/homebrew; Intel used /usr/local. Never hardcoded past this point —
+// everything downstream asks `brew --prefix`.
+var BrewPrefixes = []string{"/opt/homebrew", "/usr/local"}
+
+// checkBrew looks for Homebrew on PATH and, failing that, in the standard
+// prefixes. The distinction matters: /opt/homebrew is not on the default PATH
+// on Apple Silicon, so a perfectly good install looks missing in any shell that
+// has not sourced brew shellenv — a fresh terminal, a non-login SSH session, or
+// a script. Reporting that as "not installed" sends the user to reinstall
+// something they already have.
 func checkBrew() Status {
-	s := Status{
-		Name:     "Homebrew",
-		Required: true,
-		Fix:      InstallCommand,
-	}
-	if _, err := exec.LookPath("brew"); err != nil {
-		s.Detail = "not installed — the brew and cask backends need it"
+	s := Status{Name: "Homebrew", Required: true}
+
+	if _, err := exec.LookPath("brew"); err == nil {
+		prefix, err := exec.Command("brew", "--prefix").Output()
+		if err != nil {
+			s.Detail = "found on PATH but `brew --prefix` failed"
+			return s
+		}
+		s.OK = true
+		s.Detail = strings.TrimSpace(string(prefix))
 		return s
 	}
-	prefix, err := exec.Command("brew", "--prefix").Output()
-	if err != nil {
-		s.Detail = "found on PATH but `brew --prefix` failed"
+
+	for _, prefix := range BrewPrefixes {
+		if _, err := os.Stat(prefix + "/bin/brew"); err != nil {
+			continue
+		}
+		s.OK = true
+		s.Detail = prefix + " (installed, but not on this shell's PATH)"
+		s.Advice = ShellEnvHint(prefix)
 		return s
 	}
-	s.OK = true
-	s.Detail = strings.TrimSpace(string(prefix))
+
+	s.Detail = "not installed — the brew and cask backends need it"
+	s.Fix = InstallCommand
 	return s
 }
 
@@ -125,6 +148,12 @@ func (r *Report) Render(w *strings.Builder) {
 	blocking := r.Blocking()
 	if len(blocking) == 0 {
 		w.WriteString("\nEverything macWTF needs is present.\n")
+		for _, s := range r.Statuses {
+			if s.Advice != "" {
+				fmt.Fprintf(w, "\n%s works for this run, but add this to your shell\nprofile so it works in every future shell:\n\n    %s\n",
+					s.Name, s.Advice)
+			}
+		}
 		return
 	}
 
@@ -136,8 +165,9 @@ func (r *Report) Render(w *strings.Builder) {
 		}
 		fmt.Fprintf(w, "  %s\n    %s\n\n", s.Name, s.Fix)
 	}
-	w.WriteString("Homebrew's installer needs an administrator password and will\n")
-	w.WriteString("install the Command Line Tools itself if they are missing.\n")
+	w.WriteString("Install these yourself and re-run macwtf. Homebrew's installer\n")
+	w.WriteString("needs an administrator password and will install the Command Line\n")
+	w.WriteString("Tools itself if they are missing.\n")
 }
 
 // InstallHomebrew runs Homebrew's official installer.
@@ -188,11 +218,7 @@ func isTerminal(f *os.File) bool {
 // Membership of the admin group is checked rather than running `sudo -v`,
 // because probing sudo would itself prompt for a password.
 func checkAdmin() Status {
-	s := Status{
-		Name:     "Administrator rights",
-		Required: true,
-		Fix:      "Have an admin user run: dseditgroup -o edit -a $USER -t user admin",
-	}
+	s := Status{Name: "Administrator rights", Required: true}
 	out, err := exec.Command("id", "-Gn").Output()
 	if err != nil {
 		s.Detail = "could not determine group membership"
@@ -205,6 +231,7 @@ func checkAdmin() Status {
 			return s
 		}
 	}
+	s.Fix = "Have an admin user run: dseditgroup -o edit -a $USER -t user admin"
 	s.Detail = "not an administrator — Homebrew and any sudo step will fail"
 	return s
 }
