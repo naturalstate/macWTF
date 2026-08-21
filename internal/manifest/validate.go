@@ -219,6 +219,10 @@ func (c *Catalogue) validateProfiles() Problems {
 	seen := map[string]string{}
 
 	for _, p := range c.Profiles {
+		if p.Synthetic {
+			// Generated from the catalogue, so it cannot dangle.
+			continue
+		}
 		bad := func(format string, args ...any) {
 			ps = append(ps, Problem{File: p.SourceFile, Ref: p.ID, Msg: fmt.Sprintf(format, args...)})
 		}

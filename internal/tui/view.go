@@ -143,8 +143,15 @@ func (m Model) profilePreviewPane(width, height int) string {
 	p := m.profiles[m.profCursor]
 
 	var b strings.Builder
-	b.WriteString(boldStyle.Render(p.Name) + "\n")
+	title := boldStyle.Render(p.Name)
+	if p.Synthetic {
+		title += "  " + countChip.Render("generated")
+	}
+	b.WriteString(title + "\n")
 	b.WriteString(wrap(itemMuted.Render(p.Description), inner) + "\n\n")
+	if p.Warning != "" {
+		b.WriteString(wrap(warnStyle.Render(p.Warning), inner) + "\n\n")
+	}
 
 	res, err := resolve.Resolve(m.cat, resolve.Request{Profile: p.ID, Arch: m.ctx.Arch})
 	if err != nil {

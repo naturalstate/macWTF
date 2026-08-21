@@ -54,7 +54,41 @@ func Load(dir string) (*Catalogue, error) {
 	if err := c.loadProfiles(fsys); err != nil {
 		return nil, err
 	}
+	c.addEverything()
 	return c, nil
+}
+
+// addEverything appends the synthetic whole-catalogue profile.
+//
+// Generated rather than authored: a hand-written everything.toml would need
+// re-listing every tool on every catalogue change, and would silently go stale
+// the first time someone forgot. Conflicting tools are left in — the resolver
+// drops one of each pair and reports why, which is more informative than
+// pre-filtering them here.
+func (c *Catalogue) addEverything() {
+	if len(c.Tools) == 0 {
+		return
+	}
+	if _, exists := c.profileByID[EverythingID]; exists {
+		return
+	}
+
+	ids := make([]string, 0, len(c.Tools))
+	for _, t := range c.Tools {
+		ids = append(ids, t.ID)
+	}
+
+	p := &Profile{
+		ID:          EverythingID,
+		Name:        "Everything",
+		Description: "The entire catalogue. Large download, and several tools need manual setup afterwards.",
+		Tools:       ids,
+		SourceFile:  "(generated)",
+		Synthetic:   true,
+		Warning:     "This installs every tool in the catalogue. Expect a long run and a substantial download.",
+	}
+	c.Profiles = append(c.Profiles, p)
+	c.profileByID[p.ID] = p
 }
 
 func (c *Catalogue) loadTools(fsys fs.FS) error {

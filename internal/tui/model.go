@@ -77,7 +77,15 @@ type Model struct {
 // New builds the initial model.
 func New(cat *manifest.Catalogue, ctx *backend.Ctx) Model {
 	profiles := append([]*manifest.Profile(nil), cat.Profiles...)
-	sort.Slice(profiles, func(i, j int) bool { return profiles[i].ID < profiles[j].ID })
+	sort.SliceStable(profiles, func(i, j int) bool {
+		// Everything sorts last: it is the escape hatch, not a
+		// starting point, and putting it first invites a mis-click
+		// that installs the whole catalogue.
+		if a, b := profiles[i].Synthetic, profiles[j].Synthetic; a != b {
+			return b
+		}
+		return profiles[i].ID < profiles[j].ID
+	})
 
 	m := Model{
 		cat:       cat,
