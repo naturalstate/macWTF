@@ -1,0 +1,7 @@
+[profile]
+id = "blue-team"
+name = "Blue Team"
+description = "Defensive tooling: forensics, reversing and traffic analysis"
+includes = ["baseline"]
+categories = ["sec-reversing"]
+tools = ["wireshark"]

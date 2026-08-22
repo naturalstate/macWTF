@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/naturalstate/macWTF/internal/manifest"
+	"github.com/naturalstate/macWTF/internal/resolve"
 )
 
 const usage = `macwtf — install the tooling macOS leaves out
@@ -139,12 +140,40 @@ func listProfiles(cat *manifest.Catalogue) error {
 		if p.Description != "" {
 			fmt.Printf("             %s\n", p.Description)
 		}
-		if len(p.Includes) > 0 {
-			fmt.Printf("             includes: %s\n", strings.Join(p.Includes, ", "))
+		if c := profileComposition(p); c != "" {
+			fmt.Printf("             %s\n", c)
 		}
-		fmt.Printf("             %d tool(s) declared directly\n\n", len(p.Tools))
+
+		// The resolved count, not the declared one. A profile composed
+		// from categories declares no tools at all, and reporting that
+		// as "0 tools" is worse than saying nothing.
+		res, err := resolve.Resolve(cat, resolve.Request{Profile: p.ID})
+		if err != nil {
+			fmt.Printf("             (cannot resolve: %v)\n\n", err)
+			continue
+		}
+		fmt.Printf("             %d tools\n\n", len(res.Install))
 	}
 	return nil
+}
+
+// profileComposition renders a profile the way the design table reads:
+// "Baseline + Recon + Web", rather than listing every id it happens to pull in.
+func profileComposition(p *manifest.Profile) string {
+	var parts []string
+	parts = append(parts, p.Includes...)
+	parts = append(parts, p.Categories...)
+	if n := len(p.Tools); n > 0 {
+		parts = append(parts, fmt.Sprintf("%d named tool(s)", n))
+	}
+	if len(parts) == 0 {
+		return ""
+	}
+	out := strings.Join(parts, " + ")
+	if len(p.Excludes) > 0 {
+		out += " − " + strings.Join(p.Excludes, ", ")
+	}
+	return out
 }
 
 func listTools(cat *manifest.Catalogue, only string) error {

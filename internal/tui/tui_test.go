@@ -51,6 +51,28 @@ func press(m tea.Model, keys ...string) tea.Model {
 	return m
 }
 
+// selectProfile navigates the picker to a named profile and chooses it.
+// Counting keypresses would break every time a profile is added, which says
+// nothing about whether the code works.
+func selectProfile(t *testing.T, m tea.Model, id string) tea.Model {
+	t.Helper()
+	mm := m.(Model)
+	idx := -1
+	for i, p := range mm.profiles {
+		if p.ID == id {
+			idx = i
+			break
+		}
+	}
+	if idx < 0 {
+		t.Fatalf("no profile %q in the picker", id)
+	}
+	for i := 0; i < idx; i++ {
+		m = press(m, "down")
+	}
+	return press(m, "enter")
+}
+
 func TestProfileScreenListsProfiles(t *testing.T) {
 	out := newModel(t).View()
 	for _, want := range []string{"Baseline", "Recon", "Web Hacking", "Desktop"} {
@@ -63,7 +85,7 @@ func TestProfileScreenListsProfiles(t *testing.T) {
 // Choosing a profile must pre-check what that profile resolves to, while
 // leaving everything editable.
 func TestChoosingProfilePreselects(t *testing.T) {
-	m := press(newModel(t), "down", "down", "enter") // Recon
+	m := selectProfile(t, newModel(t), "recon")
 	mm := m.(Model)
 
 	if mm.screen != screenTree {
@@ -82,7 +104,7 @@ func TestChoosingProfilePreselects(t *testing.T) {
 // Tools with no macOS block must never appear in the tree at all, so the user
 // is never offered something macWTF cannot install.
 func TestNonMacOSToolsAreNotInTheTree(t *testing.T) {
-	m := press(newModel(t), "enter", "a") // baseline, then select everything
+	m := press(selectProfile(t, newModel(t), "baseline"), "a")
 	mm := m.(Model)
 
 	for _, r := range mm.rows {
@@ -102,7 +124,7 @@ func TestNonMacOSToolsAreNotInTheTree(t *testing.T) {
 }
 
 func TestToggleTool(t *testing.T) {
-	m := press(newModel(t), "enter") // baseline -> tree, cursor on first category
+	m := selectProfile(t, newModel(t), "baseline") // -> tree, cursor on first category
 	before := m.(Model).selected["ripgrep"]
 	m = press(m, "down", " ") // move onto first tool, toggle
 	if m.(Model).selected["ripgrep"] == before {
@@ -126,7 +148,7 @@ func TestToggleCategory(t *testing.T) {
 }
 
 func TestCollapseAndExpand(t *testing.T) {
-	m := press(newModel(t), "enter")
+	m := selectProfile(t, newModel(t), "baseline")
 	rowsOpen := len(m.(Model).rows)
 
 	m = press(m, "left")
@@ -141,7 +163,7 @@ func TestCollapseAndExpand(t *testing.T) {
 
 // The plan screen must render the same commands --dry-run produces.
 func TestPlanScreenShowsRealCommands(t *testing.T) {
-	m := press(newModel(t), "down", "down", "enter", "enter") // recon -> plan
+	m := press(selectProfile(t, newModel(t), "recon"), "enter") // -> plan
 	mm := m.(Model)
 	if mm.screen != screenPlan {
 		t.Fatalf("expected the plan screen, got %v", mm.screen)
@@ -163,7 +185,7 @@ func TestPlanScreenShowsRealCommands(t *testing.T) {
 // Installing must never be reachable without passing through the confirmation
 // screen, so browsing the catalogue cannot modify the machine by accident.
 func TestInstallRequiresConfirmation(t *testing.T) {
-	m := press(newModel(t), "enter", "enter") // profile -> tree -> plan
+	m := press(selectProfile(t, newModel(t), "baseline"), "enter") // -> plan
 	if m.(Model).screen != screenPlan {
 		t.Fatalf("expected the plan screen, got %v", m.(Model).screen)
 	}
@@ -183,7 +205,7 @@ func TestInstallRequiresConfirmation(t *testing.T) {
 // Quarantine consent is a separate decision from agreeing to install, and
 // defaults to off.
 func TestQuarantineConsentDefaultsOffAndToggles(t *testing.T) {
-	m := press(newModel(t), "enter", "enter", "i")
+	m := press(selectProfile(t, newModel(t), "baseline"), "enter", "i")
 	if m.(Model).allowQuarantine {
 		t.Fatal("quarantine stripping must default to off")
 	}
@@ -199,7 +221,7 @@ func TestQuarantineConsentDefaultsOffAndToggles(t *testing.T) {
 
 // The confirmation screen must state plainly that it will change the machine.
 func TestConfirmScreenStatesConsequence(t *testing.T) {
-	m := press(newModel(t), "enter", "enter", "i")
+	m := press(selectProfile(t, newModel(t), "baseline"), "enter", "i")
 	out := m.(Model).View()
 	if !strings.Contains(out, "About to install") {
 		t.Fatalf("confirm screen must say what it will do:\n%s", out)
@@ -218,7 +240,7 @@ func TestEmptySelectionIsHandled(t *testing.T) {
 }
 
 func TestEscapeNavigatesBack(t *testing.T) {
-	m := press(newModel(t), "enter")
+	m := selectProfile(t, newModel(t), "baseline")
 	if m.(Model).screen != screenTree {
 		t.Fatal("expected tree screen")
 	}

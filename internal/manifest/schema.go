@@ -330,11 +330,28 @@ const EverythingID = "everything"
 
 // Profile is a named list of tool ids, optionally composed from other profiles.
 type Profile struct {
-	ID          string   `toml:"id"`
-	Name        string   `toml:"name"`
-	Description string   `toml:"description"`
-	Includes    []string `toml:"includes"`
-	Tools       []string `toml:"tools"`
+	ID          string `toml:"id"`
+	Name        string `toml:"name"`
+	Description string `toml:"description"`
+
+	// Includes names other profiles to compose in.
+	Includes []string `toml:"includes"`
+
+	// Categories pulls in every tool in a category. This is how the
+	// profile table actually reads — "Pentest = Baseline + Recon + Web +
+	// Passwords + Network" — and it means a profile does not go stale as
+	// the catalogue grows: adding a recon tool joins Pentest automatically
+	// rather than requiring an edit to a list of eighty ids.
+	Categories []string `toml:"categories"`
+
+	// Tools names individual tools, for the picks that do not follow a
+	// whole category.
+	Tools []string `toml:"tools"`
+
+	// Excludes removes tools a category pulled in that do not belong. Lets
+	// a profile take a category minus its heaviest members without
+	// enumerating the rest.
+	Excludes []string `toml:"excludes"`
 
 	SourceFile string `toml:"-"`
 

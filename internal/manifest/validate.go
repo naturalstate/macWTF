@@ -242,13 +242,33 @@ func (c *Catalogue) validateProfiles() Problems {
 		if p.Name == "" {
 			bad("missing name")
 		}
-		if len(p.Tools) == 0 && len(p.Includes) == 0 {
-			bad("profile is empty: no tools and no includes")
+		if len(p.Tools) == 0 && len(p.Includes) == 0 && len(p.Categories) == 0 {
+			bad("profile is empty: no tools, categories or includes")
 		}
 
 		for _, id := range p.Tools {
 			if _, ok := c.byID[id]; !ok {
 				bad("references unknown tool %q", id)
+			}
+		}
+
+		known := map[string]bool{}
+		for _, cat := range c.Categories() {
+			known[cat] = true
+		}
+		for _, cat := range p.Categories {
+			if !known[cat] {
+				bad("references unknown category %q", cat)
+			} else if len(c.InCategory(cat)) == 0 {
+				bad("category %q is empty", cat)
+			}
+		}
+
+		// An exclude naming a tool the profile never pulls in is dead
+		// weight that will silently stop meaning anything.
+		for _, id := range p.Excludes {
+			if _, ok := c.byID[id]; !ok {
+				bad("excludes unknown tool %q", id)
 			}
 		}
 		for _, inc := range p.Includes {

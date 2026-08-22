@@ -129,11 +129,14 @@ func selectTools(cat *manifest.Catalogue, req Request) ([]*manifest.Tool, error)
 
 	switch {
 	case req.Profile != "":
-		ids, err := expandProfile(cat, req.Profile, nil)
+		ids, excluded, err := expandProfile(cat, req.Profile, nil)
 		if err != nil {
 			return nil, err
 		}
 		for _, id := range ids {
+			if excluded[id] {
+				continue
+			}
 			if err := add(id); err != nil {
 				return nil, err
 			}
@@ -174,13 +177,17 @@ func selectTools(cat *manifest.Catalogue, req Request) ([]*manifest.Tool, error)
 	return out, nil
 }
 
-// expandProfile flattens a profile and everything it includes. The stack
-// parameter guards against cycles, which validate should have caught already
-// but which must not hang the installer regardless.
-func expandProfile(cat *manifest.Catalogue, id string, stack []string) ([]string, error) {
+// expandProfile flattens a profile: the profiles it includes, the categories it
+// pulls in wholesale, and the tools it names directly. Returns the ids and the
+// set to exclude, so a profile can take a category minus a few members.
+//
+// The stack parameter guards against cycles, which validate should have caught
+// already but which must not hang the installer regardless.
+func expandProfile(cat *manifest.Catalogue, id string, stack []string) ([]string, map[string]bool, error) {
 	for _, s := range stack {
 		if s == id {
-			return nil, fmt.Errorf("profile include cycle: %s", strings.Join(append(stack, id), " → "))
+			return nil, nil, fmt.Errorf("profile include cycle: %s",
+				strings.Join(append(stack, id), " → "))
 		}
 	}
 	p, ok := cat.Profile(id)
@@ -190,18 +197,36 @@ func expandProfile(cat *manifest.Catalogue, id string, stack []string) ([]string
 			known = append(known, pr.ID)
 		}
 		sort.Strings(known)
-		return nil, fmt.Errorf("unknown profile %q — known: %s", id, strings.Join(known, ", "))
+		return nil, nil, fmt.Errorf("unknown profile %q — known: %s", id, strings.Join(known, ", "))
 	}
 
 	var ids []string
+	excluded := map[string]bool{}
+
 	for _, inc := range p.Includes {
-		sub, err := expandProfile(cat, inc, append(stack, id))
+		sub, subExcluded, err := expandProfile(cat, inc, append(stack, id))
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		ids = append(ids, sub...)
+		// An exclusion in an included profile does not bind this one: a
+		// profile that deliberately adds back what its base excluded
+		// must be able to.
+		_ = subExcluded
 	}
-	return append(ids, p.Tools...), nil
+
+	for _, c := range p.Categories {
+		for _, t := range cat.InCategory(c) {
+			ids = append(ids, t.ID)
+		}
+	}
+
+	ids = append(ids, p.Tools...)
+
+	for _, e := range p.Excludes {
+		excluded[e] = true
+	}
+	return ids, excluded, nil
 }
 
 // dropConflicts removes tools that conflict with something else in the

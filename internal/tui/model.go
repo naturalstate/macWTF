@@ -60,8 +60,9 @@ type Model struct {
 	height int
 
 	// Profile screen.
-	profiles   []*manifest.Profile
-	profCursor int
+	profiles     []*manifest.Profile
+	profCursor   int
+	profileSizes map[string]int
 
 	// installed marks tools already present on this machine, so the user can
 	// see at a glance what a selection would actually change. Without it,
@@ -125,16 +126,17 @@ func New(cat *manifest.Catalogue, ctx *backend.Ctx) Model {
 	})
 
 	m := Model{
-		cat:       cat,
-		ctx:       ctx,
-		screen:    screenProfile,
-		profiles:  profiles,
-		selected:  map[string]bool{},
-		collapsed: map[string]bool{},
-		installed: detectInstalled(cat, ctx),
-		doneCh:    make(chan doneMsg, 1),
-		width:     100,
-		height:    30,
+		cat:          cat,
+		ctx:          ctx,
+		screen:       screenProfile,
+		profiles:     profiles,
+		selected:     map[string]bool{},
+		collapsed:    map[string]bool{},
+		installed:    detectInstalled(cat, ctx),
+		doneCh:       make(chan doneMsg, 1),
+		profileSizes: map[string]int{},
+		width:        100,
+		height:       30,
 	}
 	m.buildRows()
 	return m
@@ -288,4 +290,23 @@ func detectInstalled(cat *manifest.Catalogue, ctx *backend.Ctx) map[string]bool 
 func (m *Model) refreshInstalled() {
 	m.ctx.ResetInstalledCache()
 	m.installed = detectInstalled(m.cat, m.ctx)
+}
+
+// profileSize is how many tools a profile actually resolves to. Cached because
+// the picker renders every profile on every keystroke and resolving is not
+// free once the catalogue is large.
+func (m *Model) profileSize(p *manifest.Profile) int {
+	if n, ok := m.profileSizes[p.ID]; ok {
+		return n
+	}
+	res, err := resolve.Resolve(m.cat, resolve.Request{Profile: p.ID, Arch: m.ctx.Arch})
+	n := 0
+	if err == nil {
+		n = len(res.Install)
+	}
+	if m.profileSizes == nil {
+		m.profileSizes = map[string]int{}
+	}
+	m.profileSizes[p.ID] = n
+	return n
 }

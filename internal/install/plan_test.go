@@ -81,20 +81,59 @@ func TestCaskProducesCaskCommand(t *testing.T) {
 
 // Idempotency: re-running with everything already present must produce no
 // install steps at all.
+//
+// What to seed is derived from the profile rather than hardcoded, so growing
+// the catalogue or recomposing a profile cannot silently turn this into a
+// weaker test that happens to still pass.
 func TestAlreadyInstalledIsNoOp(t *testing.T) {
-	p := testPlan(t, resolve.Request{Profile: "recon"},
-		[]string{"nmap", "masscan", "rustscan", "ffuf", "gobuster", "ripgrep", "fd", "bat", "jq", "eza"},
-		[]string{"maccy"}, false)
+	cat, err := manifest.Load("")
+	if err != nil {
+		t.Fatal(err)
+	}
+	reg := backend.NewRegistry()
+	supported := map[manifest.Backend]bool{}
+	for b := range reg {
+		supported[b] = true
+	}
+	res, err := resolve.Resolve(cat, resolve.Request{
+		Profile: "recon", Arch: manifest.ArchARM64, SupportedBackends: supported,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(res.Install) == 0 {
+		t.Fatal("the recon profile resolved to nothing")
+	}
+
+	// Seed every backend with exactly what the profile would install.
+	byBackend := map[manifest.Backend][]string{}
+	for _, tl := range res.Install {
+		impl, err := reg.Get(tl.Backend)
+		if err != nil {
+			t.Fatalf("%s: %v", tl.ID, err)
+		}
+		byBackend[tl.Backend] = append(byBackend[tl.Backend], impl.InstalledKey(tl))
+	}
+
+	ctx := backend.NewTestCtx()
+	for b := range reg {
+		ctx.SeedInstalled(b, set(byBackend[b]))
+	}
+
+	p, err := BuildPlan(res, reg, ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	todo, already, failed := p.Counts()
 	if todo != 0 || failed != 0 {
 		t.Fatalf("expected a complete no-op, got todo=%d already=%d failed=%d\n%s",
 			todo, already, failed, render(p))
 	}
-	if already == 0 {
-		t.Fatal("expected tools to be reported as already installed")
+	if already != len(res.Install) {
+		t.Fatalf("expected all %d tools reported present, got %d", len(res.Install), already)
 	}
-	if strings.Contains(render(p), "brew install") {
+	if strings.Contains(render(p), "install") && strings.Contains(render(p), "brew install") {
 		t.Fatalf("no install command should appear:\n%s", render(p))
 	}
 }

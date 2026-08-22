@@ -44,6 +44,14 @@ type Ctx struct {
 	// 400-tool run costs one `brew list` rather than four hundred.
 	installedCache map[manifest.Backend]map[string]bool
 	cacheMu        sync.Mutex
+
+	// AssumeBackendsReady skips the preflight probe and treats every
+	// backend as available. Set for tests, which seed the installed sets
+	// directly and must not depend on which package managers happen to be
+	// present on the machine running them — otherwise plan generation is
+	// only testable on a fully provisioned Mac, which defeats the point of
+	// a seedable context.
+	AssumeBackendsReady bool
 }
 
 // NewCtx builds a context by probing the live system.
@@ -105,11 +113,12 @@ func adoptBrewPath() {
 // NewTestCtx builds a context with no system probing, for tests.
 func NewTestCtx() *Ctx {
 	return &Ctx{
-		BrewPrefix:     "/opt/homebrew",
-		Arch:           manifest.ArchARM64,
-		DataDir:        "/tmp/macwtf-test/share",
-		StateDir:       "/tmp/macwtf-test/state",
-		installedCache: map[manifest.Backend]map[string]bool{},
+		BrewPrefix:          "/opt/homebrew",
+		Arch:                manifest.ArchARM64,
+		DataDir:             "/tmp/macwtf-test/share",
+		StateDir:            "/tmp/macwtf-test/state",
+		installedCache:      map[manifest.Backend]map[string]bool{},
+		AssumeBackendsReady: true,
 	}
 }
 

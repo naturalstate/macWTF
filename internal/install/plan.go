@@ -78,7 +78,7 @@ func BuildPlan(res *resolve.Result, reg backend.Registry, ctx *backend.Ctx) (*Pl
 		}
 
 		// Preflight each backend once, not once per tool.
-		if !preflighted[t.Backend] {
+		if !preflighted[t.Backend] && !ctx.AssumeBackendsReady {
 			preflighted[t.Backend] = true
 			if err := impl.Preflight(ctx); err != nil {
 				p.BackendErrs[t.Backend] = err

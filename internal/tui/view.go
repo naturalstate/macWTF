@@ -107,11 +107,7 @@ func (m Model) profileListPane(width, height int) string {
 	for i, p := range m.profiles {
 		cursored := i == m.profCursor
 
-		count := len(p.Tools)
-		meta := countChip.Render(fmt.Sprintf("%d", count))
-		if len(p.Includes) > 0 {
-			meta = countChip.Render(fmt.Sprintf("%d+", count))
-		}
+		meta := countChip.Render(fmt.Sprintf("%d", m.profileSize(p)))
 
 		name := itemStyle.Render(p.Name)
 		if cursored {
@@ -154,7 +150,11 @@ func (m Model) profilePreviewPane(width, height int) string {
 		title += "  " + countChip.Render("generated")
 	}
 	b.WriteString(title + "\n")
-	b.WriteString(wrap(itemMuted.Render(p.Description), inner) + "\n\n")
+	b.WriteString(wrap(itemMuted.Render(p.Description), inner) + "\n")
+	if comp := composition(p); comp != "" {
+		b.WriteString(wrap(categoryText.Render(comp), inner) + "\n")
+	}
+	b.WriteString("\n")
 	if p.Warning != "" {
 		b.WriteString(wrap(warnStyle.Render(p.Warning), inner) + "\n\n")
 	}
@@ -199,6 +199,25 @@ func (m Model) profilePreviewPane(width, height int) string {
 	}
 
 	return paneStyle.Width(width).Height(height).Render(strings.TrimRight(b.String(), "\n"))
+}
+
+// composition renders a profile the way the design table reads:
+// "baseline + sec-recon + sec-web", rather than a list of ids.
+func composition(p *manifest.Profile) string {
+	var parts []string
+	parts = append(parts, p.Includes...)
+	parts = append(parts, p.Categories...)
+	if n := len(p.Tools); n > 0 {
+		parts = append(parts, fmt.Sprintf("%d tool(s)", n))
+	}
+	if len(parts) == 0 {
+		return ""
+	}
+	out := strings.Join(parts, " + ")
+	if len(p.Excludes) > 0 {
+		out += " − " + strings.Join(p.Excludes, ", ")
+	}
+	return out
 }
 
 // wrapIndent wraps text to a width and indents every line after the first, so
