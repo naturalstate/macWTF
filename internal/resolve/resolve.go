@@ -28,6 +28,10 @@ const (
 
 	// SkipUnsupportedBackend covers a tool whose backend is not built yet.
 	SkipUnsupportedBackend SkipReason = "backend-not-implemented"
+
+	// SkipUnverified covers a tool whose package name has not been
+	// confirmed to resolve upstream.
+	SkipUnverified SkipReason = "unverified"
 )
 
 // Skipped is one excluded tool and the reason.
@@ -58,6 +62,12 @@ type Request struct {
 	// Arch is the target architecture; defaults to arm64.
 	Arch string
 
+	// IncludeUnverified allows tools whose package name is unconfirmed.
+	// Set when the user names a tool explicitly: asking for one thing by
+	// name is a deliberate choice, whereas a profile pulling in a guess
+	// that fails mid-run is not.
+	IncludeUnverified bool
+
 	// SupportedBackends, when non-nil, filters out tools whose backend has
 	// no implementation yet.
 	SupportedBackends map[manifest.Backend]bool
@@ -68,6 +78,13 @@ func Resolve(cat *manifest.Catalogue, req Request) (*Result, error) {
 	arch := req.Arch
 	if arch == "" {
 		arch = manifest.ArchARM64
+	}
+
+	// Naming tools explicitly is a deliberate choice, so an unverified
+	// package name becomes the user's risk to take. Set here rather than
+	// in selectTools, which receives req by value.
+	if len(req.Tools) > 0 {
+		req.IncludeUnverified = true
 	}
 
 	selected, err := selectTools(cat, req)
@@ -82,6 +99,9 @@ func Resolve(cat *manifest.Catalogue, req Request) (*Result, error) {
 	var kept []*manifest.Tool
 	for _, t := range selected {
 		switch {
+		case t.Unverified && !req.IncludeUnverified:
+			res.Skipped = append(res.Skipped, Skipped{t, SkipUnverified,
+				"package name not verified yet; install it by name to try anyway"})
 		case !t.SupportsArch(arch):
 			res.Skipped = append(res.Skipped, Skipped{t, SkipArch,
 				fmt.Sprintf("supports %s, this machine is %s", strings.Join(t.Arch, "/"), arch)})

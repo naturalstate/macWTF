@@ -1,0 +1,188 @@
+# browsers
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "google-chrome"
+name = "Google Chrome"
+description = "The baseline, needed for testing"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "google-chrome"
+
+[[tool]]
+id = "chromium"
+name = "Chromium"
+description = "Open source build"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "chromium"
+
+[[tool]]
+id = "ungoogled-chromium"
+name = "Ungoogled Chromium"
+description = "Google integration stripped out"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "ungoogled-chromium"
+
+[[tool]]
+id = "brave"
+name = "Brave"
+description = "Built-in blocking, Tor windows"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "brave"
+unverified = true
+
+[[tool]]
+id = "vivaldi"
+name = "Vivaldi"
+description = "Heavily customizable, built-in tools"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "vivaldi"
+
+[[tool]]
+id = "opera"
+name = "Opera"
+description = "Opera"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "opera"
+
+[[tool]]
+id = "opera-gx"
+name = "Opera GX"
+description = "Opera GX"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "opera-gx"
+
+[[tool]]
+id = "thorium"
+name = "Thorium"
+description = "Performance-patched Chromium"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "thorium"
+unverified = true
+
+[[tool]]
+id = "arc"
+name = "Arc"
+description = "Arc"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "arc"
+
+[[tool]]
+id = "microsoft-edge"
+name = "Microsoft Edge"
+description = "Needed for Entra/M365 testing scenarios"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "microsoft-edge"
+
+[[tool]]
+id = "firefox"
+name = "Firefox"
+description = "Firefox"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "firefox"
+
+[[tool]]
+id = "firefox-developer-edition"
+name = "Firefox Developer Edition"
+description = "Firefox Developer Edition"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "firefox-developer-edition"
+unverified = true
+
+[[tool]]
+id = "librewolf"
+name = "LibreWolf"
+description = "Hardened, telemetry stripped, uBlock preloaded"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "librewolf"
+
+[[tool]]
+id = "waterfox"
+name = "Waterfox"
+description = "Waterfox"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "waterfox"
+
+[[tool]]
+id = "zen-browser"
+name = "Zen Browser"
+description = "Arc-like UX on Firefox"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "zen-browser"
+unverified = true
+
+[[tool]]
+id = "floorp"
+name = "Floorp"
+description = "Floorp"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "floorp"
+
+[[tool]]
+id = "mullvad-browser"
+name = "Mullvad Browser"
+description = "Tor Browser hardening without the Tor network"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "mullvad-browser"
+
+[[tool]]
+id = "tor-browser"
+name = "Tor Browser"
+description = "Tor Browser"
+category = "browsers"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "tor-browser"

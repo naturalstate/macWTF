@@ -219,3 +219,47 @@ func TestArchFiltering(t *testing.T) {
 		t.Fatalf("expected arch skip, got install=%v skipped=%+v", ids(res.Install), res.Skipped)
 	}
 }
+
+// A bulk selection must never install a package name that has not been
+// confirmed to resolve. The catalogue was imported in bulk with guessed names,
+// so this is the difference between a profile that works and one that dies
+// partway through on a typo nobody caught.
+func TestProfilesNeverPullInUnverified(t *testing.T) {
+	cat := realCatalogue(t)
+	for _, p := range cat.Profiles {
+		res, err := Resolve(cat, Request{Profile: p.ID})
+		if err != nil {
+			t.Fatalf("%s: %v", p.ID, err)
+		}
+		for _, tl := range res.Install {
+			if tl.Unverified {
+				t.Errorf("profile %q would install unverified tool %q", p.ID, tl.ID)
+			}
+		}
+	}
+}
+
+// Naming a tool explicitly is a deliberate choice, so an unverified name is the
+// user's risk to take rather than something macWTF refuses outright.
+func TestNamingAToolExplicitlyAllowsUnverified(t *testing.T) {
+	cat := realCatalogue(t)
+
+	var unverified string
+	for _, tl := range cat.Tools {
+		if tl.Unverified {
+			unverified = tl.ID
+			break
+		}
+	}
+	if unverified == "" {
+		t.Skip("no unverified tools in the catalogue")
+	}
+
+	res, err := Resolve(cat, Request{Tools: []string{unverified}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(res.Install) != 1 {
+		t.Fatalf("expected the named tool to resolve, got %v", ids(res.Install))
+	}
+}

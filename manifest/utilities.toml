@@ -47,3 +47,391 @@ backend = "cask"
 package = "maccy"
 app_path = "/Applications/Maccy.app"
 verify_cmd = "test -d '/Applications/Maccy.app'"
+
+[[tool]]
+id = "alttab"
+name = "AltTab"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "alttab"
+tcc_permissions = ["accessibility"]
+unverified = true
+
+[[tool]]
+id = "raycast"
+name = "Raycast"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "raycast"
+
+[[tool]]
+id = "alfred"
+name = "Alfred"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "alfred"
+
+[[tool]]
+id = "hammerspoon"
+name = "Hammerspoon"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "hammerspoon"
+tcc_permissions = ["accessibility"]
+
+[[tool]]
+id = "karabiner-elements"
+name = "Karabiner-Elements"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "karabiner-elements"
+tcc_permissions = ["accessibility"]
+
+[[tool]]
+id = "bettertouchtool"
+name = "BetterTouchTool"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "bettertouchtool"
+
+[[tool]]
+id = "yabai-skhd"
+name = "Yabai + skhd"
+description = "brew, needs SIP partially disabled"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "yabai-+-skhd"
+unverified = true
+
+[[tool]]
+id = "ice"
+name = "Ice"
+description = "cask, free Bartender alternative"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "ice"
+
+[[tool]]
+id = "hidden-bar"
+name = "Hidden Bar"
+description = "mas"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "mas"
+package = "hidden-bar"
+unverified = true
+
+[[tool]]
+id = "monitorcontrol"
+name = "MonitorControl"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "monitorcontrol"
+
+[[tool]]
+id = "mos"
+name = "Mos"
+description = "cask, scroll fix"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "mos"
+
+[[tool]]
+id = "itsycal"
+name = "Itsycal"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "itsycal"
+
+[[tool]]
+id = "the-unarchiver"
+name = "The Unarchiver"
+description = "mas"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "mas"
+package = "the-unarchiver"
+unverified = true
+
+[[tool]]
+id = "keka"
+name = "Keka"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "keka"
+
+[[tool]]
+id = "cyberduck"
+name = "Cyberduck"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "cyberduck"
+
+[[tool]]
+id = "forklift"
+name = "ForkLift"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "forklift"
+
+[[tool]]
+id = "transmit"
+name = "Transmit"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "transmit"
+
+[[tool]]
+id = "syncthing"
+name = "Syncthing"
+description = "brew"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "syncthing"
+
+[[tool]]
+id = "rclone"
+name = "rclone"
+description = "brew"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "rclone"
+
+[[tool]]
+id = "localsend"
+name = "LocalSend"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "localsend"
+
+[[tool]]
+id = "daisydisk"
+name = "DaisyDisk"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "daisydisk"
+
+[[tool]]
+id = "pearcleaner"
+name = "Pearcleaner"
+description = "cask, free AppCleaner alternative"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "pearcleaner"
+
+[[tool]]
+id = "appcleaner"
+name = "AppCleaner"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "appcleaner"
+
+[[tool]]
+id = "onyx"
+name = "OnyX"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "onyx"
+
+[[tool]]
+id = "iina"
+name = "IINA"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "iina"
+
+[[tool]]
+id = "vlc"
+name = "VLC"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "vlc"
+
+[[tool]]
+id = "handbrake"
+name = "HandBrake"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "handbrake"
+
+[[tool]]
+id = "imageoptim"
+name = "ImageOptim"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "imageoptim"
+
+[[tool]]
+id = "yt-dlp"
+name = "yt-dlp"
+description = "brew"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "yt-dlp"
+
+[[tool]]
+id = "audacity"
+name = "Audacity"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "audacity"
+
+[[tool]]
+id = "1password"
+name = "1Password"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "1password"
+
+[[tool]]
+id = "bitwarden"
+name = "Bitwarden"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "bitwarden"
+
+[[tool]]
+id = "keepassxc"
+name = "KeePassXC"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "keepassxc"
+
+[[tool]]
+id = "proton-pass"
+name = "Proton Pass"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "proton-pass"
+
+[[tool]]
+id = "yubico-authenticator"
+name = "Yubico Authenticator"
+description = "cask"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "yubico-authenticator"
+
+[[tool]]
+id = "ykman"
+name = "ykman"
+description = "brew"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "ykman"
+
+[[tool]]
+id = "secretive"
+name = "Secretive"
+description = "cask, SSH keys in Secure Enclave"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "secretive"
+
+[[tool]]
+id = "gnupg-pinentry-mac"
+name = "gnupg + pinentry-mac"
+description = "brew"
+category = "utilities"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gnupg-+-pinentry-mac"
+unverified = true

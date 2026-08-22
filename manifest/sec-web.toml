@@ -105,3 +105,202 @@ homepage = "https://github.com/nabla-c0d3/sslyze"
 backend = "pipx"
 package = "sslyze"
 verify_cmd = "command -v sslyze"
+
+[[tool]]
+id = "burp-suite-community"
+name = "Burp Suite Community"
+description = "Burp Suite Community"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "burp-suite-community"
+app_path = "/Applications/Burp Suite Community.app"
+quarantine_strip = true
+unverified = true
+
+[[tool]]
+id = "burp-suite-professional"
+name = "Burp Suite Professional"
+description = "License required"
+category = "sec-web"
+license = "paid"
+[tool.macos]
+backend = "manual"
+package = "burp-suite-professional"
+unverified = true
+
+[[tool]]
+id = "owasp-zap"
+name = "OWASP ZAP"
+description = "OWASP ZAP"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "owasp-zap"
+app_path = "/Applications/OWASP ZAP.app"
+quarantine_strip = true
+unverified = true
+
+[[tool]]
+id = "proxyman"
+name = "Proxyman"
+description = "Native macOS, excellent UI"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "proxyman"
+
+[[tool]]
+id = "charles-proxy"
+name = "Charles Proxy"
+description = "Charles Proxy"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "charles-proxy"
+unverified = true
+
+[[tool]]
+id = "commix"
+name = "commix"
+description = "commix"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "commix"
+unverified = true
+
+[[tool]]
+id = "xsstrike"
+name = "XSStrike"
+description = "XSStrike"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "xsstrike"
+unverified = true
+
+[[tool]]
+id = "arjun"
+name = "arjun"
+description = "arjun"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "arjun"
+unverified = true
+
+[[tool]]
+id = "paramspider"
+name = "ParamSpider"
+description = "ParamSpider"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "paramspider"
+unverified = true
+
+[[tool]]
+id = "jwt-tool"
+name = "jwt-tool"
+description = "jwt-tool"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "jwt-tool"
+unverified = true
+
+[[tool]]
+id = "wpscan"
+name = "wpscan"
+description = "wpscan"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "wpscan"
+unverified = true
+
+[[tool]]
+id = "nikto"
+name = "nikto"
+description = "nikto"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "nikto"
+
+[[tool]]
+id = "testssl-sh"
+name = "testssl.sh"
+description = "testssl.sh"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "testssl.sh"
+unverified = true
+
+[[tool]]
+id = "sslscan"
+name = "sslscan"
+description = "sslscan"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "sslscan"
+
+[[tool]]
+id = "hakrawler"
+name = "hakrawler"
+description = "hakrawler"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "hakrawler"
+unverified = true
+
+[[tool]]
+id = "kiterunner"
+name = "kiterunner"
+description = "kiterunner"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "kiterunner"
+unverified = true
+
+[[tool]]
+id = "graphql-cop"
+name = "graphql-cop / clairvoyance / InQL"
+description = "GraphQL testing"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "graphql-cop"
+unverified = true
+
+[[tool]]
+id = "wappalyzer-cli"
+name = "wappalyzer CLI"
+description = "wappalyzer CLI"
+category = "sec-web"
+license = "free"
+[tool.macos]
+backend = "npm"
+package = "wappalyzer-cli"
+unverified = true

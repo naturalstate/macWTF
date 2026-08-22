@@ -113,3 +113,206 @@ backend = "pipx"
 package = "netexec"
 verify_cmd = "command -v nxc"
 notes = "Successor to CrackMapExec. The binary is nxc."
+
+[[tool]]
+id = "ettercap"
+name = "ettercap"
+description = "ettercap"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "ettercap"
+
+[[tool]]
+id = "arp-scan"
+name = "arp-scan"
+description = "arp-scan"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "arp-scan"
+
+[[tool]]
+id = "netcat"
+name = "netcat / ncat / socat"
+description = "netcat / ncat / socat"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "netcat"
+
+[[tool]]
+id = "smbmap"
+name = "smbmap"
+description = "smbmap"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "smbmap"
+unverified = true
+
+[[tool]]
+id = "enum4linux-ng"
+name = "enum4linux-ng"
+description = "enum4linux-ng"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "enum4linux-ng"
+unverified = true
+
+[[tool]]
+id = "ldapdomaindump"
+name = "ldapdomaindump"
+description = "ldapdomaindump"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "ldapdomaindump"
+unverified = true
+
+[[tool]]
+id = "kerbrute"
+name = "kerbrute"
+description = "kerbrute"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "kerbrute"
+unverified = true
+
+[[tool]]
+id = "evil-winrm"
+name = "evil-winrm"
+description = "evil-winrm"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "gem"
+package = "evil-winrm"
+unverified = true
+
+[[tool]]
+id = "bloodhound-ce"
+name = "BloodHound CE"
+description = "Plus neo4j"
+category = "sec-network"
+license = "free"
+notes = "Not in the macOS catalogue: docker backend not implemented."
+[tool.kali]
+backend = "apt"
+package = "bloodhound-ce"
+
+[[tool]]
+id = "sharphound-collectors"
+name = "SharpHound collectors"
+description = "Store in /opt, for transfer to targets"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "sharphound-collectors"
+unverified = true
+
+[[tool]]
+id = "chisel"
+name = "chisel"
+description = "chisel"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "chisel"
+
+[[tool]]
+id = "ligolo-ng"
+name = "ligolo-ng"
+description = "ligolo-ng"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "ligolo-ng"
+unverified = true
+
+[[tool]]
+id = "proxychains-ng"
+name = "proxychains-ng"
+description = "Note: SIP breaks it for system binaries"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "proxychains-ng"
+
+[[tool]]
+id = "frp"
+name = "frp"
+description = "frp"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "frp"
+unverified = true
+
+[[tool]]
+id = "responder"
+name = "Responder"
+description = "Needs Linux, route to VM"
+category = "sec-network"
+license = "free"
+notes = "Not in the macOS catalogue: needs Linux."
+[tool.kali]
+backend = "apt"
+package = "responder"
+
+[[tool]]
+id = "hcxdumptool"
+name = "hcxdumptool / hcxtools"
+description = "Capture is Linux-only"
+category = "sec-network"
+license = "free"
+notes = "Not in the macOS catalogue: needs Linux."
+[tool.kali]
+backend = "apt"
+package = "hcxdumptool"
+
+[[tool]]
+id = "kismet"
+name = "kismet"
+description = "Needs external adapter + Linux for most modes"
+category = "sec-network"
+license = "free"
+notes = "Not in the macOS catalogue: needs Linux."
+[tool.kali]
+backend = "apt"
+package = "kismet"
+
+[[tool]]
+id = "angry-ip-scanner"
+name = "Angry IP Scanner"
+description = "Angry IP Scanner"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "angry-ip-scanner"
+
+[[tool]]
+id = "lanscan"
+name = "LanScan / iNet Network Scanner"
+description = "Native alternatives"
+category = "sec-network"
+license = "free"
+[tool.macos]
+backend = "mas"
+package = "lanscan"
+unverified = true

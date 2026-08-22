@@ -1,0 +1,408 @@
+# sdr
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "gnu-radio"
+name = "GNU Radio"
+description = "Large build"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gnu-radio"
+unverified = true
+
+[[tool]]
+id = "gqrx"
+name = "gqrx"
+description = "gqrx"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "gqrx"
+
+[[tool]]
+id = "sdr"
+name = "SDR++"
+description = "SDR++"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "sdr++"
+app_path = "/Applications/SDR++.app"
+quarantine_strip = true
+unverified = true
+
+[[tool]]
+id = "cubicsdr"
+name = "CubicSDR"
+description = "CubicSDR"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "cubicsdr"
+
+[[tool]]
+id = "sdrangel"
+name = "SDRangel"
+description = "SDRangel"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "sdrangel"
+unverified = true
+
+[[tool]]
+id = "rtl-sdr"
+name = "rtl-sdr"
+description = "rtl-sdr"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "rtl-sdr"
+unverified = true
+
+[[tool]]
+id = "hackrf"
+name = "hackrf"
+description = "hackrf"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "hackrf"
+
+[[tool]]
+id = "airspy"
+name = "airspy"
+description = "airspy"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "airspy"
+
+[[tool]]
+id = "limesuite"
+name = "limesuite"
+description = "limesuite"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "limesuite"
+
+[[tool]]
+id = "soapysdr-modules"
+name = "soapysdr + modules"
+description = "soapysdr + modules"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "soapysdr-+-modules"
+unverified = true
+
+[[tool]]
+id = "rtl-433"
+name = "rtl_433"
+description = "rtl_433"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "rtl433"
+unverified = true
+
+[[tool]]
+id = "dump1090-mutability"
+name = "dump1090-mutability"
+description = "ADS-B"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "dump1090-mutability"
+unverified = true
+
+[[tool]]
+id = "multimon-ng"
+name = "multimon-ng"
+description = "multimon-ng"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "multimon-ng"
+unverified = true
+
+[[tool]]
+id = "universal-radio-hacker"
+name = "Universal Radio Hacker (urh)"
+description = "Universal Radio Hacker (urh)"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "universal-radio-hacker"
+unverified = true
+
+[[tool]]
+id = "inspectrum"
+name = "inspectrum"
+description = "inspectrum"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "inspectrum"
+
+[[tool]]
+id = "sigdigger"
+name = "SigDigger"
+description = "SigDigger"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "sigdigger"
+unverified = true
+
+[[tool]]
+id = "proxmark3-client"
+name = "Proxmark3 client"
+description = "Build from source for RDV4"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "proxmark3-client"
+unverified = true
+
+[[tool]]
+id = "chameleonultragui"
+name = "ChameleonUltraGUI"
+description = "ChameleonUltraGUI"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "chameleonultragui"
+app_path = "/Applications/ChameleonUltraGUI.app"
+quarantine_strip = true
+unverified = true
+
+[[tool]]
+id = "qflipper"
+name = "qFlipper"
+description = "qFlipper"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "qflipper"
+
+[[tool]]
+id = "mfoc"
+name = "mfoc / mfcuk / libnfc"
+description = "MIFARE attacks"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "mfoc"
+
+[[tool]]
+id = "esptool"
+name = "esptool"
+description = "esptool"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "esptool"
+unverified = true
+
+[[tool]]
+id = "esphome"
+name = "esphome"
+description = "esphome"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "esphome"
+unverified = true
+
+[[tool]]
+id = "arduino-cli"
+name = "arduino-cli"
+description = "arduino-cli"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "arduino-cli"
+
+[[tool]]
+id = "arduino-ide"
+name = "Arduino IDE"
+description = "Arduino IDE"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "arduino-ide"
+
+[[tool]]
+id = "platformio-core"
+name = "PlatformIO Core"
+description = "PlatformIO Core"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "platformio-core"
+unverified = true
+
+[[tool]]
+id = "thonny"
+name = "Thonny"
+description = "MicroPython"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "thonny"
+
+[[tool]]
+id = "minicom"
+name = "minicom / picocom"
+description = "Serial"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "minicom"
+
+[[tool]]
+id = "coolterm"
+name = "CoolTerm"
+description = "Serial GUI"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "coolterm"
+
+[[tool]]
+id = "serial"
+name = "Serial"
+description = "Paid, best-in-class"
+category = "sdr"
+license = "paid"
+[tool.macos]
+backend = "cask"
+package = "serial"
+
+[[tool]]
+id = "sigrok-cli-pulseview"
+name = "sigrok-cli + PulseView"
+description = "Logic analyzer"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "sigrok-cli-+-pulseview"
+unverified = true
+
+[[tool]]
+id = "saleae-logic-2"
+name = "Saleae Logic 2"
+description = "Saleae Logic 2"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "saleae-logic-2"
+unverified = true
+
+[[tool]]
+id = "kicad"
+name = "KiCad"
+description = "KiCad"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "kicad"
+
+[[tool]]
+id = "fritzing"
+name = "Fritzing"
+description = "Fritzing"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "fritzing"
+unverified = true
+
+[[tool]]
+id = "openscad"
+name = "OpenSCAD"
+description = "OpenSCAD"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "openscad"
+
+[[tool]]
+id = "orcaslicer"
+name = "OrcaSlicer / PrusaSlicer / Bambu Studio"
+description = "3D printing"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "orcaslicer"
+
+[[tool]]
+id = "avrdude"
+name = "avrdude"
+description = "avrdude"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "avrdude"
+
+[[tool]]
+id = "openocd"
+name = "openocd"
+description = "openocd"
+category = "sdr"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "openocd"
+unverified = true
+
+[[tool]]
+id = "wigle-upload-helper"
+name = "WiGLE upload helper"
+description = "CSV processing for wardrive data"
+category = "sdr"
+license = "free"
+notes = "Not in the macOS catalogue: script backend not implemented."
+[tool.kali]
+backend = "apt"
+package = "wigle-upload-helper"

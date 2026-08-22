@@ -2,6 +2,7 @@ package cli
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -19,6 +20,7 @@ func runCheck(args []string) error {
 	timeout := fs.Duration("timeout", 20*time.Second, "per-request timeout")
 	quiet := fs.Bool("quiet", false, "only print problems")
 	strict := fs.Bool("strict", false, "treat deprecations as failures")
+	asJSON := fs.Bool("json", false, "emit results as JSON")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
@@ -31,9 +33,11 @@ func runCheck(args []string) error {
 		return fmt.Errorf("catalogue is invalid, fix that first:\n%w", err)
 	}
 
-	fmt.Printf("Checking %d package name(s) against upstream…\n\n", len(cat.Tools))
+	if !*asJSON {
+		fmt.Printf("Checking %d package name(s) against upstream…\n\n", len(cat.Tools))
+	}
 
-	tty := isTerminal(os.Stdout)
+	tty := isTerminal(os.Stdout) && !*asJSON
 	rep, err := check.Run(context.Background(), cat, check.Options{
 		Concurrency: *concurrency,
 		Timeout:     *timeout,
@@ -55,6 +59,36 @@ func runCheck(args []string) error {
 	counts := rep.Counts()
 	problems := rep.Problems()
 	errs := rep.Errors()
+
+	if *asJSON {
+		type row struct {
+			ID         string `json:"id"`
+			File       string `json:"file"`
+			Backend    string `json:"backend"`
+			Package    string `json:"package"`
+			Verdict    string `json:"verdict"`
+			Detail     string `json:"detail"`
+			Suggestion string `json:"suggestion,omitempty"`
+		}
+		out := make([]row, 0, len(rep.Results))
+		for _, r := range rep.Results {
+			out = append(out, row{
+				ID: r.Tool.ID, File: r.Tool.SourceFile,
+				Backend: string(r.Tool.Backend), Package: r.Tool.Package,
+				Verdict: r.Verdict.String(), Detail: r.Detail,
+				Suggestion: r.Suggestion,
+			})
+		}
+		enc := json.NewEncoder(os.Stdout)
+		enc.SetIndent("", " ")
+		if err := enc.Encode(out); err != nil {
+			return err
+		}
+		if len(problems) > 0 {
+			return fmt.Errorf("%d package name(s) no longer resolve", len(problems))
+		}
+		return nil
+	}
 
 	if !*quiet {
 		for _, r := range rep.Results {

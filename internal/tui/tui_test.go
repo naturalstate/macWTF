@@ -73,6 +73,36 @@ func selectProfile(t *testing.T, m tea.Model, id string) tea.Model {
 	return press(m, "enter")
 }
 
+// gotoTool moves the tree cursor onto a named tool. Stepping a fixed number of
+// times assumes both catalogue size and ordering, which made these tests break
+// whenever the catalogue grew without saying anything about the code.
+func gotoTool(t *testing.T, m tea.Model, id string) tea.Model {
+	t.Helper()
+	mm := m.(Model)
+	for i, r := range mm.rows {
+		if r.kind == rowTool && r.tool.ID == id {
+			mm.cursor = i
+			return mm
+		}
+	}
+	t.Fatalf("tool %q is not in the tree", id)
+	return m
+}
+
+// gotoCategory moves the cursor onto a named category header.
+func gotoCategory(t *testing.T, m tea.Model, cat string) tea.Model {
+	t.Helper()
+	mm := m.(Model)
+	for i, r := range mm.rows {
+		if r.kind == rowCategory && r.category == cat {
+			mm.cursor = i
+			return mm
+		}
+	}
+	t.Fatalf("category %q is not in the tree", cat)
+	return m
+}
+
 func TestProfileScreenListsProfiles(t *testing.T) {
 	out := newModel(t).View()
 	for _, want := range []string{"Baseline", "Recon", "Web Hacking", "Desktop"} {
@@ -118,23 +148,39 @@ func TestNonMacOSToolsAreNotInTheTree(t *testing.T) {
 	if !mm.selected["nmap"] {
 		t.Error("select-all should have selected nmap")
 	}
-	if !strings.Contains(mm.View(), "nmap") {
-		t.Error("expected nmap to be visible in the tree")
+
+	// nmap must be in the tree. Whether it is on screen depends on scroll
+	// position, which is not what this test is about.
+	var found bool
+	for _, r := range mm.rows {
+		if r.kind == rowTool && r.tool.ID == "nmap" {
+			found = true
+		}
+	}
+	if !found {
+		t.Error("expected nmap in the tree")
 	}
 }
 
 func TestToggleTool(t *testing.T) {
-	m := selectProfile(t, newModel(t), "baseline") // -> tree, cursor on first category
+	m := selectProfile(t, newModel(t), "baseline")
+	m = gotoTool(t, m, "ripgrep")
+
 	before := m.(Model).selected["ripgrep"]
-	m = press(m, "down", " ") // move onto first tool, toggle
+	m = press(m, " ")
 	if m.(Model).selected["ripgrep"] == before {
 		t.Error("space should have toggled the highlighted tool")
+	}
+	m = press(m, " ")
+	if m.(Model).selected["ripgrep"] != before {
+		t.Error("space again should have toggled it back")
 	}
 }
 
 func TestToggleCategory(t *testing.T) {
 	m := press(newModel(t), "c") // custom: nothing selected
-	m = press(m, " ")            // cursor is on the first category header
+	m = gotoCategory(t, m, "cli")
+	m = press(m, " ")
 	mm := m.(Model)
 	sel, total := mm.countSelected("cli")
 	if sel != total || total == 0 {

@@ -1,0 +1,171 @@
+# remote
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "rustdesk"
+name = "RustDesk"
+description = "Self-hostable relay, open source"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "rustdesk"
+
+[[tool]]
+id = "chrome-remote-desktop"
+name = "Chrome Remote Desktop"
+description = "Requires Chrome + host installer + TCC"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "manual"
+package = "chrome-remote-desktop"
+tcc_permissions = ["accessibility"]
+unverified = true
+
+[[tool]]
+id = "anydesk"
+name = "AnyDesk"
+description = "AnyDesk"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "anydesk"
+
+[[tool]]
+id = "teamviewer"
+name = "TeamViewer"
+description = "TeamViewer"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "teamviewer"
+
+[[tool]]
+id = "parsec"
+name = "Parsec"
+description = "Low latency, good for lab GUI work"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "parsec"
+
+[[tool]]
+id = "jump-desktop"
+name = "Jump Desktop"
+description = "Jump Desktop"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "mas"
+package = "jump-desktop"
+unverified = true
+
+[[tool]]
+id = "windows-app"
+name = "Windows App (ex-Microsoft Remote Desktop)"
+description = "RDP"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "mas"
+package = "windows-app"
+unverified = true
+
+[[tool]]
+id = "realvnc-viewer"
+name = "RealVNC Viewer"
+description = "RealVNC Viewer"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "realvnc-viewer"
+unverified = true
+
+[[tool]]
+id = "screens"
+name = "Screens"
+description = "Screens"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "mas"
+package = "screens"
+unverified = true
+
+[[tool]]
+id = "moonlight"
+name = "Moonlight"
+description = "Moonlight"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "moonlight"
+
+[[tool]]
+id = "termius"
+name = "Termius"
+description = "SSH client with sync"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "termius"
+
+[[tool]]
+id = "royal-tsx"
+name = "Royal TSX"
+description = "Multi-protocol connection manager"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "royal-tsx"
+
+[[tool]]
+id = "securecrt"
+name = "SecureCRT"
+description = "Paid"
+category = "remote"
+license = "paid"
+[tool.macos]
+backend = "cask"
+package = "securecrt"
+unverified = true
+
+[[tool]]
+id = "sshuttle"
+name = "sshuttle"
+description = "Poor man's VPN over SSH"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "sshuttle"
+
+[[tool]]
+id = "mosh"
+name = "mosh"
+description = "Roaming-tolerant SSH"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "mosh"
+
+[[tool]]
+id = "autossh"
+name = "autossh"
+description = "Persistent tunnels"
+category = "remote"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "autossh"

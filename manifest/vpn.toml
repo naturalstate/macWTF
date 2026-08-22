@@ -1,0 +1,177 @@
+# vpn
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "tailscale"
+name = "Tailscale"
+description = "Mesh VPN"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "tailscale"
+
+[[tool]]
+id = "twingate"
+name = "Twingate"
+description = "ZTNA client"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "twingate"
+
+[[tool]]
+id = "mullvad-vpn"
+name = "Mullvad VPN"
+description = "Mullvad VPN"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "mullvad-vpn"
+
+[[tool]]
+id = "proton-vpn"
+name = "Proton VPN"
+description = "Proton VPN"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "proton-vpn"
+unverified = true
+
+[[tool]]
+id = "nordvpn"
+name = "NordVPN"
+description = "NordVPN"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "nordvpn"
+
+[[tool]]
+id = "windscribe"
+name = "Windscribe"
+description = "Windscribe"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "windscribe"
+
+[[tool]]
+id = "ivpn"
+name = "IVPN"
+description = "IVPN"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "ivpn"
+
+[[tool]]
+id = "wireguard"
+name = "WireGuard"
+description = "Official client"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "mas"
+package = "wireguard"
+unverified = true
+
+[[tool]]
+id = "wireguard-tools"
+name = "wireguard-tools"
+description = "CLI"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "wireguard-tools"
+
+[[tool]]
+id = "openvpn-connect"
+name = "OpenVPN Connect"
+description = "OpenVPN Connect"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "openvpn-connect"
+
+[[tool]]
+id = "tunnelblick"
+name = "Tunnelblick"
+description = "Tunnelblick"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "tunnelblick"
+
+[[tool]]
+id = "cloudflare-warp"
+name = "Cloudflare WARP"
+description = "Cloudflare WARP"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "cloudflare-warp"
+
+[[tool]]
+id = "lulu"
+name = "LuLu"
+description = "Objective-See outbound firewall, free"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "lulu"
+
+[[tool]]
+id = "little-snitch"
+name = "Little Snitch"
+description = "Paid, deeper than LuLu"
+category = "vpn"
+license = "paid"
+[tool.macos]
+backend = "cask"
+package = "little-snitch"
+
+[[tool]]
+id = "murus"
+name = "Murus / Vallum"
+description = "pf frontends"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "murus"
+
+[[tool]]
+id = "pi-hole"
+name = "Pi-hole / AdGuard Home"
+description = "Points at homelab, config only"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "manual"
+package = "pi-hole"
+unverified = true
+
+[[tool]]
+id = "nextdns"
+name = "NextDNS"
+description = "NextDNS"
+category = "vpn"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "nextdns"

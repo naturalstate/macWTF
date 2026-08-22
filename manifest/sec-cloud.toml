@@ -1,0 +1,193 @@
+# sec-cloud
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "scoutsuite"
+name = "scoutsuite"
+description = "pipx"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "scoutsuite"
+unverified = true
+
+[[tool]]
+id = "prowler"
+name = "prowler"
+description = "pipx"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "prowler"
+unverified = true
+
+[[tool]]
+id = "pacu"
+name = "pacu"
+description = "pipx"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "pacu"
+unverified = true
+
+[[tool]]
+id = "cloudsplaining"
+name = "cloudsplaining"
+description = "pipx"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "cloudsplaining"
+unverified = true
+
+[[tool]]
+id = "cloudfox"
+name = "cloudfox"
+description = "go"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "cloudfox"
+unverified = true
+
+[[tool]]
+id = "roadrecon"
+name = "ROADrecon"
+description = "pipx, Azure"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "roadrecon"
+unverified = true
+
+[[tool]]
+id = "azurehound"
+name = "AzureHound"
+description = "curl"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "azurehound"
+unverified = true
+
+[[tool]]
+id = "gcpbucketbrute"
+name = "GCPBucketBrute"
+description = "pipx"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "gcpbucketbrute"
+unverified = true
+
+[[tool]]
+id = "trivy"
+name = "trivy"
+description = "brew"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "trivy"
+
+[[tool]]
+id = "grype"
+name = "grype"
+description = "brew"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "grype"
+
+[[tool]]
+id = "syft"
+name = "syft"
+description = "brew"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "syft"
+
+[[tool]]
+id = "checkov"
+name = "checkov"
+description = "pipx"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "checkov"
+unverified = true
+
+[[tool]]
+id = "tfsec"
+name = "tfsec"
+description = "brew"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "tfsec"
+
+[[tool]]
+id = "kube-bench"
+name = "kube-bench"
+description = "brew"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "kube-bench"
+
+[[tool]]
+id = "kubescape"
+name = "kubescape"
+description = "brew"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "kubescape"
+
+[[tool]]
+id = "steampipe"
+name = "steampipe"
+description = "brew"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "steampipe"
+
+[[tool]]
+id = "dive"
+name = "dive"
+description = "brew"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "dive"
+
+[[tool]]
+id = "hadolint"
+name = "hadolint"
+description = "brew"
+category = "sec-cloud"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "hadolint"

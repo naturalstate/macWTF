@@ -232,6 +232,7 @@ func flatten(e *entry, spec *PlatformSpec, sourceFile string) *Tool {
 
 		QuarantineStrip: spec.QuarantineStrip,
 		AppPath:         spec.AppPath,
+		Unverified:      spec.Unverified,
 
 		TCCPermissions: spec.TCCPermissions,
 		ManualSteps:    spec.ManualSteps,

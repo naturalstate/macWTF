@@ -58,3 +58,202 @@ notes = "Homebrew has deprecated this cask with the reason fails_gatekeeper_chec
 [tool.windows]
 backend = "winget"
 package = "WerWolv.ImHex"
+
+[[tool]]
+id = "radare2"
+name = "radare2"
+description = "radare2"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "radare2"
+
+[[tool]]
+id = "rizin"
+name = "rizin"
+description = "rizin"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "rizin"
+
+[[tool]]
+id = "binary-ninja"
+name = "Binary Ninja"
+description = "Paid"
+category = "sec-reversing"
+license = "paid"
+[tool.macos]
+backend = "manual"
+package = "binary-ninja"
+unverified = true
+
+[[tool]]
+id = "hopper-disassembler"
+name = "Hopper Disassembler"
+description = "Paid, macOS-native"
+category = "sec-reversing"
+license = "paid"
+[tool.macos]
+backend = "cask"
+package = "hopper-disassembler"
+
+[[tool]]
+id = "ida-free"
+name = "IDA Free"
+description = "IDA Free"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "manual"
+package = "ida-free"
+unverified = true
+
+[[tool]]
+id = "binwalk"
+name = "binwalk"
+description = "binwalk"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "binwalk"
+
+[[tool]]
+id = "yara"
+name = "yara"
+description = "yara"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "yara"
+
+[[tool]]
+id = "capa"
+name = "capa"
+description = "capa"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "capa"
+unverified = true
+
+[[tool]]
+id = "floss"
+name = "floss"
+description = "floss"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "floss"
+unverified = true
+
+[[tool]]
+id = "detect-it-easy"
+name = "Detect It Easy"
+description = "Detect It Easy"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "detect-it-easy"
+unverified = true
+
+[[tool]]
+id = "hex-fiend"
+name = "Hex Fiend"
+description = "Native macOS hex editor"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "hex-fiend"
+
+[[tool]]
+id = "010-editor"
+name = "010 Editor"
+description = "Paid"
+category = "sec-reversing"
+license = "paid"
+[tool.macos]
+backend = "cask"
+package = "010-editor"
+
+[[tool]]
+id = "volatility3"
+name = "volatility3"
+description = "volatility3"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "volatility3"
+unverified = true
+
+[[tool]]
+id = "sleuthkit"
+name = "sleuthkit"
+description = "sleuthkit"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "sleuthkit"
+
+[[tool]]
+id = "autopsy"
+name = "Autopsy"
+description = "Autopsy"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "manual"
+package = "autopsy"
+unverified = true
+
+[[tool]]
+id = "foremost"
+name = "foremost / testdisk / photorec"
+description = "foremost / testdisk / photorec"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "foremost"
+
+[[tool]]
+id = "bulk-extractor"
+name = "bulk_extractor"
+description = "bulk_extractor"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "bulkextractor"
+unverified = true
+
+[[tool]]
+id = "lldb"
+name = "lldb / otool / codesign / nm"
+description = "Xcode CLT"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "builtin"
+package = "lldb"
+unverified = true
+
+[[tool]]
+id = "gdb"
+name = "gdb"
+description = "Codesigning hassle on macOS"
+category = "sec-reversing"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gdb"

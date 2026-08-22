@@ -1,0 +1,616 @@
+# dev
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "visual-studio-code"
+name = "Visual Studio Code"
+description = "Visual Studio Code"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "visual-studio-code"
+
+[[tool]]
+id = "vscodium"
+name = "VSCodium"
+description = "Telemetry-free VS Code"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "vscodium"
+
+[[tool]]
+id = "cursor"
+name = "Cursor"
+description = "Cursor"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "cursor"
+
+[[tool]]
+id = "zed"
+name = "Zed"
+description = "Zed"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "zed"
+
+[[tool]]
+id = "sublime-text"
+name = "Sublime Text"
+description = "Sublime Text"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "sublime-text"
+
+[[tool]]
+id = "jetbrains-toolbox"
+name = "JetBrains Toolbox"
+description = "Gateway to PyCharm/IntelliJ/etc"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "jetbrains-toolbox"
+
+[[tool]]
+id = "neovim-lazyvim"
+name = "Neovim + LazyVim"
+description = "Config bootstrap"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "neovim-+-lazyvim"
+unverified = true
+
+[[tool]]
+id = "xcode"
+name = "Xcode"
+description = "Large, optional"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "mas"
+package = "xcode"
+unverified = true
+
+[[tool]]
+id = "orbstack"
+name = "OrbStack"
+description = "Fast, low overhead, best Docker experience on Apple Silicon"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "orbstack"
+
+[[tool]]
+id = "docker-desktop"
+name = "Docker Desktop"
+description = "Docker Desktop"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "docker-desktop"
+
+[[tool]]
+id = "colima"
+name = "Colima"
+description = "CLI-only Docker/Lima"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "colima"
+
+[[tool]]
+id = "lima"
+name = "Lima"
+description = "Linux VMs from CLI"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "lima"
+
+[[tool]]
+id = "podman-desktop"
+name = "Podman Desktop"
+description = "Podman Desktop"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "podman-desktop"
+
+[[tool]]
+id = "rancher-desktop"
+name = "Rancher Desktop"
+description = "Rancher Desktop"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "rancher-desktop"
+unverified = true
+
+[[tool]]
+id = "utm"
+name = "UTM"
+description = "QEMU frontend, free"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "utm"
+
+[[tool]]
+id = "vmware-fusion"
+name = "VMware Fusion"
+description = "Free for personal, requires Broadcom account"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "manual"
+package = "vmware-fusion"
+unverified = true
+
+[[tool]]
+id = "parallels-desktop"
+name = "Parallels Desktop"
+description = "Paid, best Windows-on-ARM experience"
+category = "dev"
+license = "paid"
+[tool.macos]
+backend = "cask"
+package = "parallels-desktop"
+unverified = true
+
+[[tool]]
+id = "vagrant"
+name = "Vagrant"
+description = "Vagrant"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "vagrant"
+
+[[tool]]
+id = "qemu"
+name = "qemu"
+description = "qemu"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "qemu"
+
+[[tool]]
+id = "python-3-13"
+name = "python@3.13"
+description = "python@3.13"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "python@3.13"
+
+[[tool]]
+id = "pyenv"
+name = "pyenv"
+description = "pyenv"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "pyenv"
+
+[[tool]]
+id = "go"
+name = "go"
+description = "go"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "go"
+
+[[tool]]
+id = "rustup-init"
+name = "rustup-init"
+description = "rustup-init"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "rustup-init"
+unverified = true
+
+[[tool]]
+id = "node"
+name = "node"
+description = "node"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "node"
+
+[[tool]]
+id = "fnm"
+name = "fnm"
+description = "fnm"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "fnm"
+
+[[tool]]
+id = "bun"
+name = "bun"
+description = "bun"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "bun"
+
+[[tool]]
+id = "deno"
+name = "deno"
+description = "deno"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "deno"
+
+[[tool]]
+id = "ruby"
+name = "ruby"
+description = "ruby"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "ruby"
+
+[[tool]]
+id = "rbenv"
+name = "rbenv"
+description = "rbenv"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "rbenv"
+
+[[tool]]
+id = "temurin"
+name = "temurin"
+description = "cask"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "temurin"
+
+[[tool]]
+id = "dotnet-sdk"
+name = "dotnet-sdk"
+description = "cask"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "dotnet-sdk"
+
+[[tool]]
+id = "php"
+name = "php"
+description = "php"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "php"
+
+[[tool]]
+id = "perl"
+name = "perl"
+description = "perl"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "perl"
+
+[[tool]]
+id = "lua"
+name = "lua"
+description = "lua"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "lua"
+
+[[tool]]
+id = "terraform"
+name = "terraform"
+description = "terraform"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "terraform"
+unverified = true
+
+[[tool]]
+id = "opentofu"
+name = "opentofu"
+description = "opentofu"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "opentofu"
+
+[[tool]]
+id = "ansible"
+name = "ansible"
+description = "ansible"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "ansible"
+
+[[tool]]
+id = "pulumi"
+name = "pulumi"
+description = "pulumi"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "pulumi"
+
+[[tool]]
+id = "kubectl"
+name = "kubectl"
+description = "kubectl"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "kubectl"
+unverified = true
+
+[[tool]]
+id = "k9s"
+name = "k9s"
+description = "k9s"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "k9s"
+
+[[tool]]
+id = "helm"
+name = "helm"
+description = "helm"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "helm"
+
+[[tool]]
+id = "kubectx"
+name = "kubectx"
+description = "kubectx"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "kubectx"
+
+[[tool]]
+id = "stern"
+name = "stern"
+description = "stern"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "stern"
+
+[[tool]]
+id = "awscli"
+name = "awscli"
+description = "awscli"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "awscli"
+
+[[tool]]
+id = "azure-cli"
+name = "azure-cli"
+description = "azure-cli"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "azure-cli"
+
+[[tool]]
+id = "google-cloud-sdk"
+name = "google-cloud-sdk"
+description = "google-cloud-sdk"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "google-cloud-sdk"
+unverified = true
+
+[[tool]]
+id = "doctl"
+name = "doctl"
+description = "doctl"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "doctl"
+
+[[tool]]
+id = "flyctl"
+name = "flyctl"
+description = "flyctl"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "flyctl"
+
+[[tool]]
+id = "packer"
+name = "packer"
+description = "packer"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "packer"
+unverified = true
+
+[[tool]]
+id = "vault"
+name = "vault"
+description = "vault"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "vault"
+unverified = true
+
+[[tool]]
+id = "consul"
+name = "consul"
+description = "consul"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "consul"
+
+[[tool]]
+id = "postman"
+name = "Postman"
+description = "Postman"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "postman"
+
+[[tool]]
+id = "insomnia"
+name = "Insomnia"
+description = "Insomnia"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "insomnia"
+
+[[tool]]
+id = "bruno"
+name = "Bruno"
+description = "Local-first, no account"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "bruno"
+
+[[tool]]
+id = "hoppscotch"
+name = "Hoppscotch"
+description = "Hoppscotch"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "hoppscotch"
+
+[[tool]]
+id = "tableplus"
+name = "TablePlus"
+description = "TablePlus"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "tableplus"
+
+[[tool]]
+id = "dbeaver-community"
+name = "DBeaver Community"
+description = "DBeaver Community"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "dbeaver-community"
+
+[[tool]]
+id = "beekeeper-studio"
+name = "Beekeeper Studio"
+description = "Beekeeper Studio"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "beekeeper-studio"
+
+[[tool]]
+id = "pgcli"
+name = "pgcli / mycli"
+description = "pgcli / mycli"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "pgcli"
+unverified = true
+
+[[tool]]
+id = "redis-insight"
+name = "Redis Insight"
+description = "Redis Insight"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "redis-insight"

@@ -206,6 +206,13 @@ type PlatformSpec struct {
 
 	// Notes adds platform-specific detail to the shared description.
 	Notes string `toml:"notes"`
+
+	// Unverified marks a package name that has not been confirmed to
+	// resolve upstream. Such tools are listed and searchable but never
+	// installed by a profile or by --category, because a bulk import
+	// guesses names and a guess that fails mid-run is worse than an
+	// omission. `macwtf check` is what clears the flag.
+	Unverified bool `toml:"unverified"`
 }
 
 // entry is the on-disk shape of a catalogue item: shared identity at the top
@@ -288,6 +295,9 @@ type Tool struct {
 	License  License
 	Homepage string
 	Notes    string
+
+	// Unverified marks a package name not yet confirmed upstream.
+	Unverified bool
 
 	// AlsoOn lists the other platforms this tool is available on. Carried
 	// through for the website and for the lab bridge, which needs to know

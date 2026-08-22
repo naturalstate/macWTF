@@ -1,0 +1,162 @@
+# sec-mobile
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "android-platform-tools"
+name = "android-platform-tools"
+description = "adb, fastboot"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "android-platform-tools"
+
+[[tool]]
+id = "android-studio"
+name = "Android Studio"
+description = "Emulator, large"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "android-studio"
+
+[[tool]]
+id = "scrcpy"
+name = "scrcpy"
+description = "Screen mirror/control"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "scrcpy"
+
+[[tool]]
+id = "apktool"
+name = "apktool"
+description = "apktool"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "apktool"
+
+[[tool]]
+id = "jadx"
+name = "jadx"
+description = "jadx"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "jadx"
+
+[[tool]]
+id = "dex2jar"
+name = "dex2jar"
+description = "dex2jar"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "dex2jar"
+
+[[tool]]
+id = "frida"
+name = "frida / frida-tools"
+description = "frida / frida-tools"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "frida"
+unverified = true
+
+[[tool]]
+id = "objection"
+name = "objection"
+description = "objection"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "objection"
+unverified = true
+
+[[tool]]
+id = "mobsf"
+name = "MobSF"
+description = "MobSF"
+category = "sec-mobile"
+license = "free"
+notes = "Not in the macOS catalogue: docker backend not implemented."
+[tool.kali]
+backend = "apt"
+package = "mobsf"
+
+[[tool]]
+id = "libimobiledevice"
+name = "libimobiledevice"
+description = "iOS device interaction"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "libimobiledevice"
+
+[[tool]]
+id = "ideviceinstaller"
+name = "ideviceinstaller"
+description = "ideviceinstaller"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "ideviceinstaller"
+
+[[tool]]
+id = "ios-deploy"
+name = "ios-deploy"
+description = "ios-deploy"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "ios-deploy"
+
+[[tool]]
+id = "class-dump"
+name = "class-dump"
+description = "class-dump"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "class-dump"
+unverified = true
+
+[[tool]]
+id = "apktool-gui"
+name = "Apktool GUI / Bytecode Viewer"
+description = "Apktool GUI / Bytecode Viewer"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "apktool-gui"
+app_path = "/Applications/Apktool GUI.app"
+quarantine_strip = true
+unverified = true
+
+[[tool]]
+id = "apkleaks"
+name = "apkleaks"
+description = "apkleaks"
+category = "sec-mobile"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "apkleaks"
+unverified = true

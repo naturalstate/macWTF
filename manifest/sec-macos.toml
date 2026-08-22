@@ -1,0 +1,115 @@
+# sec-macos
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "blockblock"
+name = "BlockBlock"
+description = "Persistence monitoring"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "blockblock"
+
+[[tool]]
+id = "knockknock"
+name = "KnockKnock"
+description = "Persistent item scanner"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "knockknock"
+
+[[tool]]
+id = "taskexplorer"
+name = "TaskExplorer"
+description = "Process inspector"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "taskexplorer"
+
+[[tool]]
+id = "ransomwhere"
+name = "RansomWhere?"
+description = "Encryption behavior monitor"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "ransomwhere"
+
+[[tool]]
+id = "oversight"
+name = "OverSight"
+description = "Mic/camera access alerts"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "oversight"
+
+[[tool]]
+id = "donotdisturb"
+name = "DoNotDisturb"
+description = "Lid-open detection"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "donotdisturb"
+unverified = true
+
+[[tool]]
+id = "netiquette"
+name = "Netiquette"
+description = "Network connection monitor"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "netiquette"
+
+[[tool]]
+id = "santa"
+name = "Santa"
+description = "Google binary authorization"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "santa"
+
+[[tool]]
+id = "pareto-security"
+name = "Pareto Security"
+description = "Config posture checks"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "pareto-security"
+
+[[tool]]
+id = "suspicious-package"
+name = "Suspicious Package"
+description = "Inspect .pkg before install"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "suspicious-package"
+
+[[tool]]
+id = "kextviewr"
+name = "KextViewr / What's Your Sign"
+description = "KextViewr / What's Your Sign"
+category = "sec-macos"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "kextviewr"

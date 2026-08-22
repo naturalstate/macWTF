@@ -1,0 +1,261 @@
+# shell
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "zsh"
+name = "zsh"
+description = "macOS default since Catalina"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "builtin"
+package = "zsh"
+unverified = true
+
+[[tool]]
+id = "bash-5"
+name = "bash 5"
+description = "macOS ships bash 3.2 from 2007, worth upgrading"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "bash-5"
+unverified = true
+
+[[tool]]
+id = "fish"
+name = "fish"
+description = "Sane defaults, autosuggestions out of the box"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "fish"
+
+[[tool]]
+id = "nushell"
+name = "nushell"
+description = "Structured data pipelines"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "nushell"
+
+[[tool]]
+id = "oh-my-zsh"
+name = "Oh My Zsh"
+description = "The obvious default, huge plugin library"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "oh-my-zsh"
+unverified = true
+
+[[tool]]
+id = "prezto"
+name = "Prezto"
+description = "Lighter, faster than OMZ"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "git"
+package = "prezto"
+unverified = true
+
+[[tool]]
+id = "zinit"
+name = "zinit"
+description = "Fastest loader, turbo mode"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "zinit"
+unverified = true
+
+[[tool]]
+id = "antidote"
+name = "antidote"
+description = "Modern OMZ alternative"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "antidote"
+
+[[tool]]
+id = "oh-my-fish"
+name = "Oh My Fish / fisher"
+description = "For fish users"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "oh-my-fish"
+unverified = true
+
+[[tool]]
+id = "starship"
+name = "Starship"
+description = "Cross-shell, config in one TOML file"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "starship"
+
+[[tool]]
+id = "powerlevel10k"
+name = "Powerlevel10k"
+description = "Zsh only, configuration wizard"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "git"
+package = "powerlevel10k"
+unverified = true
+
+[[tool]]
+id = "oh-my-posh"
+name = "oh-my-posh"
+description = "Cross-shell, cross-platform (shares config with WindowsWTF)"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "oh-my-posh"
+
+[[tool]]
+id = "zsh-autosuggestions"
+name = "zsh-autosuggestions"
+description = "zsh-autosuggestions"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "zsh-autosuggestions"
+
+[[tool]]
+id = "zsh-syntax-highlighting"
+name = "zsh-syntax-highlighting"
+description = "zsh-syntax-highlighting"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "zsh-syntax-highlighting"
+
+[[tool]]
+id = "zsh-history-substring-search"
+name = "zsh-history-substring-search"
+description = "zsh-history-substring-search"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "zsh-history-substring-search"
+
+[[tool]]
+id = "fzf-tab"
+name = "fzf-tab"
+description = "fzf-tab"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "fzf-tab"
+
+[[tool]]
+id = "zsh-you-should-use"
+name = "zsh-you-should-use"
+description = "zsh-you-should-use"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "zsh-you-should-use"
+
+[[tool]]
+id = "zsh-vi-mode"
+name = "zsh-vi-mode"
+description = "zsh-vi-mode"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "zsh-vi-mode"
+
+[[tool]]
+id = "font-meslo-lg-nerd-font"
+name = "font-meslo-lg-nerd-font"
+description = "font-meslo-lg-nerd-font"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "font-meslo-lg-nerd-font"
+
+[[tool]]
+id = "font-jetbrains-mono-nerd-font"
+name = "font-jetbrains-mono-nerd-font"
+description = "font-jetbrains-mono-nerd-font"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "font-jetbrains-mono-nerd-font"
+
+[[tool]]
+id = "font-hack-nerd-font"
+name = "font-hack-nerd-font"
+description = "font-hack-nerd-font"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "font-hack-nerd-font"
+
+[[tool]]
+id = "font-fira-code-nerd-font"
+name = "font-fira-code-nerd-font"
+description = "font-fira-code-nerd-font"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "font-fira-code-nerd-font"
+
+[[tool]]
+id = "font-caskaydia-cove-nerd-font"
+name = "font-caskaydia-cove-nerd-font"
+description = "font-caskaydia-cove-nerd-font"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "font-caskaydia-cove-nerd-font"
+
+[[tool]]
+id = "font-iosevka-nerd-font"
+name = "font-iosevka-nerd-font"
+description = "font-iosevka-nerd-font"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "font-iosevka-nerd-font"
+
+[[tool]]
+id = "font-symbols-only-nerd-font"
+name = "font-symbols-only-nerd-font"
+description = "font-symbols-only-nerd-font"
+category = "shell"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "font-symbols-only-nerd-font"

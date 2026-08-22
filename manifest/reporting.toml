@@ -1,0 +1,220 @@
+# reporting
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "obsidian"
+name = "Obsidian"
+description = "Obsidian"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "obsidian"
+
+[[tool]]
+id = "notion"
+name = "Notion"
+description = "Notion"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "notion"
+
+[[tool]]
+id = "joplin"
+name = "Joplin"
+description = "Joplin"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "joplin"
+
+[[tool]]
+id = "logseq"
+name = "Logseq"
+description = "Logseq"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "logseq"
+
+[[tool]]
+id = "typora"
+name = "Typora"
+description = "Typora"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "typora"
+
+[[tool]]
+id = "basictex"
+name = "BasicTeX / MacTeX"
+description = "LaTeX for report pipelines"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "basictex"
+
+[[tool]]
+id = "draw-io"
+name = "Draw.io"
+description = "Draw.io"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "draw.io"
+unverified = true
+
+[[tool]]
+id = "excalidraw"
+name = "Excalidraw"
+description = "Excalidraw"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "excalidraw"
+unverified = true
+
+[[tool]]
+id = "omnigraffle"
+name = "OmniGraffle"
+description = "Paid"
+category = "reporting"
+license = "paid"
+[tool.macos]
+backend = "cask"
+package = "omnigraffle"
+
+[[tool]]
+id = "figma"
+name = "Figma"
+description = "Figma"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "figma"
+
+[[tool]]
+id = "microsoft-office"
+name = "Microsoft Office"
+description = "Report deliverables"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "microsoft-office"
+
+[[tool]]
+id = "libreoffice"
+name = "LibreOffice"
+description = "LibreOffice"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "libreoffice"
+
+[[tool]]
+id = "sysreptor"
+name = "SysReptor"
+description = "Self-hosted pentest reporting"
+category = "reporting"
+license = "free"
+notes = "Not in the macOS catalogue: docker backend not implemented."
+[tool.kali]
+backend = "apt"
+package = "sysreptor"
+
+[[tool]]
+id = "ghostwriter"
+name = "Ghostwriter"
+description = "Ghostwriter"
+category = "reporting"
+license = "free"
+notes = "Not in the macOS catalogue: docker backend not implemented."
+[tool.kali]
+backend = "apt"
+package = "ghostwriter"
+
+[[tool]]
+id = "dradis"
+name = "Dradis"
+description = "Dradis"
+category = "reporting"
+license = "free"
+notes = "Not in the macOS catalogue: docker backend not implemented."
+[tool.kali]
+backend = "apt"
+package = "dradis"
+
+[[tool]]
+id = "cleanshot-x"
+name = "CleanShot X"
+description = "cask"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "cleanshot-x"
+unverified = true
+
+[[tool]]
+id = "shottr"
+name = "Shottr"
+description = "cask, free"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "shottr"
+
+[[tool]]
+id = "kap"
+name = "Kap"
+description = "cask"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "kap"
+
+[[tool]]
+id = "obs"
+name = "OBS"
+description = "cask"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "obs"
+
+[[tool]]
+id = "licecap"
+name = "LICEcap"
+description = "cask"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "licecap"
+
+[[tool]]
+id = "loom"
+name = "Loom"
+description = "cask"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "loom"

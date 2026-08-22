@@ -94,3 +94,881 @@ verify_cmd = "command -v eza"
 [tool.kali]
 backend = "apt"
 package = "eza"
+
+[[tool]]
+id = "sd"
+name = "sd"
+description = "sed"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "sd"
+
+[[tool]]
+id = "dust"
+name = "dust"
+description = "du"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "dust"
+
+[[tool]]
+id = "duf"
+name = "duf"
+description = "df"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "duf"
+
+[[tool]]
+id = "procs"
+name = "procs"
+description = "ps"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "procs"
+
+[[tool]]
+id = "btop"
+name = "btop"
+description = "top"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "btop"
+
+[[tool]]
+id = "zoxide"
+name = "zoxide"
+description = "cd"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "zoxide"
+
+[[tool]]
+id = "delta"
+name = "delta"
+description = "diff"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "delta"
+unverified = true
+
+[[tool]]
+id = "hyperfine"
+name = "hyperfine"
+description = "time"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "hyperfine"
+
+[[tool]]
+id = "choose"
+name = "choose"
+description = "cut"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "choose"
+unverified = true
+
+[[tool]]
+id = "fzf"
+name = "fzf"
+description = "fzf"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "fzf"
+
+[[tool]]
+id = "atuin"
+name = "atuin"
+description = "shell history sync"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "atuin"
+
+[[tool]]
+id = "broot"
+name = "broot"
+description = "broot"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "broot"
+
+[[tool]]
+id = "yazi"
+name = "yazi"
+description = "TUI file manager"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "yazi"
+
+[[tool]]
+id = "mc"
+name = "mc"
+description = "midnight commander"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "mc"
+unverified = true
+
+[[tool]]
+id = "tldr"
+name = "tldr"
+description = "tldr"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "tldr"
+unverified = true
+
+[[tool]]
+id = "navi"
+name = "navi"
+description = "cheatsheets"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "navi"
+
+[[tool]]
+id = "coreutils"
+name = "coreutils"
+description = "coreutils"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "coreutils"
+
+[[tool]]
+id = "gnu-sed"
+name = "gnu-sed"
+description = "gnu-sed"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gnu-sed"
+
+[[tool]]
+id = "gawk"
+name = "gawk"
+description = "gawk"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gawk"
+
+[[tool]]
+id = "findutils"
+name = "findutils"
+description = "findutils"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "findutils"
+
+[[tool]]
+id = "grep"
+name = "grep"
+description = "grep"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "grep"
+
+[[tool]]
+id = "gnu-tar"
+name = "gnu-tar"
+description = "gnu-tar"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gnu-tar"
+
+[[tool]]
+id = "moreutils"
+name = "moreutils"
+description = "moreutils"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "moreutils"
+
+[[tool]]
+id = "parallel"
+name = "parallel"
+description = "parallel"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "parallel"
+
+[[tool]]
+id = "watch"
+name = "watch"
+description = "watch"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "watch"
+
+[[tool]]
+id = "yq"
+name = "yq"
+description = "yq"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "yq"
+
+[[tool]]
+id = "gron"
+name = "gron"
+description = "gron"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gron"
+
+[[tool]]
+id = "fx"
+name = "fx"
+description = "fx"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "fx"
+
+[[tool]]
+id = "miller"
+name = "miller"
+description = "miller"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "miller"
+
+[[tool]]
+id = "csvkit"
+name = "csvkit"
+description = "csvkit"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "csvkit"
+
+[[tool]]
+id = "xsv"
+name = "xsv"
+description = "xsv"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "xsv"
+unverified = true
+
+[[tool]]
+id = "dasel"
+name = "dasel"
+description = "dasel"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "dasel"
+
+[[tool]]
+id = "curl"
+name = "curl"
+description = "curl"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "curl"
+
+[[tool]]
+id = "wget"
+name = "wget"
+description = "wget"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "wget"
+
+[[tool]]
+id = "aria2"
+name = "aria2"
+description = "aria2"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "aria2"
+
+[[tool]]
+id = "httpie"
+name = "httpie"
+description = "httpie"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "httpie"
+
+[[tool]]
+id = "xh"
+name = "xh"
+description = "xh"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "xh"
+
+[[tool]]
+id = "mtr"
+name = "mtr"
+description = "mtr"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "mtr"
+
+[[tool]]
+id = "iperf3"
+name = "iperf3"
+description = "iperf3"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "iperf3"
+
+[[tool]]
+id = "speedtest-cli"
+name = "speedtest-cli"
+description = "speedtest-cli"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "speedtest-cli"
+
+[[tool]]
+id = "dog"
+name = "dog"
+description = "dig"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "dog"
+unverified = true
+
+[[tool]]
+id = "gping"
+name = "gping"
+description = "gping"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gping"
+
+[[tool]]
+id = "bandwhich"
+name = "bandwhich"
+description = "bandwhich"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "bandwhich"
+tcc_permissions = ["accessibility"]
+
+[[tool]]
+id = "tmux"
+name = "tmux"
+description = "tmux"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "tmux"
+
+[[tool]]
+id = "zellij"
+name = "zellij"
+description = "zellij"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "zellij"
+
+[[tool]]
+id = "screen"
+name = "screen"
+description = "screen"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "screen"
+
+[[tool]]
+id = "neovim"
+name = "neovim"
+description = "neovim"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "neovim"
+
+[[tool]]
+id = "vim"
+name = "vim"
+description = "vim"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "vim"
+
+[[tool]]
+id = "micro"
+name = "micro"
+description = "micro"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "micro"
+
+[[tool]]
+id = "helix"
+name = "helix"
+description = "helix"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "helix"
+
+[[tool]]
+id = "nano"
+name = "nano"
+description = "nano"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "nano"
+
+[[tool]]
+id = "git"
+name = "git"
+description = "git"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "git"
+
+[[tool]]
+id = "gh"
+name = "gh"
+description = "gh"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gh"
+
+[[tool]]
+id = "glab"
+name = "glab"
+description = "glab"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "glab"
+
+[[tool]]
+id = "lazygit"
+name = "lazygit"
+description = "lazygit"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "lazygit"
+
+[[tool]]
+id = "git-delta"
+name = "git-delta"
+description = "git-delta"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "git-delta"
+
+[[tool]]
+id = "git-lfs"
+name = "git-lfs"
+description = "git-lfs"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "git-lfs"
+
+[[tool]]
+id = "tig"
+name = "tig"
+description = "tig"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "tig"
+
+[[tool]]
+id = "gitui"
+name = "gitui"
+description = "gitui"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gitui"
+
+[[tool]]
+id = "pre-commit"
+name = "pre-commit"
+description = "pre-commit"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "pre-commit"
+
+[[tool]]
+id = "git-filter-repo"
+name = "git-filter-repo"
+description = "git-filter-repo"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "git-filter-repo"
+
+[[tool]]
+id = "gitleaks"
+name = "gitleaks"
+description = "gitleaks"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gitleaks"
+
+[[tool]]
+id = "htop"
+name = "htop"
+description = "htop"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "htop"
+
+[[tool]]
+id = "glances"
+name = "glances"
+description = "glances"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "glances"
+
+[[tool]]
+id = "ncdu"
+name = "ncdu"
+description = "ncdu"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "ncdu"
+
+[[tool]]
+id = "smartmontools"
+name = "smartmontools"
+description = "smartmontools"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "smartmontools"
+
+[[tool]]
+id = "stats"
+name = "stats"
+description = "cask, menu bar"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "stats"
+
+[[tool]]
+id = "direnv"
+name = "direnv"
+description = "direnv"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "direnv"
+
+[[tool]]
+id = "just"
+name = "just"
+description = "just"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "just"
+
+[[tool]]
+id = "entr"
+name = "entr"
+description = "entr"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "entr"
+
+[[tool]]
+id = "mise"
+name = "mise"
+description = "runtime version manager"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "mise"
+
+[[tool]]
+id = "pv"
+name = "pv"
+description = "pv"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "pv"
+
+[[tool]]
+id = "tree"
+name = "tree"
+description = "tree"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "tree"
+
+[[tool]]
+id = "rsync"
+name = "rsync"
+description = "rsync"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "rsync"
+
+[[tool]]
+id = "age"
+name = "age"
+description = "age"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "age"
+
+[[tool]]
+id = "sops"
+name = "sops"
+description = "sops"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "sops"
+
+[[tool]]
+id = "gnupg"
+name = "gnupg"
+description = "gnupg"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "gnupg"
+
+[[tool]]
+id = "pinentry-mac"
+name = "pinentry-mac"
+description = "pinentry-mac"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "pinentry-mac"
+
+[[tool]]
+id = "openssl"
+name = "openssl"
+description = "openssl"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "openssl"
+unverified = true
+
+[[tool]]
+id = "sshpass"
+name = "sshpass"
+description = "sshpass"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "sshpass"
+
+[[tool]]
+id = "tesseract"
+name = "tesseract"
+description = "tesseract"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "tesseract"
+
+[[tool]]
+id = "ffmpeg"
+name = "ffmpeg"
+description = "ffmpeg"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "ffmpeg"
+
+[[tool]]
+id = "imagemagick"
+name = "imagemagick"
+description = "imagemagick"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "imagemagick"
+
+[[tool]]
+id = "pandoc"
+name = "pandoc"
+description = "pandoc"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "pandoc"
+
+[[tool]]
+id = "qpdf"
+name = "qpdf"
+description = "qpdf"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "qpdf"
+
+[[tool]]
+id = "poppler"
+name = "poppler"
+description = "poppler"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "poppler"
+
+[[tool]]
+id = "exiftool"
+name = "exiftool"
+description = "exiftool"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "exiftool"

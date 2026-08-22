@@ -1,0 +1,67 @@
+# bootstrap
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "xcode-command-line-tools"
+name = "Xcode Command Line Tools"
+description = "xcode-select --install, prerequisite for everything"
+category = "bootstrap"
+license = "free"
+[tool.macos]
+backend = "manual"
+package = "xcode-command-line-tools"
+unverified = true
+
+[[tool]]
+id = "homebrew"
+name = "Homebrew"
+description = "Detect existing install, don't clobber"
+category = "bootstrap"
+license = "free"
+[tool.macos]
+backend = "curl"
+package = "homebrew"
+unverified = true
+
+[[tool]]
+id = "rosetta-2"
+name = "Rosetta 2"
+description = "softwareupdate --install-rosetta, only if user picks an x86 cask"
+category = "bootstrap"
+license = "free"
+[tool.macos]
+backend = "manual"
+package = "rosetta-2"
+unverified = true
+
+[[tool]]
+id = "mas"
+name = "mas"
+description = "Mac App Store CLI"
+category = "bootstrap"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "mas"
+
+[[tool]]
+id = "pipx"
+name = "pipx"
+description = "Isolated Python CLI installs"
+category = "bootstrap"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "pipx"
+
+[[tool]]
+id = "uv"
+name = "uv"
+description = "Fast Python package/venv manager"
+category = "bootstrap"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "uv"

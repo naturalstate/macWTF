@@ -145,3 +145,308 @@ homepage = "https://github.com/EnableSecurity/wafw00f"
 backend = "pipx"
 package = "wafw00f"
 verify_cmd = "command -v wafw00f"
+
+[[tool]]
+id = "naabu"
+name = "naabu"
+description = "naabu"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "naabu"
+unverified = true
+
+[[tool]]
+id = "amass"
+name = "amass"
+description = "amass"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "amass"
+
+[[tool]]
+id = "assetfinder"
+name = "assetfinder"
+description = "assetfinder"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "assetfinder"
+unverified = true
+
+[[tool]]
+id = "dnsx"
+name = "dnsx"
+description = "dnsx"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "dnsx"
+unverified = true
+
+[[tool]]
+id = "katana"
+name = "katana"
+description = "katana"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "katana"
+unverified = true
+
+[[tool]]
+id = "nuclei"
+name = "nuclei"
+description = "Plus template sync"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "nuclei"
+
+[[tool]]
+id = "gau"
+name = "gau"
+description = "gau"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "gau"
+unverified = true
+
+[[tool]]
+id = "waybackurls"
+name = "waybackurls"
+description = "waybackurls"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "waybackurls"
+unverified = true
+
+[[tool]]
+id = "feroxbuster"
+name = "feroxbuster"
+description = "feroxbuster"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "feroxbuster"
+
+[[tool]]
+id = "dirsearch"
+name = "dirsearch"
+description = "dirsearch"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "dirsearch"
+unverified = true
+
+[[tool]]
+id = "whatweb"
+name = "whatweb"
+description = "whatweb"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "whatweb"
+unverified = true
+
+[[tool]]
+id = "spiderfoot"
+name = "SpiderFoot"
+description = "SpiderFoot"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "spiderfoot"
+unverified = true
+
+[[tool]]
+id = "recon-ng"
+name = "recon-ng"
+description = "recon-ng"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "recon-ng"
+unverified = true
+
+[[tool]]
+id = "maltego"
+name = "Maltego"
+description = "Maltego"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "maltego"
+app_path = "/Applications/Maltego.app"
+quarantine_strip = true
+
+[[tool]]
+id = "sherlock"
+name = "sherlock"
+description = "sherlock"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "sherlock"
+unverified = true
+
+[[tool]]
+id = "holehe"
+name = "holehe"
+description = "holehe"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "holehe"
+unverified = true
+
+[[tool]]
+id = "maigret"
+name = "maigret"
+description = "maigret"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "maigret"
+unverified = true
+
+[[tool]]
+id = "dnsrecon"
+name = "dnsrecon"
+description = "dnsrecon"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "dnsrecon"
+unverified = true
+
+[[tool]]
+id = "massdns"
+name = "massdns"
+description = "massdns"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "massdns"
+
+[[tool]]
+id = "puredns"
+name = "puredns"
+description = "puredns"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "puredns"
+unverified = true
+
+[[tool]]
+id = "shuffledns"
+name = "shuffledns"
+description = "shuffledns"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "shuffledns"
+unverified = true
+
+[[tool]]
+id = "asnmap"
+name = "asnmap"
+description = "asnmap"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "asnmap"
+unverified = true
+
+[[tool]]
+id = "tlsx"
+name = "tlsx"
+description = "tlsx"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "tlsx"
+unverified = true
+
+[[tool]]
+id = "cero"
+name = "cero"
+description = "cero"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "cero"
+unverified = true
+
+[[tool]]
+id = "bbot"
+name = "BBOT"
+description = "BBOT"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "bbot"
+unverified = true
+
+[[tool]]
+id = "eyewitness"
+name = "EyeWitness"
+description = "Needs headless Chrome"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "eyewitness"
+unverified = true
+
+[[tool]]
+id = "gowitness"
+name = "gowitness"
+description = "gowitness"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "gowitness"
+unverified = true
+
+[[tool]]
+id = "whois"
+name = "whois / dig / host"
+description = "whois / dig / host"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "builtin"
+package = "whois"
+unverified = true

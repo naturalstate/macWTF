@@ -1,0 +1,95 @@
+# terminal
+#
+# Imported from the draft catalogue. Package names are guesses and
+# some will be wrong; `macwtf check` finds them.
+
+[[tool]]
+id = "tabby"
+name = "Tabby"
+description = "Default recommendation. Config sync, split panes, SSH profile manager"
+category = "terminal"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "tabby"
+
+[[tool]]
+id = "ghostty"
+name = "Ghostty"
+description = "Native Swift, GPU accelerated, extremely fast"
+category = "terminal"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "ghostty"
+
+[[tool]]
+id = "iterm2"
+name = "iTerm2"
+description = "The long-standing default, deepest feature set"
+category = "terminal"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "iterm2"
+
+[[tool]]
+id = "wezterm"
+name = "WezTerm"
+description = "Lua config, multiplexing built in"
+category = "terminal"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "wezterm"
+
+[[tool]]
+id = "kitty"
+name = "Kitty"
+description = "GPU accelerated, kittens ecosystem"
+category = "terminal"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "kitty"
+
+[[tool]]
+id = "alacritty"
+name = "Alacritty"
+description = "Minimal, fastest cold start"
+category = "terminal"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "alacritty"
+
+[[tool]]
+id = "warp"
+name = "Warp"
+description = "AI-assisted, account required"
+category = "terminal"
+license = "freemium"
+[tool.macos]
+backend = "cask"
+package = "warp"
+
+[[tool]]
+id = "hyper"
+name = "Hyper"
+description = "Electron, plugin ecosystem"
+category = "terminal"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "hyper"
+
+[[tool]]
+id = "terminal-app"
+name = "Terminal.app"
+description = "Escape hatch, no install"
+category = "terminal"
+license = "free"
+[tool.macos]
+backend = "builtin"
+package = "terminal.app"
+unverified = true
