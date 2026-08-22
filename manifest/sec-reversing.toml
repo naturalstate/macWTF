@@ -52,7 +52,9 @@ homepage = "https://imhex.werwolv.net"
 backend = "cask"
 package = "imhex"
 app_path = "/Applications/ImHex.app"
+quarantine_strip = true
 verify_cmd = "test -d '/Applications/ImHex.app'"
+notes = "Homebrew has deprecated this cask with the reason fails_gatekeeper_check: upstream ships builds that Gatekeeper rejects. It still installs, and stripping quarantine is what makes it launch. Expect the cask to be withdrawn eventually."
 [tool.windows]
 backend = "winget"
 package = "WerWolv.ImHex"

@@ -136,6 +136,8 @@ func runInstall(args []string) error {
 	result.RenderSummary(&summary)
 	fmt.Print(summary.String())
 
+	offerPathFix(result, *assumeYes)
+
 	fmt.Printf("\nState written to %s\n", st.Path())
 
 	if len(result.Failed) > 0 {

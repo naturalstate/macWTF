@@ -22,6 +22,7 @@ commands:
   bootstrap   install the prerequisites macwtf needs (Homebrew, Xcode CLT)
   doctor      check that the prerequisites macwtf needs are present
   validate    check the catalogue for schema and referential integrity errors
+  check       verify every package name still resolves upstream (needs network)
   list        list tools, categories and profiles
   install     install a profile, a category, or individual tools
   version     print the version
@@ -44,6 +45,8 @@ func Run(args []string, version string) error {
 	switch cmd {
 	case "validate":
 		return runValidate(rest)
+	case "check":
+		return runCheck(rest)
 	case "list":
 		return runList(rest)
 	case "install":
