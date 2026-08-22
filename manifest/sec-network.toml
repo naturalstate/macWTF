@@ -108,11 +108,15 @@ description = "Network service exploitation across SMB, LDAP, WinRM and more"
 category = "sec-network"
 license = "free"
 homepage = "https://github.com/Pennyw0rth/NetExec"
+requires = ["rustup-init"]
 [tool.macos]
 backend = "pipx"
-package = "netexec"
+package = "git+https://github.com/Pennyw0rth/NetExec"
 verify_cmd = "command -v nxc"
-notes = "Successor to CrackMapExec. The binary is nxc."
+manual_steps = [
+  "NetExec builds a Rust extension, so it needs a Rust toolchain: brew install rustup-init && rustup-init. Without it the install fails with 'can't find Rust compiler'.",
+]
+notes = "Successor to CrackMapExec; the binary is nxc. Not published to PyPI, so it installs from git."
 
 [[tool]]
 id = "ettercap"

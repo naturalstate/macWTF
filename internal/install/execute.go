@@ -5,12 +5,14 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"os"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/naturalstate/macWTF/internal/backend"
 	"github.com/naturalstate/macWTF/internal/manifest"
+	"github.com/naturalstate/macWTF/internal/pathenv"
 	"github.com/naturalstate/macWTF/internal/state"
 )
 
@@ -86,7 +88,9 @@ type Executor struct {
 	// Emit receives progress events. Never nil in practice; guarded anyway.
 	Emit func(Event)
 
-	mu sync.Mutex
+	mu      sync.Mutex
+	envOnce sync.Once
+	env     []string
 }
 
 func (e *Executor) emit(ev Event) {
@@ -206,9 +210,40 @@ func (e *Executor) runTool(ctx context.Context, tp ToolPlan, index, total int) e
 	return nil
 }
 
+// stepEnv is the environment steps run under: the caller's, with every
+// backend's bin directory prepended to PATH.
+//
+// Without this, verification lies. `go install` puts a binary in ~/go/bin and
+// pipx puts entry points in ~/.local/bin, neither of which is on the default
+// PATH — so a tool that installed perfectly fails `command -v` and gets
+// reported as broken. macWTF knows where each backend writes, so it should look
+// there rather than depend on the user's shell being configured first.
+func (e *Executor) stepEnv() []string {
+	e.envOnce.Do(func() {
+		dirs := pathenv.Detect(map[manifest.Backend]bool{
+			manifest.BackendBrew: true, manifest.BackendCask: true,
+			manifest.BackendPipx: true, manifest.BackendCargo: true,
+			manifest.BackendGo: true, manifest.BackendNPM: true,
+		})
+		var prefix []string
+		for _, d := range dirs {
+			if d.Exists && !d.OnPath {
+				prefix = append(prefix, d.Dir)
+			}
+		}
+		env := os.Environ()
+		if len(prefix) > 0 {
+			env = append(env, "PATH="+strings.Join(prefix, ":")+":"+os.Getenv("PATH"))
+		}
+		e.env = env
+	})
+	return e.env
+}
+
 // runStep runs one command, streaming its output as events.
 func (e *Executor) runStep(ctx context.Context, step backend.Step, tool *manifest.Tool, index, total int) error {
 	cmd := step.Cmd()
+	cmd.Env = e.stepEnv()
 
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {

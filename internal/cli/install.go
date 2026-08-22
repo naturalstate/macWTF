@@ -84,6 +84,18 @@ func runInstall(args []string) error {
 		return err
 	}
 
+	// A missing package manager is usually one brew install away. Offering
+	// it here, and rebuilding the plan afterwards, means the tools it
+	// blocks install in this run rather than after the user goes away,
+	// reads an error, installs something and comes back.
+	if !*dryRun {
+		if newPlan, err := offerBackendInstall(plan, res, reg, ctx, *assumeYes); err != nil {
+			return err
+		} else if newPlan != nil {
+			plan = newPlan
+		}
+	}
+
 	var out strings.Builder
 	plan.Render(&out, *dryRun)
 	fmt.Print(out.String())

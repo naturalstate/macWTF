@@ -8,6 +8,7 @@ package install
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/naturalstate/macWTF/internal/backend"
@@ -113,6 +114,17 @@ func BuildPlan(res *resolve.Result, reg backend.Registry, ctx *backend.Ctx) (*Pl
 	}
 
 	return p, nil
+}
+
+// MissingBackends lists the backends that failed preflight, sorted so the
+// prompt reads the same way every time.
+func (p *Plan) MissingBackends() []manifest.Backend {
+	out := make([]manifest.Backend, 0, len(p.BackendErrs))
+	for b := range p.BackendErrs {
+		out = append(out, b)
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i] < out[j] })
+	return out
 }
 
 // MayNeedSudo reports whether the plan contains anything likely to ask for an
