@@ -311,3 +311,52 @@ func TestViewsRenderAtSmallSizes(t *testing.T) {
 		}
 	}
 }
+
+// No screen may render taller than the terminal. An alternate screen does not
+// scroll, so an oversized view is clipped at the top and the user is left
+// looking at the tail of the interface with the header gone — which is exactly
+// what a large selection did to the confirmation screen.
+func TestNoScreenExceedsTerminalHeight(t *testing.T) {
+	for _, size := range []tea.WindowSizeMsg{
+		{Width: 120, Height: 40}, {Width: 90, Height: 20},
+		{Width: 80, Height: 14}, {Width: 60, Height: 10},
+	} {
+		m := newModel(t)
+		m, _ = m.Update(size)
+
+		// Custom start, select everything, then walk every screen. The
+		// whole catalogue is the worst case for content height.
+		m = press(m, "c", "a")
+		for _, step := range []struct {
+			name string
+			keys []string
+		}{
+			{"profile", nil},
+			{"tree", nil},
+			{"plan", []string{"enter"}},
+			{"confirm", []string{"i"}},
+		} {
+			m = press(m, step.keys...)
+			lines := strings.Count(m.View(), "\n") + 1
+			if lines > size.Height {
+				t.Errorf("%s screen at %dx%d rendered %d lines, budget %d",
+					step.name, size.Width, size.Height, lines, size.Height)
+			}
+		}
+	}
+}
+
+// The plan screen must always show how to proceed, however long the plan is.
+// That line was previously appended below the plan pane, which made it the
+// first thing lost when the content was clamped.
+func TestPlanCallToActionSurvivesASmallWindow(t *testing.T) {
+	for _, size := range []tea.WindowSizeMsg{{Width: 100, Height: 40}, {Width: 80, Height: 12}} {
+		m := newModel(t)
+		m, _ = m.Update(size)
+		m = press(m, "c", "a", "enter")
+		if !strings.Contains(m.View(), "to install") {
+			t.Errorf("at %dx%d the plan screen does not say how to proceed:\n%s",
+				size.Width, size.Height, m.View())
+		}
+	}
+}

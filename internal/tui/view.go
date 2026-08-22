@@ -31,9 +31,20 @@ func (m Model) View() string {
 	return ""
 }
 
-// chrome wraps a screen body in the shared header and footer bars, so every
-// screen sits in the same frame and the interface reads as one thing.
-func (m Model) chrome(context, right, body, footer string) string {
+// frameHeight is the number of lines the frame spends on itself: the header,
+// the rule under it, the rule above the footer, and the footer.
+const frameHeight = 4
+
+// frame wraps a screen body in the shared header and footer bars, so every
+// screen sits in the same furniture and the interface reads as one thing.
+//
+// It also enforces the height budget. Nothing rendered inside an alternate
+// screen scrolls: a body taller than the terminal is simply clipped, and
+// because the clipping happens at the top the user is left looking at the tail
+// of the interface with the header gone. Clamping here rather than in each
+// screen means a screen cannot forget, which is exactly how the confirmation
+// screen came to overflow once a selection got large.
+func (m Model) frame(context, right, body, footer string) string {
 	w := m.width
 	if w < 40 {
 		w = 40
@@ -47,6 +58,12 @@ func (m Model) chrome(context, right, body, footer string) string {
 	}
 	header := left + repeat(" ", gap) + headerRightStyle.Render(right)
 
+	avail := m.height - frameHeight
+	if avail < 3 {
+		avail = 3
+	}
+	body = clampLines(body, avail, w)
+
 	var b strings.Builder
 	b.WriteString(header + "\n")
 	b.WriteString(rule.Render(repeat("─", w)) + "\n")
@@ -54,6 +71,29 @@ func (m Model) chrome(context, right, body, footer string) string {
 	b.WriteString(rule.Render(repeat("─", w)) + "\n")
 	b.WriteString(" " + footer)
 	return b.String()
+}
+
+// clampLines trims a body to a line budget, and pads it out when short so the
+// footer stays pinned to the bottom instead of floating up under the content.
+//
+// When content is dropped it says so, because silently truncating a plan is
+// indistinguishable from the plan being shorter than it is.
+func clampLines(body string, max, width int) string {
+	lines := strings.Split(strings.TrimRight(body, "\n"), "\n")
+
+	if len(lines) > max {
+		keep := max - 1
+		if keep < 1 {
+			keep = 1
+		}
+		hidden := len(lines) - keep
+		lines = append(lines[:keep],
+			itemDimStyle.Render(fmt.Sprintf("  … %d more line(s) — the window is too short to show everything", hidden)))
+	}
+	for len(lines) < max {
+		lines = append(lines, "")
+	}
+	return strings.Join(lines, "\n") + "\n"
 }
 
 func (m Model) statusRight() string {
@@ -92,7 +132,7 @@ func (m Model) viewProfile() string {
 			"  ", m.profilePreviewPane(rightW, height+1))
 	}
 
-	return m.chrome(
+	return m.frame(
 		"the tooling macOS leaves out",
 		m.statusRight(),
 		"\n"+body+"\n",
@@ -302,7 +342,7 @@ func (m Model) viewTree() string {
 		}
 	}
 
-	return m.chrome(
+	return m.frame(
 		ctx,
 		m.statusRight(),
 		body,
@@ -481,9 +521,12 @@ func (m Model) viewPlan() string {
 	if w < 60 {
 		w = 60
 	}
-	height := m.height - 8
-	if height < 6 {
-		height = 6
+	// Reserve room for the call to action and the blank lines around the
+	// pane, so a long plan cannot clamp away the line telling the user how
+	// to proceed.
+	height := m.height - frameHeight - 6
+	if height < 4 {
+		height = 4
 	}
 
 	end := m.planScroll + height
@@ -508,15 +551,17 @@ func (m Model) viewPlan() string {
 	pane := paneFocusStyle.Width(w - 2).Render(
 		title + "\n" + strings.TrimRight(b.String(), "\n"))
 
+	cta := "  " + boldStyle.Render("Press ") + keyStyle.Render("i") +
+		boldStyle.Render(" to install") +
+		itemMuted.Render("   nothing has been changed yet")
 	if m.notice != "" {
-		pane += "\n" + warnStyle.Render("  "+wrap(m.notice, w-6))
-	} else if m.plan != nil || len(m.planLines) > 0 {
-		pane += "\n  " + boldStyle.Render("Press ") + keyStyle.Render("i") +
-			boldStyle.Render(" to install") +
-			itemMuted.Render("   nothing has been changed yet")
+		cta = warnStyle.Render("  " + wrap(m.notice, w-6))
 	}
+	// Above the pane, not below it: the pane is the part that can be
+	// truncated, and this line must survive.
+	pane = cta + "\n" + pane
 
-	return m.chrome(
+	return m.frame(
 		"review",
 		m.statusRight(),
 		"\n"+pane+"\n",
@@ -556,22 +601,37 @@ func (m Model) viewConfirm() string {
 	}
 	b.WriteString("\n")
 
+	// Long selections are summarised rather than listed in full. Everything
+	// resolves to hundreds of tools, and a confirmation screen that scrolls
+	// off the top is one nobody reads before pressing y.
+	const showAtMost = 5
+
 	if len(tcc) > 0 {
-		b.WriteString(infoStyle.Render("Will need permissions granted by hand afterwards:") + "\n")
-		for _, t := range tcc {
+		b.WriteString(infoStyle.Render(fmt.Sprintf(
+			"%d tool(s) will need permissions granted by hand afterwards:", len(tcc))) + "\n")
+		for i, t := range tcc {
+			if i == showAtMost {
+				b.WriteString(itemMuted.Render(fmt.Sprintf("  … and %d more", len(tcc)-showAtMost)) + "\n")
+				break
+			}
 			var panes []string
 			for _, p := range t.TCCPermissions {
 				panes = append(panes, p.Pane().Name)
 			}
-			b.WriteString(itemMuted.Render("  "+t.ID+" — "+strings.Join(panes, ", ")) + "\n")
+			b.WriteString(itemMuted.Render(truncate("  "+t.ID+" — "+strings.Join(panes, ", "), inner)) + "\n")
 		}
-		b.WriteString(itemMuted.Render("  macOS does not allow an installer to grant these.") + "\n\n")
+		b.WriteString(itemMuted.Render("  macOS does not allow an installer to grant these.") + "\n")
+		b.WriteString(itemMuted.Render("  They are all listed again in the report at the end.") + "\n\n")
 	}
 
 	if len(pending) > 0 {
 		box := warnStyle.Render(fmt.Sprintf("%d unsigned tool(s): Gatekeeper will block first launch", len(pending))) + "\n"
-		for _, t := range pending {
-			box += itemMuted.Render("  "+t.ID+" — "+t.AppPath) + "\n"
+		for i, t := range pending {
+			if i == showAtMost {
+				box += itemMuted.Render(fmt.Sprintf("  … and %d more", len(pending)-showAtMost)) + "\n"
+				break
+			}
+			box += itemMuted.Render(truncate("  "+t.ID+" — "+t.AppPath, inner-2)) + "\n"
 		}
 		box += "\n"
 		if m.allowQuarantine {
@@ -587,7 +647,7 @@ func (m Model) viewConfirm() string {
 
 	b.WriteString(boldStyle.Render("Proceed?") + itemMuted.Render("   this will modify your system") + "\n")
 
-	return m.chrome(
+	return m.frame(
 		"confirm",
 		m.statusRight(),
 		"\n  "+strings.ReplaceAll(b.String(), "\n", "\n  ")+"\n",
@@ -655,7 +715,7 @@ func (m Model) viewProgress() string {
 			itemMuted.Render(fmt.Sprintf("%.1fs", e.elapsed.Seconds())))
 	}
 
-	return m.chrome(
+	return m.frame(
 		"installing",
 		m.statusRight(),
 		"\n  "+strings.ReplaceAll(b.String(), "\n", "\n  ")+"\n",
@@ -711,7 +771,7 @@ func (m Model) viewDone() string {
 		ctx = warnStyle.Render(fmt.Sprintf("finished with %d failure(s)", len(m.runResult.Failed)))
 	}
 
-	return m.chrome(ctx, m.statusRight(), "\n"+out.String(),
+	return m.frame(ctx, m.statusRight(), "\n"+out.String(),
 		help("↑/↓", "scroll", "q", "quit"))
 }
 
