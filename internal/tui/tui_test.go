@@ -150,6 +150,14 @@ func TestPlanScreenShowsRealCommands(t *testing.T) {
 	if !strings.Contains(joined, "brew install --formula nmap") {
 		t.Fatalf("plan screen should show real commands:\n%s", joined)
 	}
+	// The TUI plan is a review step before installing, not a dry run.
+	// Labelling it a dry run tells the user the opposite of the truth.
+	if strings.Contains(joined, "nothing will be executed") {
+		t.Fatalf("the TUI plan must not claim to be a dry run:\n%s", joined)
+	}
+	if !strings.Contains(mm.View(), "to install") {
+		t.Fatalf("the plan screen must say how to proceed:\n%s", mm.View())
+	}
 }
 
 // Installing must never be reachable without passing through the confirmation

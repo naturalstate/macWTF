@@ -28,13 +28,5 @@ func runTUI(args []string) error {
 	if err != nil {
 		return err
 	}
-	// Preview only: the plan is built against real installed state when
-	// Homebrew is present, and against an empty set when it is not, so the
-	// interface works on a machine with no brew at all.
-	if _, lookErr := backend.NewRegistry().Get(manifest.BackendBrew); lookErr == nil && ctx.BrewPrefix == "" {
-		ctx.SeedInstalled(manifest.BackendBrew, map[string]bool{})
-		ctx.SeedInstalled(manifest.BackendCask, map[string]bool{})
-	}
-
 	return tui.Run(cat, ctx)
 }

@@ -65,12 +65,41 @@ func NewCtx() (*Ctx, error) {
 		c.Arch = manifest.ArchAMD64
 	}
 
+	// Homebrew installs to /opt/homebrew on Apple Silicon, which is not on
+	// the default PATH. Any shell that has not sourced `brew shellenv` — a
+	// fresh Terminal window, a non-login SSH session, an app launched from
+	// Finder — cannot see it, and every brew-backed tool would be reported
+	// as unavailable on a machine where Homebrew is installed and working.
+	//
+	// Done here rather than in a single command so that every entry point
+	// benefits: CLI, TUI and doctor alike.
+	adoptBrewPath()
+
 	// Best effort: a missing brew is a backend preflight failure, not a
 	// fatal error, since not every backend needs it.
 	if out, err := exec.Command("brew", "--prefix").Output(); err == nil {
 		c.BrewPrefix = strings.TrimSpace(string(out))
 	}
 	return c, nil
+}
+
+// brewPrefixes are the standard Homebrew locations, newest convention first.
+var brewPrefixes = []string{"/opt/homebrew", "/usr/local"}
+
+// adoptBrewPath puts an installed-but-unreachable Homebrew on this process's
+// PATH. It changes nothing on disk and nothing outside this process.
+func adoptBrewPath() {
+	if _, err := exec.LookPath("brew"); err == nil {
+		return
+	}
+	for _, prefix := range brewPrefixes {
+		bin := prefix + "/bin"
+		if _, err := os.Stat(bin + "/brew"); err != nil {
+			continue
+		}
+		os.Setenv("PATH", bin+":"+os.Getenv("PATH"))
+		return
+	}
 }
 
 // NewTestCtx builds a context with no system probing, for tests.

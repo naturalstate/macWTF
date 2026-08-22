@@ -224,7 +224,7 @@ func (m *Model) buildPlan() {
 	}
 
 	var b strings.Builder
-	p.Render(&b, true)
+	p.Render(&b, false)
 	m.planLines = strings.Split(b.String(), "\n")
 	m.planScroll = 0
 }

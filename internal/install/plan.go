@@ -140,12 +140,16 @@ func (p *Plan) PendingQuarantine() []*manifest.Tool {
 	return out
 }
 
-// Render writes the plan as human-readable text. This is what --dry-run
-// prints: every command, in order, exactly as it would run.
+// Render writes the plan as human-readable text: every command, in order,
+// exactly as it would run.
+//
+// dryRun affects only wording. A dry run genuinely executes nothing, whereas
+// the TUI shows the same plan as a step before installing — calling that a dry
+// run told users the opposite of the truth and stopped them installing at all.
 func (p *Plan) Render(w *strings.Builder, dryRun bool) {
 	todo, already, failed := p.Counts()
 
-	header := "install plan"
+	header := "these commands will run"
 	if dryRun {
 		header = "dry run — nothing will be executed"
 	}

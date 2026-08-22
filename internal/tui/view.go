@@ -480,7 +480,7 @@ func (m Model) viewPlan() string {
 		b.WriteString(padTo("", w-6) + "\n")
 	}
 
-	title := paneTitleStyle.Render(" plan ")
+	title := paneTitleStyle.Render(" review ")
 	if len(m.planLines) > height {
 		title += countChip.Render(fmt.Sprintf("lines %d–%d of %d",
 			m.planScroll+1, end, len(m.planLines)))
@@ -491,10 +491,14 @@ func (m Model) viewPlan() string {
 
 	if m.notice != "" {
 		pane += "\n" + warnStyle.Render("  "+wrap(m.notice, w-6))
+	} else if m.plan != nil || len(m.planLines) > 0 {
+		pane += "\n  " + boldStyle.Render("Press ") + keyStyle.Render("i") +
+			boldStyle.Render(" to install") +
+			itemMuted.Render("   nothing has been changed yet")
 	}
 
 	return m.chrome(
-		"plan preview",
+		"review",
 		m.statusRight(),
 		"\n"+pane+"\n",
 		help("i", "install", "↑/↓", "scroll", "esc", "back", "q", "quit"),
