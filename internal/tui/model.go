@@ -111,6 +111,7 @@ type Model struct {
 	cancelled       bool
 	spin            int
 	verbose         bool
+	sudoAsked       bool
 
 	// notice is a transient message shown to the user, for the cases where
 	// a keypress correctly does nothing. Silence reads as a broken button.

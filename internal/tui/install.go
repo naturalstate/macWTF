@@ -6,6 +6,8 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 
+	"github.com/naturalstate/macWTF/internal/sudo"
+
 	"github.com/naturalstate/macWTF/internal/backend"
 	"github.com/naturalstate/macWTF/internal/install"
 	"github.com/naturalstate/macWTF/internal/manifest"
@@ -38,6 +40,22 @@ func waitForEvent(ch <-chan install.Event) tea.Cmd {
 		}
 		return eventMsg(ev)
 	}
+}
+
+// sudoDoneMsg reports the outcome of the suspended password prompt.
+type sudoDoneMsg struct{ err error }
+
+// primeSudo suspends the interface and hands the real terminal to `sudo -v`.
+//
+// This has to suspend rather than just run the command. While the program is
+// active the terminal is in raw mode and bubbletea is reading every keystroke,
+// so a password prompt underneath it receives nothing the user types — which
+// looks exactly like the password being rejected. tea.ExecProcess restores the
+// terminal, runs the command attached to it, and resumes afterwards.
+func primeSudo() tea.Cmd {
+	return tea.ExecProcess(sudo.PrimeCmd(), func(err error) tea.Msg {
+		return sudoDoneMsg{err: err}
+	})
 }
 
 // startInstall builds the plan for the current selection and runs it.
@@ -80,6 +98,11 @@ func (m *Model) startInstall() tea.Cmd {
 
 	runCtx, cancel := context.WithCancel(context.Background())
 	m.cancelRun = cancel
+
+	// Keep the authorisation warm: sudo's timestamp expires in five
+	// minutes and a large install runs far longer, which would otherwise
+	// put the prompt back in the middle of the run.
+	sudo.KeepAlive(runCtx)
 
 	ex := &install.Executor{
 		Ctx:   m.ctx,

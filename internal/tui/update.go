@@ -6,6 +6,7 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 
 	"github.com/naturalstate/macWTF/internal/install"
+	"github.com/naturalstate/macWTF/internal/sudo"
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
@@ -24,6 +25,15 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tick()
 		}
 		return m, nil
+
+	case sudoDoneMsg:
+		// Whether or not it succeeded, the run proceeds: declining
+		// authorisation is a valid choice, and the steps that need it
+		// will say so rather than the whole run refusing to start.
+		if msg.err != nil {
+			m.notice = "continuing without administrator authorisation"
+		}
+		return m, m.startInstall()
 
 	case doneMsg:
 		m.runResult = msg.result
@@ -80,8 +90,13 @@ func (m Model) updateConfirm(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, nil
 
 	case "y", "enter":
-		cmd := m.startInstall()
-		return m, cmd
+		// Ask for the password before starting, with the interface
+		// suspended so the prompt actually reaches the terminal.
+		if m.plan != nil && len(m.plan.MayNeedSudo()) > 0 && !sudo.Active() && !m.sudoAsked {
+			m.sudoAsked = true
+			return m, primeSudo()
+		}
+		return m, m.startInstall()
 	}
 	return m, nil
 }

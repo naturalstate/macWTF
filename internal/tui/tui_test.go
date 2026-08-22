@@ -360,3 +360,19 @@ func TestPlanCallToActionSurvivesASmallWindow(t *testing.T) {
 		}
 	}
 }
+
+// A password prompt must never appear while the interface owns the terminal.
+// In raw mode bubbletea consumes every keystroke, so the prompt underneath
+// receives nothing the user types and looks like it is rejecting a correct
+// password. Confirming a plan that needs elevation must therefore suspend
+// first rather than going straight to the run.
+func TestConfirmSuspendsForTheSudoPrompt(t *testing.T) {
+	m := press(selectProfile(t, newModel(t), "baseline"), "enter", "i")
+	mm := m.(Model)
+	if mm.screen != screenConfirm {
+		t.Fatalf("expected the confirm screen, got %v", mm.screen)
+	}
+	if mm.sudoAsked {
+		t.Fatal("authorisation must not be requested before the user confirms")
+	}
+}
