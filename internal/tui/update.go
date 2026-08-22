@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"fmt"
+
 	tea "github.com/charmbracelet/bubbletea"
 
 	"github.com/naturalstate/macWTF/internal/install"
@@ -225,6 +227,7 @@ func (m Model) updatePlan(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		return m, tea.Quit
 
 	case "esc", "left", "h", "backspace":
+		m.notice = ""
 		m.screen = screenTree
 
 	case "i", "enter":
@@ -232,13 +235,29 @@ func (m Model) updatePlan(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		// keypress away from browsing.
 		p, err := m.resolvePlan()
 		if err != nil {
-			m.runErr = err
+			m.notice = "could not build a plan: " + err.Error()
 			return m, nil
 		}
 		m.plan = p
-		if todo, _, _ := p.Counts(); todo == 0 {
+
+		// Nothing to do is a legitimate outcome, but it must say so.
+		// A keypress that silently does nothing reads as a broken
+		// button, not as "you are already up to date".
+		todo, already, failed := p.Counts()
+		if todo == 0 {
+			switch {
+			case already > 0 && failed == 0:
+				m.notice = fmt.Sprintf(
+					"Nothing to install — all %d selected tool(s) are already installed. Go back with esc and select more.", already)
+			case failed > 0:
+				m.notice = fmt.Sprintf(
+					"Nothing can be installed: %d tool(s) could not be planned. See the plan above.", failed)
+			default:
+				m.notice = "Nothing selected. Press esc to go back and choose some tools."
+			}
 			return m, nil
 		}
+		m.notice = ""
 		m.screen = screenConfirm
 
 	case "up", "k":

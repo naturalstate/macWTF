@@ -266,9 +266,22 @@ func (m Model) viewTree() string {
 	}
 	body = "\n" + body + "\n"
 
-	sel := len(m.selectedIDs())
+	sel := m.selectedIDs()
+	var fresh int
+	for _, id := range sel {
+		if !m.installed[id] {
+			fresh++
+		}
+	}
 	ctx := fmt.Sprintf("%s · %s selected", m.chosenProfile,
-		okStyle.Render(fmt.Sprintf("%d", sel)))
+		okStyle.Render(fmt.Sprintf("%d", len(sel))))
+	if len(sel) > 0 {
+		if fresh == 0 {
+			ctx += itemMuted.Render(" · all already installed")
+		} else {
+			ctx += itemMuted.Render(fmt.Sprintf(" · %d to install", fresh))
+		}
+	}
 
 	return m.chrome(
 		ctx,
@@ -319,6 +332,13 @@ func (m Model) treePane(width, height int) string {
 				nameStyle = itemStyle
 			}
 			chips := toolChips(t)
+			// Already-installed tools are dimmed and marked, so a
+			// selection that would change nothing is obvious before
+			// reaching the plan.
+			if m.installed[t.ID] {
+				nameStyle = itemDimStyle
+				chips = itemDimStyle.Render("installed") + chipSep(chips)
+			}
 			name := nameStyle.Render(t.ID)
 			avail := inner - 4 - lipgloss.Width(chips) - 1
 			line = "   " + check + " " + padTo(truncate(name, avail), avail)
@@ -372,7 +392,11 @@ func (m Model) detailPane(width, height int) string {
 
 	t := r.tool
 	b.WriteString(boldStyle.Render(truncate(t.Name, inner)) + "\n")
-	b.WriteString(itemMuted.Render(fmt.Sprintf("%s · %s", t.Backend, t.Package)) + "\n\n")
+	b.WriteString(itemMuted.Render(fmt.Sprintf("%s · %s", t.Backend, t.Package)) + "\n")
+	if m.installed[t.ID] {
+		b.WriteString(okStyle.Render("already installed") + "\n")
+	}
+	b.WriteString("\n")
 	b.WriteString(wrap(itemStyle.Render(t.Description), inner) + "\n")
 
 	if chips := toolChips(t); chips != "" {
@@ -464,6 +488,10 @@ func (m Model) viewPlan() string {
 
 	pane := paneFocusStyle.Width(w - 2).Render(
 		title + "\n" + strings.TrimRight(b.String(), "\n"))
+
+	if m.notice != "" {
+		pane += "\n" + warnStyle.Render("  "+wrap(m.notice, w-6))
+	}
 
 	return m.chrome(
 		"plan preview",
@@ -665,3 +693,11 @@ func (m Model) viewDone() string {
 }
 
 var spinFrames = []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
+
+// chipSep joins the installed marker to any other chips.
+func chipSep(chips string) string {
+	if chips == "" {
+		return ""
+	}
+	return " " + chips
+}

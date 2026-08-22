@@ -84,6 +84,16 @@ func NewTestCtx() *Ctx {
 	}
 }
 
+// ResetInstalledCache drops the memoised per-backend snapshots, so the next
+// query re-probes the system. Needed after a run: the whole point of the cache
+// is that one `brew list` serves a whole plan, which makes it stale the moment
+// anything is installed.
+func (c *Ctx) ResetInstalledCache() {
+	c.cacheMu.Lock()
+	defer c.cacheMu.Unlock()
+	c.installedCache = map[manifest.Backend]map[string]bool{}
+}
+
 // SeedInstalled injects a known installed set for a backend, bypassing the
 // live probe. Used by tests, and by --dry-run when no probe is possible.
 func (c *Ctx) SeedInstalled(b manifest.Backend, pkgs map[string]bool) {

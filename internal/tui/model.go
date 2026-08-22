@@ -63,6 +63,12 @@ type Model struct {
 	profiles   []*manifest.Profile
 	profCursor int
 
+	// installed marks tools already present on this machine, so the user can
+	// see at a glance what a selection would actually change. Without it,
+	// selecting a fully-installed profile looks identical to selecting a
+	// fresh one right up until the plan turns out to be empty.
+	installed map[string]bool
+
 	// Tree screen.
 	rows      []row
 	cursor    int
@@ -95,6 +101,10 @@ type Model struct {
 	cancelled       bool
 	spin            int
 
+	// notice is a transient message shown to the user, for the cases where
+	// a keypress correctly does nothing. Silence reads as a broken button.
+	notice string
+
 	quitting bool
 	err      error
 }
@@ -121,6 +131,7 @@ func New(cat *manifest.Catalogue, ctx *backend.Ctx) Model {
 		profiles:  profiles,
 		selected:  map[string]bool{},
 		collapsed: map[string]bool{},
+		installed: detectInstalled(cat, ctx),
 		doneCh:    make(chan doneMsg, 1),
 		width:     100,
 		height:    30,
@@ -246,4 +257,35 @@ func resolveSelection(m *Model, supported map[manifest.Backend]bool) (*resolve.R
 		Arch:              m.ctx.Arch,
 		SupportedBackends: supported,
 	})
+}
+
+// detectInstalled asks each backend once what it already has, and maps that
+// back onto tool ids. Failures are silent: a backend that cannot be queried
+// simply means nothing is known to be installed through it, which is a display
+// concern rather than a reason to refuse to start.
+func detectInstalled(cat *manifest.Catalogue, ctx *backend.Ctx) map[string]bool {
+	out := map[string]bool{}
+	reg := backend.NewRegistry()
+
+	for _, t := range cat.Tools {
+		impl, err := reg.Get(t.Backend)
+		if err != nil {
+			continue
+		}
+		set, err := ctx.InstalledFor(impl)
+		if err != nil {
+			continue
+		}
+		if set[t.Package] {
+			out[t.ID] = true
+		}
+	}
+	return out
+}
+
+// refreshInstalled re-detects after a run, so the tree reflects reality if the
+// user goes back to pick more.
+func (m *Model) refreshInstalled() {
+	m.ctx.ResetInstalledCache()
+	m.installed = detectInstalled(m.cat, m.ctx)
 }
