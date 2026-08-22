@@ -30,6 +30,9 @@ func (b *Brew) Installed(ctx *Ctx) (map[string]bool, error) {
 	return lineSet(string(out)), nil
 }
 
+// InstalledKey is the package name: this backend's set is package-keyed.
+func (b *Brew) InstalledKey(t *manifest.Tool) string { return t.Package }
+
 func (b *Brew) InstallPlan(t *manifest.Tool, ctx *Ctx) ([]Step, error) {
 	var steps []Step
 	if t.Tap != "" {

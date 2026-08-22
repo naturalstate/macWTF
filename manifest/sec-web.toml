@@ -81,3 +81,27 @@ verify_cmd = "command -v sqlmap"
 backend = "apt"
 package = "sqlmap"
 notes = "Preinstalled on Kali."
+
+[[tool]]
+id = "dalfox"
+name = "dalfox"
+description = "XSS scanning and parameter analysis"
+category = "sec-web"
+license = "free"
+homepage = "https://github.com/hahwul/dalfox"
+[tool.macos]
+backend = "go"
+package = "github.com/hahwul/dalfox/v2"
+verify_cmd = "command -v dalfox"
+
+[[tool]]
+id = "sslyze"
+name = "SSLyze"
+description = "TLS configuration scanner"
+category = "sec-web"
+license = "free"
+homepage = "https://github.com/nabla-c0d3/sslyze"
+[tool.macos]
+backend = "pipx"
+package = "sslyze"
+verify_cmd = "command -v sslyze"

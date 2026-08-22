@@ -89,3 +89,59 @@ verify_cmd = "command -v gobuster"
 [tool.kali]
 backend = "apt"
 package = "gobuster"
+
+[[tool]]
+id = "subfinder"
+name = "subfinder"
+description = "Passive subdomain discovery across dozens of sources"
+category = "sec-recon"
+license = "free"
+homepage = "https://github.com/projectdiscovery/subfinder"
+[tool.macos]
+backend = "go"
+package = "github.com/projectdiscovery/subfinder/v2/cmd/subfinder"
+verify_cmd = "command -v subfinder"
+notes = "Ships only as a Go module. The /v2 in the path is a module major version, not part of the binary name."
+[tool.kali]
+backend = "apt"
+package = "subfinder"
+
+[[tool]]
+id = "httpx"
+name = "httpx"
+description = "Fast multi-purpose HTTP prober"
+category = "sec-recon"
+license = "free"
+homepage = "https://github.com/projectdiscovery/httpx"
+[tool.macos]
+backend = "go"
+package = "github.com/projectdiscovery/httpx/cmd/httpx"
+verify_cmd = "command -v httpx"
+notes = "Name collides with the Python httpx library. If you use both, alias one of them."
+
+[[tool]]
+id = "theharvester"
+name = "theHarvester"
+description = "Email, subdomain and name harvesting from public sources"
+category = "sec-recon"
+license = "free"
+homepage = "https://github.com/laramies/theHarvester"
+[tool.macos]
+backend = "pipx"
+package = "theHarvester"
+verify_cmd = "command -v theHarvester"
+[tool.kali]
+backend = "apt"
+package = "theharvester"
+
+[[tool]]
+id = "wafw00f"
+name = "wafw00f"
+description = "Identify the web application firewall behind a site"
+category = "sec-recon"
+license = "free"
+homepage = "https://github.com/EnableSecurity/wafw00f"
+[tool.macos]
+backend = "pipx"
+package = "wafw00f"
+verify_cmd = "command -v wafw00f"

@@ -96,7 +96,7 @@ func BuildPlan(res *resolve.Result, reg backend.Registry, ctx *backend.Ctx) (*Pl
 			p.Tools = append(p.Tools, tp)
 			continue
 		}
-		if installed[t.Package] {
+		if installed[impl.InstalledKey(t)] {
 			tp.AlreadyInstalled = true
 			p.Tools = append(p.Tools, tp)
 			continue

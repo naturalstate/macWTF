@@ -111,8 +111,14 @@ type Backend interface {
 	Preflight(ctx *Ctx) error
 
 	// Installed snapshots everything this backend has already installed, in
-	// one call rather than one per tool. Package-name keyed.
+	// one call rather than one per tool.
 	Installed(ctx *Ctx) (map[string]bool, error)
+
+	// InstalledKey is the key to look up in the Installed set for a given
+	// tool. Usually the package name, but not always: Go keeps no package
+	// database, so its set is keyed by binary name and a module path has to
+	// be reduced to the binary it produces.
+	InstalledKey(t *manifest.Tool) string
 
 	// InstallPlan returns the steps that would install the tool.
 	InstallPlan(t *manifest.Tool, ctx *Ctx) ([]Step, error)
@@ -128,8 +134,12 @@ type Registry map[manifest.Backend]Backend
 // absent are reported as unsupported rather than silently skipped.
 func NewRegistry() Registry {
 	return Registry{
-		manifest.BackendBrew: &Brew{},
-		manifest.BackendCask: &Cask{},
+		manifest.BackendBrew:  &Brew{},
+		manifest.BackendCask:  &Cask{},
+		manifest.BackendPipx:  &Pipx{},
+		manifest.BackendGo:    &Golang{},
+		manifest.BackendCargo: &Cargo{},
+		manifest.BackendNPM:   &NPM{},
 	}
 }
 

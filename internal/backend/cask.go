@@ -32,6 +32,9 @@ func (c *Cask) Installed(ctx *Ctx) (map[string]bool, error) {
 	return lineSet(string(out)), nil
 }
 
+// InstalledKey is the package name: this backend's set is package-keyed.
+func (c *Cask) InstalledKey(t *manifest.Tool) string { return t.Package }
+
 func (c *Cask) InstallPlan(t *manifest.Tool, ctx *Ctx) ([]Step, error) {
 	var steps []Step
 	if t.Tap != "" {
