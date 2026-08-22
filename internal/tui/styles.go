@@ -1,6 +1,10 @@
 package tui
 
-import "github.com/charmbracelet/lipgloss"
+import (
+	"strings"
+
+	"github.com/charmbracelet/lipgloss"
+)
 
 // Palette. Adaptive so the interface stays legible on light-background
 // terminals, which a meaningful share of macOS users run.
@@ -125,4 +129,76 @@ func repeat(s string, n int) string {
 		out += s
 	}
 	return out
+}
+
+// barGradient is the fill colour ramp for the progress bar: indigo through
+// violet to a light lilac. Rendering each cell at its own point on the ramp
+// gives the bar depth without animation for its own sake, and it reads as one
+// object rather than a row of identical blocks.
+var barGradient = []string{
+	"#4C1D95", "#5B21B6", "#6D28D9", "#7C3AED",
+	"#8B5CF6", "#9B72F8", "#A78BFA", "#B9A2FC",
+}
+
+// pulseFrames drive the leading edge of the bar. A partially filled cell shows
+// how far into the current tool the run is, which a plain block cannot.
+var pulseFrames = []string{"▏", "▎", "▍", "▌", "▋", "▊", "▉", "█"}
+
+// gradientBar renders a progress bar coloured along its length, with a
+// fractional leading edge and a dimmed track behind it.
+func gradientBar(done, total, width, tick int) string {
+	if width < 4 {
+		width = 4
+	}
+	ratio := 0.0
+	if total > 0 {
+		ratio = float64(done) / float64(total)
+	}
+	if ratio > 1 {
+		ratio = 1
+	}
+
+	exact := ratio * float64(width)
+	full := int(exact)
+	frac := exact - float64(full)
+
+	var b strings.Builder
+	for i := 0; i < full && i < width; i++ {
+		c := barGradient[i*len(barGradient)/max(1, width)]
+		b.WriteString(lipgloss.NewStyle().Foreground(lipgloss.Color(c)).Render("█"))
+	}
+
+	if full < width {
+		// The leading edge shows sub-cell progress, and breathes while a
+		// tool is mid-flight so a slow download does not look frozen.
+		idx := int(frac * float64(len(pulseFrames)))
+		if idx == 0 {
+			idx = (tick / 2) % 3
+		}
+		if idx >= len(pulseFrames) {
+			idx = len(pulseFrames) - 1
+		}
+		c := barGradient[min(len(barGradient)-1, full*len(barGradient)/max(1, width))]
+		b.WriteString(lipgloss.NewStyle().Foreground(lipgloss.Color(c)).Render(pulseFrames[idx]))
+
+		for i := full + 1; i < width; i++ {
+			b.WriteString(trackStyle.Render("─"))
+		}
+	}
+	return b.String()
+}
+
+var trackStyle = lipgloss.NewStyle().Foreground(lipgloss.AdaptiveColor{Light: "#D8D8E4", Dark: "#2A2A38"})
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
 }

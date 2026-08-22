@@ -75,13 +75,33 @@ func (r *Result) RenderSummary(w *strings.Builder) {
 	if n := len(r.Failed); n > 0 {
 		fmt.Fprintf(w, "  %d failed\n", n)
 	}
+	if n := len(r.Blocked); n > 0 {
+		fmt.Fprintf(w, "  %d not attempted\n", n)
+	}
 
 	if len(r.Failed) > 0 {
 		w.WriteString("\nfailed\n")
 		for _, f := range r.Failed {
 			fmt.Fprintf(w, "  %-14s %v\n", f.Tool.ID, f.Err)
 		}
-		w.WriteString("\nThese were skipped and the run continued. Re-running will retry them.\n")
+		w.WriteString("\nThese were attempted and did not succeed. Re-running will retry them.\n")
+	}
+
+	// Reported apart from failures, and grouped by what is missing, so the
+	// fix is one install rather than a list of names to investigate.
+	if len(r.Blocked) > 0 {
+		byBackend := map[manifest.Backend][]string{}
+		for _, b := range r.Blocked {
+			byBackend[b.Tool.Backend] = append(byBackend[b.Tool.Backend], b.Tool.ID)
+		}
+		w.WriteString("\nnot attempted — the package manager they need is missing\n")
+		for be, ids := range byBackend {
+			fmt.Fprintf(w, "  %-6s %s\n", be, strings.Join(ids, ", "))
+			if fix := backendFix(be); fix != "" {
+				fmt.Fprintf(w, "         %s\n", fix)
+			}
+		}
+		w.WriteString("\nNothing was installed for these, and nothing was broken by them.\n")
 	}
 
 	if len(r.QuarantineStripped) > 0 {
@@ -111,6 +131,23 @@ func (r *Result) RenderSummary(w *strings.Builder) {
 		}
 		w.WriteString("\n")
 	}
+}
+
+// backendFix is the command that makes a package manager available.
+func backendFix(b manifest.Backend) string {
+	switch b {
+	case manifest.BackendPipx:
+		return "brew install pipx"
+	case manifest.BackendGo:
+		return "brew install go"
+	case manifest.BackendCargo:
+		return "brew install rustup-init && rustup-init"
+	case manifest.BackendNPM:
+		return "brew install node"
+	case manifest.BackendMAS:
+		return "brew install mas"
+	}
+	return ""
 }
 
 // roundDuration trims a duration to something worth reading. Nobody needs

@@ -115,6 +115,33 @@ func BuildPlan(res *resolve.Result, reg backend.Registry, ctx *backend.Ctx) (*Pl
 	return p, nil
 }
 
+// MayNeedSudo reports whether the plan contains anything likely to ask for an
+// administrator password.
+//
+// Casks are the reason: many ship a .pkg payload or write outside the Homebrew
+// prefix. Homebrew does not expose which ones in advance, so this is
+// deliberately pessimistic — asking once up front and not needing it is far
+// better than a prompt appearing partway through and corrupting a full-screen
+// interface.
+func (p *Plan) MayNeedSudo() []*manifest.Tool {
+	var out []*manifest.Tool
+	for _, tp := range p.Tools {
+		if tp.AlreadyInstalled || tp.PlanErr != nil {
+			continue
+		}
+		needs := tp.Tool.Backend == manifest.BackendCask
+		for _, s := range tp.Steps {
+			if s.Sudo {
+				needs = true
+			}
+		}
+		if needs {
+			out = append(out, tp.Tool)
+		}
+	}
+	return out
+}
+
 // PendingQuarantine lists tools in the plan that need a quarantine strip which
 // has not been authorised. Used to prompt once, up front, rather than
 // interrupting the run repeatedly.

@@ -48,7 +48,16 @@ type row struct {
 	kind     rowKind
 	category string
 	tool     *manifest.Tool
+
+	// pinned marks a row in the selected-tools group at the top of the
+	// tree. The same tool also appears in its real category below, so the
+	// pinned copy is a summary rather than a move — seeing what you picked
+	// should not cost you the context of where it came from.
+	pinned bool
 }
+
+// selectedGroup is the pseudo-category holding the current selection.
+const selectedGroup = "selected"
 
 // Model is the bubbletea model for the whole interface.
 type Model struct {
@@ -101,6 +110,7 @@ type Model struct {
 	startedAt       time.Time
 	cancelled       bool
 	spin            int
+	verbose         bool
 
 	// notice is a transient message shown to the user, for the cases where
 	// a keypress correctly does nothing. Silence reads as a broken button.
@@ -145,8 +155,27 @@ func New(cat *manifest.Catalogue, ctx *backend.Ctx) Model {
 func (m Model) Init() tea.Cmd { return nil }
 
 // buildRows rebuilds the flat row list from the catalogue and collapse state.
+//
+// The selection is repeated in a group at the top. A profile can pick six tools
+// out of five hundred, and hunting through nineteen categories to see what they
+// were is not a reasonable thing to ask.
 func (m *Model) buildRows() {
 	m.rows = nil
+
+	if sel := m.selectedIDs(); len(sel) > 0 {
+		m.rows = append(m.rows, row{kind: rowCategory, category: selectedGroup, pinned: true})
+		if !m.collapsed[selectedGroup] {
+			for _, id := range sel {
+				if t, ok := m.cat.Tool(id); ok {
+					m.rows = append(m.rows, row{
+						kind: rowTool, category: selectedGroup,
+						tool: t, pinned: true,
+					})
+				}
+			}
+		}
+	}
+
 	for _, c := range m.cat.Categories() {
 		m.rows = append(m.rows, row{kind: rowCategory, category: c})
 		if m.collapsed[c] {
@@ -179,6 +208,9 @@ func (m *Model) applyProfile(p *manifest.Profile) {
 	for _, t := range res.Install {
 		m.selected[t.ID] = true
 	}
+	// The pinned group is derived from the selection, so it has to be
+	// rebuilt whenever the selection changes.
+	m.buildRows()
 	// Tools the resolver excluded (linux-only, conflicts) stay unchecked,
 	// so the tree reflects what would actually be installed.
 }
@@ -231,8 +263,23 @@ func (m *Model) buildPlan() {
 	m.planScroll = 0
 }
 
+// pendingCount is how many of the current selection are not already installed.
+func (m *Model) pendingCount() int {
+	n := 0
+	for _, id := range m.selectedIDs() {
+		if !m.installed[id] {
+			n++
+		}
+	}
+	return n
+}
+
 // countSelected reports how many tools in a category are selected.
 func (m *Model) countSelected(cat string) (sel, total int) {
+	if cat == selectedGroup {
+		n := len(m.selectedIDs())
+		return n, n
+	}
 	for _, t := range m.cat.InCategory(cat) {
 		total++
 		if m.selected[t.ID] {
@@ -244,11 +291,25 @@ func (m *Model) countSelected(cat string) (sel, total int) {
 
 // toggleCategory selects all of a category, or clears it if all are selected.
 func (m *Model) toggleCategory(cat string) {
+	// The pinned group is a view of the selection, so clearing it means
+	// clearing the selection rather than selecting it again.
+	if cat == selectedGroup {
+		m.selected = map[string]bool{}
+		return
+	}
 	sel, total := m.countSelected(cat)
 	want := sel < total
 	for _, t := range m.cat.InCategory(cat) {
 		m.selected[t.ID] = want
 	}
+}
+
+// setAllCollapsed folds or unfolds every category at once.
+func (m *Model) setAllCollapsed(v bool) {
+	for _, c := range m.cat.Categories() {
+		m.collapsed[c] = v
+	}
+	m.collapsed[selectedGroup] = false // the selection stays visible
 }
 
 // resolveSelection resolves the current selection, optionally filtered to
@@ -309,4 +370,43 @@ func (m *Model) profileSize(p *manifest.Profile) int {
 	}
 	m.profileSizes[p.ID] = n
 	return n
+}
+
+// rebuildKeepingCursor rebuilds the rows after a selection change and puts the
+// cursor back on the same item. Adding or removing the pinned group shifts
+// every row below it, so without this the cursor jumps by one on every toggle,
+// which makes ticking several tools in a row nearly impossible.
+func (m *Model) rebuildKeepingCursor(was row) {
+	m.buildRows()
+
+	// Prefer the identical row, pinned state included. Failing that, take
+	// the same tool anywhere: deselecting a tool removes its pinned copy,
+	// and the cursor should follow it down to its real category rather than
+	// staying at an index that now means something else entirely.
+	fallback := -1
+	for i, r := range m.rows {
+		same := (was.kind == rowCategory && r.kind == rowCategory && r.category == was.category) ||
+			(was.kind == rowTool && r.kind == rowTool && was.tool != nil && r.tool == was.tool)
+		if !same {
+			continue
+		}
+		if r.pinned == was.pinned {
+			m.cursor = i
+			return
+		}
+		if fallback < 0 {
+			fallback = i
+		}
+	}
+	if fallback >= 0 {
+		m.cursor = fallback
+		return
+	}
+
+	if m.cursor >= len(m.rows) {
+		m.cursor = len(m.rows) - 1
+	}
+	if m.cursor < 0 {
+		m.cursor = 0
+	}
 }

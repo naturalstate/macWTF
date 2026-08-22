@@ -55,6 +55,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case screenConfirm:
 			return m.updateConfirm(msg)
 		case screenProgress:
+			if msg.String() == "v" {
+				m.verbose = !m.verbose
+			}
 			return m, nil
 		case screenDone:
 			return m.updateDone(msg)
@@ -180,6 +183,7 @@ func (m Model) updateTree(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		} else {
 			m.selected[r.tool.ID] = !m.selected[r.tool.ID]
 		}
+		m.rebuildKeepingCursor(r)
 
 	case "left", "h":
 		if len(m.rows) == 0 {
@@ -209,9 +213,20 @@ func (m Model) updateTree(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		for _, t := range m.cat.Tools {
 			m.selected[t.ID] = true
 		}
+		m.buildRows()
 
 	case "n":
 		m.selected = map[string]bool{}
+		m.buildRows()
+
+	case "E":
+		m.setAllCollapsed(false)
+		m.buildRows()
+
+	case "C":
+		m.setAllCollapsed(true)
+		m.buildRows()
+		m.cursor = 0
 
 	case "enter", "p":
 		m.buildPlan()

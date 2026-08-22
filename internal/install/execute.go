@@ -53,8 +53,17 @@ type Event struct {
 // Result summarises a finished run.
 type Result struct {
 	Installed []*manifest.Tool
-	Failed    []FailedTool
-	Skipped   []*manifest.Tool // already present
+
+	// Failed is tools that were attempted and did not succeed.
+	Failed []FailedTool
+
+	// Blocked is tools that were never attempted, because the backend they
+	// need is not available. Kept apart from Failed deliberately: reporting
+	// them together makes a missing package manager look like nine broken
+	// installs, which sends the user hunting for the wrong cause.
+	Blocked []FailedTool
+
+	Skipped []*manifest.Tool // already present
 
 	// QuarantineStripped lists tools whose Gatekeeper quarantine attribute
 	// was removed, for the end-of-run report.
@@ -116,7 +125,11 @@ func (e *Executor) Run(ctx context.Context, p *Plan) (*Result, error) {
 				})
 			}
 		case tp.PlanErr != nil:
-			res.Failed = append(res.Failed, FailedTool{tp.Tool, tp.PlanErr})
+			if _, dead := p.BackendErrs[tp.Tool.Backend]; dead {
+				res.Blocked = append(res.Blocked, FailedTool{tp.Tool, tp.PlanErr})
+			} else {
+				res.Failed = append(res.Failed, FailedTool{tp.Tool, tp.PlanErr})
+			}
 		default:
 			todo = append(todo, tp)
 		}

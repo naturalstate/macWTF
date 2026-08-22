@@ -96,6 +96,25 @@ func clampLines(body string, max, width int) string {
 	return strings.Join(lines, "\n") + "\n"
 }
 
+// selectionContext is the running summary shown from the tree screen onward.
+// Carrying it through every step means the user never has to remember what
+// they picked or scroll back to check before committing.
+func (m Model) selectionContext() string {
+	sel := len(m.selectedIDs())
+	if sel == 0 {
+		return m.chosenProfile
+	}
+	pending := m.pendingCount()
+	out := fmt.Sprintf("%s · %s selected", m.chosenProfile,
+		okStyle.Render(fmt.Sprintf("%d", sel)))
+	if pending == 0 {
+		out += itemMuted.Render(" · all already installed")
+	} else {
+		out += " · " + boldStyle.Render(fmt.Sprintf("%d", pending)) + itemMuted.Render(" to install")
+	}
+	return out
+}
+
 func (m Model) statusRight() string {
 	return fmt.Sprintf("%s · %d tools · %d categories",
 		m.ctx.Arch, len(m.cat.Tools), len(m.cat.Categories()))
@@ -310,9 +329,11 @@ func (m Model) viewTree() string {
 		rightW = w - leftW - 6
 	}
 
-	listHeight := m.height - 8
-	if listHeight < 6 {
-		listHeight = 6
+	// frame furniture, the hint line and its blank, the pane borders and the
+	// blank lines around the body.
+	listHeight := m.height - frameHeight - 7
+	if listHeight < 4 {
+		listHeight = 4
 	}
 
 	left := m.treePane(leftW, listHeight)
@@ -325,29 +346,18 @@ func (m Model) viewTree() string {
 	}
 	body = "\n" + body + "\n"
 
-	sel := m.selectedIDs()
-	var fresh int
-	for _, id := range sel {
-		if !m.installed[id] {
-			fresh++
-		}
-	}
-	ctx := fmt.Sprintf("%s · %s selected", m.chosenProfile,
-		okStyle.Render(fmt.Sprintf("%d", len(sel))))
-	if len(sel) > 0 {
-		if fresh == 0 {
-			ctx += itemMuted.Render(" · all already installed")
-		} else {
-			ctx += itemMuted.Render(fmt.Sprintf(" · %d to install", fresh))
-		}
-	}
+	// A tree of nineteen categories with things already ticked does not
+	// say whether the user is expected to act. One line does.
+	hint := descStyle.Render("  Your selection is pinned at the top. ") +
+		keyStyle.Render("enter") + descStyle.Render(" to continue, or ") +
+		keyStyle.Render("space") + descStyle.Render(" to add and remove tools.")
 
 	return m.frame(
-		ctx,
+		m.selectionContext(),
 		m.statusRight(),
-		body,
+		"\n"+hint+"\n"+body,
 		help("↑/↓", "move", "space", "toggle", "←/→", "fold",
-			"a/n", "all/none", "enter", "plan", "esc", "back"),
+			"E/C", "expand/collapse all", "a/n", "all/none", "enter", "plan"),
 	)
 }
 
@@ -442,10 +452,27 @@ func (m Model) detailPane(width, height int) string {
 
 	if r.kind == rowCategory {
 		selN, tot := m.countSelected(r.category)
+
+		if r.category == selectedGroup {
+			b.WriteString(boldStyle.Render("Your selection") + "\n\n")
+			b.WriteString(okStyle.Render(fmt.Sprintf("%d tool(s)", selN)))
+			if pending := m.pendingCount(); pending != selN {
+				b.WriteString(itemMuted.Render(fmt.Sprintf(", %d not yet installed", pending)))
+			}
+			b.WriteString("\n\n")
+			b.WriteString(wrap(descStyle.Render(
+				"Everything you have picked, repeated here so you do not have to hunt "+
+					"for it. Each tool also stays in its own category below."), inner) + "\n\n")
+			b.WriteString(descStyle.Render("space clears the whole selection") + "\n")
+			b.WriteString(descStyle.Render("enter builds the plan"))
+			return paneStyle.Width(width).Height(height).Render(b.String())
+		}
+
 		b.WriteString(boldStyle.Render(r.category) + "\n\n")
 		b.WriteString(itemMuted.Render(fmt.Sprintf("%d of %d selected", selN, tot)) + "\n\n")
 		b.WriteString(descStyle.Render("space toggles the whole category") + "\n")
-		b.WriteString(descStyle.Render("←/→ folds and unfolds it"))
+		b.WriteString(descStyle.Render("←/→ folds and unfolds it") + "\n")
+		b.WriteString(descStyle.Render("E / C expand or collapse everything"))
 		return paneStyle.Width(width).Height(height).Render(b.String())
 	}
 
@@ -562,7 +589,7 @@ func (m Model) viewPlan() string {
 	pane = cta + "\n" + pane
 
 	return m.frame(
-		"review",
+		m.selectionContext(),
 		m.statusRight(),
 		"\n"+pane+"\n",
 		help("i", "install", "↑/↓", "scroll", "esc", "back", "q", "quit"),
@@ -648,7 +675,7 @@ func (m Model) viewConfirm() string {
 	b.WriteString(boldStyle.Render("Proceed?") + itemMuted.Render("   this will modify your system") + "\n")
 
 	return m.frame(
-		"confirm",
+		m.selectionContext(),
 		m.statusRight(),
 		"\n  "+strings.ReplaceAll(b.String(), "\n", "\n  ")+"\n",
 		help("y", "install", "t", "quarantine", "esc", "back", "ctrl+c", "quit"),
@@ -666,16 +693,14 @@ func (m Model) viewProgress() string {
 
 	var b strings.Builder
 
-	const barWidth = 34
-	filled := 0
-	if m.runTotal > 0 {
-		filled = m.runDone * barWidth / m.runTotal
+	barWidth := inner - 26
+	if barWidth < 12 {
+		barWidth = 12
 	}
-	if filled > barWidth {
-		filled = barWidth
+	if barWidth > 44 {
+		barWidth = 44
 	}
-	bar := okStyle.Render(strings.Repeat("█", filled)) +
-		itemDimStyle.Render(strings.Repeat("░", barWidth-filled))
+	bar := gradientBar(m.runDone, m.runTotal, barWidth, m.spin)
 
 	spinner := " "
 	if m.runDone < m.runTotal && !m.cancelled {
@@ -686,7 +711,9 @@ func (m Model) viewProgress() string {
 	if m.runTotal > 0 {
 		pct = m.runDone * 100 / m.runTotal
 	}
-	fmt.Fprintf(&b, "%s  %s  %d/%d  %d%%\n\n", spinner, bar, m.runDone, m.runTotal, pct)
+	fmt.Fprintf(&b, "%s  %s  %s  %s\n\n", spinner, bar,
+		boldStyle.Render(fmt.Sprintf("%3d%%", pct)),
+		itemMuted.Render(fmt.Sprintf("%d/%d", m.runDone, m.runTotal)))
 
 	if m.cancelled {
 		b.WriteString(warnStyle.Render("Cancelling — finishing the current step…") + "\n\n")
@@ -715,11 +742,27 @@ func (m Model) viewProgress() string {
 			itemMuted.Render(fmt.Sprintf("%.1fs", e.elapsed.Seconds())))
 	}
 
+	// Verbose mode replays the live command output. Off by default because
+	// brew is extremely chatty, but a stalled download is indistinguishable
+	// from a hung program without it.
+	if m.verbose && len(m.runRecent) > 0 {
+		b.WriteString("\n" + itemDimStyle.Render("output") + "\n")
+		for _, line := range m.runRecent {
+			b.WriteString(itemDimStyle.Render("  "+truncate(line, inner-2)) + "\n")
+		}
+	}
+
+	vkey := "v"
+	vlabel := "show output"
+	if m.verbose {
+		vlabel = "hide output"
+	}
+
 	return m.frame(
-		"installing",
+		m.selectionContext(),
 		m.statusRight(),
 		"\n  "+strings.ReplaceAll(b.String(), "\n", "\n  ")+"\n",
-		help("ctrl+c", "cancel"),
+		help(vkey, vlabel, "ctrl+c", "cancel"),
 	)
 }
 

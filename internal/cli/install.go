@@ -12,6 +12,7 @@ import (
 	"github.com/naturalstate/macWTF/internal/manifest"
 	"github.com/naturalstate/macWTF/internal/resolve"
 	"github.com/naturalstate/macWTF/internal/state"
+	"github.com/naturalstate/macWTF/internal/sudo"
 )
 
 // stringList collects a repeatable flag, so --tool can be passed more than once.
@@ -118,6 +119,24 @@ func runInstall(args []string) error {
 		return fmt.Errorf("cancelled")
 	}
 
+	// Ask for the password now, at a predictable moment, rather than
+	// letting a cask demand it partway through the run.
+	if needs := plan.MayNeedSudo(); len(needs) > 0 && !sudo.Active() {
+		fmt.Printf("\n%d cask(s) may need an administrator password.\n",
+			len(needs))
+		fmt.Println(dimText.Render("Homebrew refuses to run as root, so macOS asks per-package. " +
+			"Authorising once now avoids a prompt interrupting the run."))
+		fmt.Println()
+		if err := sudo.Prime(); err != nil {
+			fmt.Println(warnText.Render("Continuing without authorisation — " +
+				"anything needing it will prompt or fail."))
+		}
+	}
+
+	runCtx, cancelKeepAlive := context.WithCancel(context.Background())
+	defer cancelKeepAlive()
+	sudo.KeepAlive(runCtx)
+
 	st, err := state.Load("")
 	if err != nil {
 		return err
@@ -126,7 +145,7 @@ func runInstall(args []string) error {
 	runner := newRunner(todo)
 	ex := &install.Executor{Ctx: ctx, State: st, Emit: runner.handle}
 
-	result, err := ex.Run(context.Background(), plan)
+	result, err := ex.Run(runCtx, plan)
 	runner.finish()
 	if err != nil {
 		return err
