@@ -40,6 +40,12 @@ type runner struct {
 	tty       bool
 	width     int
 
+	// awaitingInput suspends the progress display while a child process is
+	// prompting. Homebrew shells out to sudo mid-run for some casks, and a
+	// progress line redrawn over "Password:" makes a program that is
+	// waiting for input look like one that has hung.
+	awaitingInput bool
+
 	// recent holds the tail of the current tool's output. Progress output
 	// is transient by design, which means a failing command's error would
 	// be overwritten and lost — the one moment the user most needs to see
@@ -77,10 +83,15 @@ func (r *runner) handle(ev install.Event) {
 
 	case install.EventOutput:
 		r.spin++
-		// Homebrew's own progress lines are noise here; the bar already
-		// says what is happening. Only surface lines that matter.
 		line := strings.TrimSpace(ev.Line)
 		if line == "" {
+			return
+		}
+		if looksLikePrompt(line) {
+			r.clearLine()
+			r.awaitingInput = true
+			fmt.Printf("\n  %s\n", warnText.Render(
+				"A command is asking for input — answer it below and the run will continue."))
 			return
 		}
 		r.recent = append(r.recent, line)
@@ -90,6 +101,7 @@ func (r *runner) handle(ev install.Event) {
 		r.setStatus(line)
 
 	case install.EventToolDone:
+		r.awaitingInput = false
 		r.clearLine()
 		if ev.Err != nil {
 			fmt.Printf("  %s %-16s %s\n", failMark.Render("✗"), ev.Tool.ID,
@@ -121,7 +133,8 @@ func (r *runner) setStatus(text string) {
 }
 
 func (r *runner) render() {
-	if !r.tty {
+	// Never draw over a prompt: the user needs to see what is being asked.
+	if !r.tty || r.awaitingInput {
 		return
 	}
 	r.clearLine()
@@ -247,4 +260,16 @@ func truncateLine(s string, w int) string {
 		return s
 	}
 	return string(r[:w-1]) + "…"
+}
+
+// looksLikePrompt spots a child process asking for input. Matching on the text
+// is crude, but a subprocess gives no other signal that it is blocked waiting
+// for a human.
+func looksLikePrompt(line string) bool {
+	l := strings.ToLower(line)
+	return strings.HasPrefix(l, "password") ||
+		strings.Contains(l, "password for") ||
+		strings.Contains(l, "[y/n]") ||
+		strings.Contains(l, "press return") ||
+		strings.Contains(l, "press enter")
 }

@@ -245,6 +245,13 @@ func (e *Executor) runStep(ctx context.Context, step backend.Step, tool *manifes
 	cmd := step.Cmd()
 	cmd.Env = e.stepEnv()
 
+	// Give the child the real terminal. Homebrew invokes sudo itself for
+	// casks that touch /Applications or install a launch daemon, and with
+	// no stdin it falls back to /dev/tty and prompts anyway — but with
+	// nothing able to read the reply cleanly. Handing it stdin means the
+	// prompt behaves like a prompt.
+	cmd.Stdin = os.Stdin
+
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
 		return err

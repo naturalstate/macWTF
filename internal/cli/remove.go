@@ -177,9 +177,18 @@ func runRemove(args []string) error {
 		return fmt.Errorf("cancelled")
 	}
 
-	if sudo.Available() && !sudo.Active() {
-		// Cask removal writes to /Applications.
-		_ = sudo.Prime()
+	// Cask removal writes to /Applications and can install or remove launch
+	// daemons. Priming covers most of it, but Homebrew invokes sudo itself
+	// for some casks and macOS will ask again regardless of our timestamp,
+	// so say so rather than letting an unexplained prompt look like a hang.
+	if casksInPlan(plan) {
+		fmt.Println()
+		fmt.Println(dimText.Render(
+			"Some casks ask for an administrator password of their own during removal. " +
+				"If a prompt appears mid-run, answer it and the run continues."))
+		if sudo.Available() && !sudo.Active() {
+			_ = sudo.Prime()
+		}
 	}
 	runCtx, cancel := context.WithCancel(context.Background())
 	defer cancel()
@@ -224,6 +233,16 @@ func runRemove(args []string) error {
 		fmt.Printf("Full output: %s\n", p)
 	}
 	return nil
+}
+
+// casksInPlan reports whether anything in the plan is a cask.
+func casksInPlan(p *install.RemovePlan) bool {
+	for _, tp := range p.Tools {
+		if tp.Tool.Backend == manifest.BackendCask {
+			return true
+		}
+	}
+	return false
 }
 
 func reverse(ts []*manifest.Tool) {
