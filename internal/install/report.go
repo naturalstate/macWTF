@@ -66,6 +66,23 @@ func (r *Result) RenderSummary(w *strings.Builder) {
 	w.WriteString(strings.Repeat("─", 64) + "\n")
 	fmt.Fprintf(w, "Done in %s\n\n", roundDuration(r.Elapsed))
 
+	// Name what was installed rather than only counting it. After a long
+	// run "37 already present" says nothing about what the machine now has.
+	if len(r.Installed) > 0 {
+		byCat := map[string][]string{}
+		var order []string
+		for _, t := range r.Installed {
+			if _, seen := byCat[t.Category]; !seen {
+				order = append(order, t.Category)
+			}
+			byCat[t.Category] = append(byCat[t.Category], t.ID)
+		}
+		for _, c := range order {
+			fmt.Fprintf(w, "  %-16s %s\n", c, strings.Join(byCat[c], " "))
+		}
+		w.WriteString("\n")
+	}
+
 	if n := len(r.Installed); n > 0 {
 		fmt.Fprintf(w, "  %d installed\n", n)
 	}

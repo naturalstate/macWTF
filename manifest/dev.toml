@@ -614,3 +614,19 @@ license = "free"
 [tool.macos]
 backend = "cask"
 package = "redis-insight"
+
+[[tool]]
+id = "rust"
+name = "Rust"
+description = "The Rust compiler and cargo, installed as one formula"
+category = "dev"
+license = "free"
+homepage = "https://www.rust-lang.org"
+[tool.macos]
+backend = "brew"
+package = "rust"
+verify_cmd = "command -v cargo"
+notes = "Provides rustc and cargo directly. rustup-init only installs the toolchain installer, so anything that needs to compile Rust at install time needs this instead."
+[tool.kali]
+backend = "apt"
+package = "rustc"

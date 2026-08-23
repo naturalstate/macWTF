@@ -129,6 +129,7 @@ homepage = "https://github.com/laramies/theHarvester"
 [tool.macos]
 backend = "pipx"
 package = "git+https://github.com/laramies/theHarvester"
+binary = "theHarvester"
 verify_cmd = "command -v theHarvester"
 notes = "The PyPI package of this name has no entry point, so it installs from git."
 [tool.kali]

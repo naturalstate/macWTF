@@ -154,8 +154,16 @@ func runInstall(args []string) error {
 		return err
 	}
 
+	what := runLabel(*profile, *category, tools)
+	log := install.NewRunLog(ctx.StateDir, what)
+	defer log.Close()
+
 	runner := newRunner(todo)
-	ex := &install.Executor{Ctx: ctx, State: st, Emit: runner.handle}
+	ex := &install.Executor{Ctx: ctx, State: st, Emit: func(ev install.Event) {
+		// The log gets everything; the screen gets what fits.
+		log.Event(ev)
+		runner.handle(ev)
+	}}
 
 	result, err := ex.Run(runCtx, plan)
 	runner.finish()
@@ -164,8 +172,13 @@ func runInstall(args []string) error {
 	}
 
 	var summary strings.Builder
+	summary.WriteString("\n" + boldText.Render(what))
 	result.RenderSummary(&summary)
 	fmt.Print(summary.String())
+
+	if p := log.Path(); p != "" {
+		fmt.Printf("\nFull output of every command: %s\n", p)
+	}
 
 	offerPathFix(result, *assumeYes)
 
@@ -179,3 +192,21 @@ func runInstall(args []string) error {
 
 // backendAdoptBrew exposes PATH adoption to the install flow.
 func backendAdoptBrew() (string, bool) { return bootstrap.AdoptBrewPath() }
+
+// runLabel describes what a run was asked to do, so the summary and the log
+// both say which profile or category this was. Finishing a long run and not
+// being told what it was for is a small thing that makes the output useless
+// twenty minutes later.
+func runLabel(profile, category string, tools []string) string {
+	switch {
+	case profile != "":
+		return "profile: " + profile
+	case category != "":
+		return "category: " + category
+	case len(tools) == 1:
+		return "tool: " + tools[0]
+	case len(tools) > 1:
+		return fmt.Sprintf("%d tools: %s", len(tools), strings.Join(tools, ", "))
+	}
+	return "install"
+}

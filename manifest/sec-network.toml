@@ -108,10 +108,11 @@ description = "Network service exploitation across SMB, LDAP, WinRM and more"
 category = "sec-network"
 license = "free"
 homepage = "https://github.com/Pennyw0rth/NetExec"
-requires = ["rustup-init"]
+requires = ["rust"]
 [tool.macos]
 backend = "pipx"
 package = "git+https://github.com/Pennyw0rth/NetExec"
+binary = "netexec"
 verify_cmd = "command -v nxc"
 manual_steps = [
   "NetExec builds a Rust extension, so it needs a Rust toolchain: brew install rustup-init && rustup-init. Without it the install fails with 'can't find Rust compiler'.",

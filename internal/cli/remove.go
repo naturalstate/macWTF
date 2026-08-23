@@ -185,8 +185,18 @@ func runRemove(args []string) error {
 	defer cancel()
 	sudo.KeepAlive(runCtx)
 
+	what := "remove — " + runLabel(*profile, *category, tools)
+	if *all {
+		what = "remove — everything macWTF installed"
+	}
+	log := install.NewRunLog(ctx.StateDir, what)
+	defer log.Close()
+
 	runner := newRunner(todo)
-	ex := &install.Executor{Ctx: ctx, State: st, Emit: runner.handle}
+	ex := &install.Executor{Ctx: ctx, State: st, Emit: func(ev install.Event) {
+		log.Event(ev)
+		runner.handle(ev)
+	}}
 
 	result, err := ex.Run(runCtx, plan.AsToolPlans())
 	runner.finish()
@@ -210,6 +220,9 @@ func runRemove(args []string) error {
 		}
 	}
 	fmt.Printf("\nState: %s\n", st.Path())
+	if p := log.Path(); p != "" {
+		fmt.Printf("Full output: %s\n", p)
+	}
 	return nil
 }
 
