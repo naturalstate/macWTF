@@ -57,7 +57,7 @@ package = "vivaldi"
 [[tool]]
 id = "opera"
 name = "Opera"
-description = "Opera"
+description = "Web browser"
 category = "browsers"
 license = "free"
 [tool.macos]
@@ -67,7 +67,7 @@ package = "opera"
 [[tool]]
 id = "opera-gx"
 name = "Opera GX"
-description = "Opera GX"
+description = "Alternate version of the Opera web browser to complement gaming"
 category = "browsers"
 license = "free"
 [tool.macos]
@@ -88,7 +88,7 @@ unverified = true
 [[tool]]
 id = "arc"
 name = "Arc"
-description = "Arc"
+description = "Chromium based browser"
 category = "browsers"
 license = "free"
 [tool.macos]
@@ -108,7 +108,7 @@ package = "microsoft-edge"
 [[tool]]
 id = "firefox"
 name = "Firefox"
-description = "Firefox"
+description = "Web browser"
 category = "browsers"
 license = "free"
 [tool.macos]
@@ -139,7 +139,7 @@ package = "librewolf"
 [[tool]]
 id = "waterfox"
 name = "Waterfox"
-description = "Waterfox"
+description = "Web browser"
 category = "browsers"
 license = "free"
 [tool.macos]
@@ -160,7 +160,7 @@ unverified = true
 [[tool]]
 id = "floorp"
 name = "Floorp"
-description = "Floorp"
+description = "Privacy-focused Firefox-based browser"
 category = "browsers"
 license = "free"
 [tool.macos]
@@ -180,7 +180,7 @@ package = "mullvad-browser"
 [[tool]]
 id = "tor-browser"
 name = "Tor Browser"
-description = "Tor Browser"
+description = "Web browser focusing on security"
 category = "browsers"
 license = "free"
 [tool.macos]

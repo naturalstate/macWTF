@@ -122,7 +122,7 @@ notes = "Successor to CrackMapExec; the binary is nxc. Not published to PyPI, so
 [[tool]]
 id = "ettercap"
 name = "ettercap"
-description = "ettercap"
+description = "Multipurpose sniffer/interceptor/logger for switched LAN"
 category = "sec-network"
 license = "free"
 [tool.macos]
@@ -132,7 +132,7 @@ package = "ettercap"
 [[tool]]
 id = "arp-scan"
 name = "arp-scan"
-description = "arp-scan"
+description = "ARP scanning and fingerprinting tool"
 category = "sec-network"
 license = "free"
 [tool.macos]
@@ -142,7 +142,7 @@ package = "arp-scan"
 [[tool]]
 id = "netcat"
 name = "netcat / ncat / socat"
-description = "netcat / ncat / socat"
+description = "Utility for managing network connections"
 category = "sec-network"
 license = "free"
 [tool.macos]
@@ -152,13 +152,12 @@ package = "netcat"
 [[tool]]
 id = "smbmap"
 name = "smbmap"
-description = "smbmap"
+description = "SMBMap is a handy SMB enumeration tool"
 category = "sec-network"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "smbmap"
-unverified = true
 
 [[tool]]
 id = "enum4linux-ng"
@@ -174,13 +173,12 @@ unverified = true
 [[tool]]
 id = "ldapdomaindump"
 name = "ldapdomaindump"
-description = "ldapdomaindump"
+description = "Active Directory information dumper via LDAP"
 category = "sec-network"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "ldapdomaindump"
-unverified = true
 
 [[tool]]
 id = "kerbrute"
@@ -229,7 +227,7 @@ unverified = true
 [[tool]]
 id = "chisel"
 name = "chisel"
-description = "chisel"
+description = "Collection of LLDB commands to assist debugging iOS apps"
 category = "sec-network"
 license = "free"
 [tool.macos]

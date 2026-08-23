@@ -6,7 +6,7 @@
 [[tool]]
 id = "tailscale"
 name = "Tailscale"
-description = "Mesh VPN"
+description = "Easiest, most secure way to use WireGuard and 2FA"
 category = "vpn"
 license = "free"
 [tool.macos]
@@ -16,7 +16,7 @@ package = "tailscale"
 [[tool]]
 id = "twingate"
 name = "Twingate"
-description = "ZTNA client"
+description = "Zero trust network access platform"
 category = "vpn"
 license = "free"
 [tool.macos]
@@ -26,7 +26,7 @@ package = "twingate"
 [[tool]]
 id = "mullvad-vpn"
 name = "Mullvad VPN"
-description = "Mullvad VPN"
+description = "VPN client"
 category = "vpn"
 license = "free"
 [tool.macos]
@@ -47,7 +47,7 @@ unverified = true
 [[tool]]
 id = "nordvpn"
 name = "NordVPN"
-description = "NordVPN"
+description = "VPN client for secure internet access and private browsing"
 category = "vpn"
 license = "free"
 [tool.macos]
@@ -57,7 +57,7 @@ package = "nordvpn"
 [[tool]]
 id = "windscribe"
 name = "Windscribe"
-description = "Windscribe"
+description = "VPN client for secure internet access and private browsing"
 category = "vpn"
 license = "free"
 [tool.macos]
@@ -67,7 +67,7 @@ package = "windscribe"
 [[tool]]
 id = "ivpn"
 name = "IVPN"
-description = "IVPN"
+description = "VPN client"
 category = "vpn"
 license = "free"
 [tool.macos]
@@ -88,7 +88,7 @@ unverified = true
 [[tool]]
 id = "wireguard-tools"
 name = "wireguard-tools"
-description = "CLI"
+description = "Tools for the WireGuard secure network tunnel"
 category = "vpn"
 license = "free"
 [tool.macos]
@@ -98,7 +98,7 @@ package = "wireguard-tools"
 [[tool]]
 id = "openvpn-connect"
 name = "OpenVPN Connect"
-description = "OpenVPN Connect"
+description = "Client program for the OpenVPN Access Server"
 category = "vpn"
 license = "free"
 [tool.macos]
@@ -108,7 +108,7 @@ package = "openvpn-connect"
 [[tool]]
 id = "tunnelblick"
 name = "Tunnelblick"
-description = "Tunnelblick"
+description = "Free and open-source OpenVPN client"
 category = "vpn"
 license = "free"
 [tool.macos]
@@ -118,7 +118,7 @@ package = "tunnelblick"
 [[tool]]
 id = "cloudflare-warp"
 name = "Cloudflare WARP"
-description = "Cloudflare WARP"
+description = "Free app that makes your Internet safer"
 category = "vpn"
 license = "free"
 [tool.macos]
@@ -169,7 +169,7 @@ unverified = true
 [[tool]]
 id = "nextdns"
 name = "NextDNS"
-description = "NextDNS"
+description = "CLI for NextDNS's DNS-over-HTTPS (DoH)"
 category = "vpn"
 license = "free"
 [tool.macos]

@@ -98,7 +98,7 @@ package = "eza"
 [[tool]]
 id = "sd"
 name = "sd"
-description = "sed"
+description = "Intuitive find & replace CLI"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -108,7 +108,7 @@ package = "sd"
 [[tool]]
 id = "dust"
 name = "dust"
-description = "du"
+description = "More intuitive version of du in rust"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -118,7 +118,7 @@ package = "dust"
 [[tool]]
 id = "duf"
 name = "duf"
-description = "df"
+description = "Disk Usage/Free Utility - a better 'df' alternative"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -128,7 +128,7 @@ package = "duf"
 [[tool]]
 id = "procs"
 name = "procs"
-description = "ps"
+description = "Modern replacement for ps written in Rust"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -138,7 +138,7 @@ package = "procs"
 [[tool]]
 id = "btop"
 name = "btop"
-description = "top"
+description = "Resource monitor. C++ version and continuation of bashtop and bpytop"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -148,7 +148,7 @@ package = "btop"
 [[tool]]
 id = "zoxide"
 name = "zoxide"
-description = "cd"
+description = "Shell extension to navigate your filesystem faster"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -169,7 +169,7 @@ unverified = true
 [[tool]]
 id = "hyperfine"
 name = "hyperfine"
-description = "time"
+description = "Command-line benchmarking tool"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -190,7 +190,7 @@ unverified = true
 [[tool]]
 id = "fzf"
 name = "fzf"
-description = "fzf"
+description = "Command-line fuzzy finder written in Go"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -210,7 +210,7 @@ package = "atuin"
 [[tool]]
 id = "broot"
 name = "broot"
-description = "broot"
+description = "New way to see and navigate directory trees"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -252,7 +252,7 @@ unverified = true
 [[tool]]
 id = "navi"
 name = "navi"
-description = "cheatsheets"
+description = "Interactive cheatsheet tool for the command-line"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -262,7 +262,7 @@ package = "navi"
 [[tool]]
 id = "coreutils"
 name = "coreutils"
-description = "coreutils"
+description = "GNU File, Shell, and Text utilities"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -272,7 +272,7 @@ package = "coreutils"
 [[tool]]
 id = "gnu-sed"
 name = "gnu-sed"
-description = "gnu-sed"
+description = "GNU implementation of the famous stream editor"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -282,7 +282,7 @@ package = "gnu-sed"
 [[tool]]
 id = "gawk"
 name = "gawk"
-description = "gawk"
+description = "GNU awk utility"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -292,7 +292,7 @@ package = "gawk"
 [[tool]]
 id = "findutils"
 name = "findutils"
-description = "findutils"
+description = "Collection of GNU find, xargs, and locate"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -302,7 +302,7 @@ package = "findutils"
 [[tool]]
 id = "grep"
 name = "grep"
-description = "grep"
+description = "GNU grep, egrep and fgrep"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -312,7 +312,7 @@ package = "grep"
 [[tool]]
 id = "gnu-tar"
 name = "gnu-tar"
-description = "gnu-tar"
+description = "GNU version of the tar archiving utility"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -322,7 +322,7 @@ package = "gnu-tar"
 [[tool]]
 id = "moreutils"
 name = "moreutils"
-description = "moreutils"
+description = "Collection of tools that nobody wrote when UNIX was young"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -332,7 +332,7 @@ package = "moreutils"
 [[tool]]
 id = "parallel"
 name = "parallel"
-description = "parallel"
+description = "Shell command parallelization utility"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -342,7 +342,7 @@ package = "parallel"
 [[tool]]
 id = "watch"
 name = "watch"
-description = "watch"
+description = "Executes a program periodically, showing output fullscreen"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -352,7 +352,7 @@ package = "watch"
 [[tool]]
 id = "yq"
 name = "yq"
-description = "yq"
+description = "Process YAML, JSON, XML, CSV and properties documents from the CLI"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -362,7 +362,7 @@ package = "yq"
 [[tool]]
 id = "gron"
 name = "gron"
-description = "gron"
+description = "Make JSON greppable"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -372,7 +372,7 @@ package = "gron"
 [[tool]]
 id = "fx"
 name = "fx"
-description = "fx"
+description = "Terminal JSON viewer"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -382,7 +382,7 @@ package = "fx"
 [[tool]]
 id = "miller"
 name = "miller"
-description = "miller"
+description = "Like sed, awk, cut, join & sort for name-indexed data such as CSV"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -392,7 +392,7 @@ package = "miller"
 [[tool]]
 id = "csvkit"
 name = "csvkit"
-description = "csvkit"
+description = "Suite of command-line tools for converting to and working with CSV"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -413,7 +413,7 @@ unverified = true
 [[tool]]
 id = "dasel"
 name = "dasel"
-description = "dasel"
+description = "JSON, YAML, TOML, XML, and CSV query and modification tool"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -423,7 +423,7 @@ package = "dasel"
 [[tool]]
 id = "curl"
 name = "curl"
-description = "curl"
+description = "Get a file from an HTTP, HTTPS or FTP server"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -433,7 +433,7 @@ package = "curl"
 [[tool]]
 id = "wget"
 name = "wget"
-description = "wget"
+description = "Internet file retriever"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -443,7 +443,7 @@ package = "wget"
 [[tool]]
 id = "aria2"
 name = "aria2"
-description = "aria2"
+description = "Download with resuming and segmented downloading"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -453,7 +453,7 @@ package = "aria2"
 [[tool]]
 id = "httpie"
 name = "httpie"
-description = "httpie"
+description = "User-friendly cURL replacement (command-line HTTP client)"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -463,7 +463,7 @@ package = "httpie"
 [[tool]]
 id = "xh"
 name = "xh"
-description = "xh"
+description = "Friendly and fast tool for sending HTTP requests"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -473,7 +473,7 @@ package = "xh"
 [[tool]]
 id = "mtr"
 name = "mtr"
-description = "mtr"
+description = "'traceroute' and 'ping' in a single tool"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -483,7 +483,7 @@ package = "mtr"
 [[tool]]
 id = "iperf3"
 name = "iperf3"
-description = "iperf3"
+description = "Update of iperf: measures TCP, UDP, and SCTP bandwidth"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -514,7 +514,7 @@ unverified = true
 [[tool]]
 id = "gping"
 name = "gping"
-description = "gping"
+description = "Ping, but with a graph"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -524,7 +524,7 @@ package = "gping"
 [[tool]]
 id = "bandwhich"
 name = "bandwhich"
-description = "bandwhich"
+description = "Terminal bandwidth utilization tool"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -535,7 +535,7 @@ tcc_permissions = ["accessibility"]
 [[tool]]
 id = "tmux"
 name = "tmux"
-description = "tmux"
+description = "Terminal multiplexer"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -545,7 +545,7 @@ package = "tmux"
 [[tool]]
 id = "zellij"
 name = "zellij"
-description = "zellij"
+description = "Pluggable terminal workspace, with terminal multiplexer as the base feature"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -555,7 +555,7 @@ package = "zellij"
 [[tool]]
 id = "screen"
 name = "screen"
-description = "screen"
+description = "Terminal multiplexer with VT100/ANSI terminal emulation"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -565,7 +565,7 @@ package = "screen"
 [[tool]]
 id = "neovim"
 name = "neovim"
-description = "neovim"
+description = "Ambitious Vim-fork focused on extensibility and agility"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -575,7 +575,7 @@ package = "neovim"
 [[tool]]
 id = "vim"
 name = "vim"
-description = "vim"
+description = "Vi 'workalike' with many additional features"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -585,7 +585,7 @@ package = "vim"
 [[tool]]
 id = "micro"
 name = "micro"
-description = "micro"
+description = "Modern and intuitive terminal-based text editor"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -595,7 +595,7 @@ package = "micro"
 [[tool]]
 id = "helix"
 name = "helix"
-description = "helix"
+description = "Post-modern modal text editor"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -605,7 +605,7 @@ package = "helix"
 [[tool]]
 id = "nano"
 name = "nano"
-description = "nano"
+description = "Free (GNU) replacement for the Pico text editor"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -615,7 +615,7 @@ package = "nano"
 [[tool]]
 id = "git"
 name = "git"
-description = "git"
+description = "Distributed revision control system"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -625,7 +625,7 @@ package = "git"
 [[tool]]
 id = "gh"
 name = "gh"
-description = "gh"
+description = "GitHub command-line tool"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -635,7 +635,7 @@ package = "gh"
 [[tool]]
 id = "glab"
 name = "glab"
-description = "glab"
+description = "Open-source GitLab command-line tool"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -645,7 +645,7 @@ package = "glab"
 [[tool]]
 id = "lazygit"
 name = "lazygit"
-description = "lazygit"
+description = "Simple terminal UI for git commands"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -655,7 +655,7 @@ package = "lazygit"
 [[tool]]
 id = "git-delta"
 name = "git-delta"
-description = "git-delta"
+description = "Syntax-highlighting pager for git and diff output"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -665,7 +665,7 @@ package = "git-delta"
 [[tool]]
 id = "git-lfs"
 name = "git-lfs"
-description = "git-lfs"
+description = "Git extension for versioning large files"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -675,7 +675,7 @@ package = "git-lfs"
 [[tool]]
 id = "tig"
 name = "tig"
-description = "tig"
+description = "Text interface for Git repositories"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -685,7 +685,7 @@ package = "tig"
 [[tool]]
 id = "gitui"
 name = "gitui"
-description = "gitui"
+description = "Blazing fast terminal-ui for git written in rust"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -695,7 +695,7 @@ package = "gitui"
 [[tool]]
 id = "pre-commit"
 name = "pre-commit"
-description = "pre-commit"
+description = "Framework for managing multi-language pre-commit hooks"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -705,7 +705,7 @@ package = "pre-commit"
 [[tool]]
 id = "git-filter-repo"
 name = "git-filter-repo"
-description = "git-filter-repo"
+description = "Quickly rewrite git repository history"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -715,7 +715,7 @@ package = "git-filter-repo"
 [[tool]]
 id = "gitleaks"
 name = "gitleaks"
-description = "gitleaks"
+description = "Audit git repos for secrets"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -725,7 +725,7 @@ package = "gitleaks"
 [[tool]]
 id = "htop"
 name = "htop"
-description = "htop"
+description = "Improved top (interactive process viewer)"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -735,7 +735,7 @@ package = "htop"
 [[tool]]
 id = "glances"
 name = "glances"
-description = "glances"
+description = "Alternative to top/htop"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -745,7 +745,7 @@ package = "glances"
 [[tool]]
 id = "ncdu"
 name = "ncdu"
-description = "ncdu"
+description = "NCurses Disk Usage"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -755,7 +755,7 @@ package = "ncdu"
 [[tool]]
 id = "smartmontools"
 name = "smartmontools"
-description = "smartmontools"
+description = "SMART hard drive monitoring"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -775,7 +775,7 @@ package = "stats"
 [[tool]]
 id = "direnv"
 name = "direnv"
-description = "direnv"
+description = "Load/unload environment variables based on $PWD"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -785,7 +785,7 @@ package = "direnv"
 [[tool]]
 id = "just"
 name = "just"
-description = "just"
+description = "Handy way to save and run project-specific commands"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -795,7 +795,7 @@ package = "just"
 [[tool]]
 id = "entr"
 name = "entr"
-description = "entr"
+description = "Run arbitrary commands when files change"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -815,7 +815,7 @@ package = "mise"
 [[tool]]
 id = "pv"
 name = "pv"
-description = "pv"
+description = "Monitor data's progress through a pipe"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -825,7 +825,7 @@ package = "pv"
 [[tool]]
 id = "tree"
 name = "tree"
-description = "tree"
+description = "Display directories as trees (with optional color/HTML output)"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -835,7 +835,7 @@ package = "tree"
 [[tool]]
 id = "rsync"
 name = "rsync"
-description = "rsync"
+description = "Utility that provides fast incremental file transfer"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -845,7 +845,7 @@ package = "rsync"
 [[tool]]
 id = "age"
 name = "age"
-description = "age"
+description = "Simple, modern, secure file encryption"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -855,7 +855,7 @@ package = "age"
 [[tool]]
 id = "sops"
 name = "sops"
-description = "sops"
+description = "Editor of encrypted files"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -865,7 +865,7 @@ package = "sops"
 [[tool]]
 id = "gnupg"
 name = "gnupg"
-description = "gnupg"
+description = "GNU Privacy Guard (OpenPGP)"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -875,7 +875,7 @@ package = "gnupg"
 [[tool]]
 id = "pinentry-mac"
 name = "pinentry-mac"
-description = "pinentry-mac"
+description = "Pinentry for GPG on Mac"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -896,7 +896,7 @@ unverified = true
 [[tool]]
 id = "sshpass"
 name = "sshpass"
-description = "sshpass"
+description = "Non-interactive SSH password auth"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -906,7 +906,7 @@ package = "sshpass"
 [[tool]]
 id = "tesseract"
 name = "tesseract"
-description = "tesseract"
+description = "OCR (Optical Character Recognition) engine"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -916,7 +916,7 @@ package = "tesseract"
 [[tool]]
 id = "ffmpeg"
 name = "ffmpeg"
-description = "ffmpeg"
+description = "Play, record, convert, and stream select audio and video codecs"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -926,7 +926,7 @@ package = "ffmpeg"
 [[tool]]
 id = "imagemagick"
 name = "imagemagick"
-description = "imagemagick"
+description = "Tools and libraries to manipulate images in select formats"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -936,7 +936,7 @@ package = "imagemagick"
 [[tool]]
 id = "pandoc"
 name = "pandoc"
-description = "pandoc"
+description = "Swiss-army knife of markup format conversion"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -946,7 +946,7 @@ package = "pandoc"
 [[tool]]
 id = "qpdf"
 name = "qpdf"
-description = "qpdf"
+description = "Tools for and transforming and inspecting PDF files"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -956,7 +956,7 @@ package = "qpdf"
 [[tool]]
 id = "poppler"
 name = "poppler"
-description = "poppler"
+description = "PDF rendering library (based on the xpdf-3.0 code base)"
 category = "cli"
 license = "free"
 [tool.macos]
@@ -966,7 +966,7 @@ package = "poppler"
 [[tool]]
 id = "exiftool"
 name = "exiftool"
-description = "exiftool"
+description = "Perl lib for reading and writing EXIF metadata"
 category = "cli"
 license = "free"
 [tool.macos]

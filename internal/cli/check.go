@@ -62,13 +62,14 @@ func runCheck(args []string) error {
 
 	if *asJSON {
 		type row struct {
-			ID         string `json:"id"`
-			File       string `json:"file"`
-			Backend    string `json:"backend"`
-			Package    string `json:"package"`
-			Verdict    string `json:"verdict"`
-			Detail     string `json:"detail"`
-			Suggestion string `json:"suggestion,omitempty"`
+			ID          string `json:"id"`
+			File        string `json:"file"`
+			Backend     string `json:"backend"`
+			Package     string `json:"package"`
+			Verdict     string `json:"verdict"`
+			Detail      string `json:"detail"`
+			Suggestion  string `json:"suggestion,omitempty"`
+			Description string `json:"description,omitempty"`
 		}
 		out := make([]row, 0, len(rep.Results))
 		for _, r := range rep.Results {
@@ -76,7 +77,7 @@ func runCheck(args []string) error {
 				ID: r.Tool.ID, File: r.Tool.SourceFile,
 				Backend: string(r.Tool.Backend), Package: r.Tool.Package,
 				Verdict: r.Verdict.String(), Detail: r.Detail,
-				Suggestion: r.Suggestion,
+				Suggestion: r.Suggestion, Description: r.Description,
 			})
 		}
 		enc := json.NewEncoder(os.Stdout)

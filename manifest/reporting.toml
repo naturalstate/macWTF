@@ -6,7 +6,7 @@
 [[tool]]
 id = "obsidian"
 name = "Obsidian"
-description = "Obsidian"
+description = "Knowledge base that works on top of a local folder of plain text Markdown files"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -16,7 +16,7 @@ package = "obsidian"
 [[tool]]
 id = "notion"
 name = "Notion"
-description = "Notion"
+description = "App to write, plan, collaborate, and get organised"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -26,7 +26,7 @@ package = "notion"
 [[tool]]
 id = "joplin"
 name = "Joplin"
-description = "Joplin"
+description = "Note taking and to-do application with synchronisation capabilities"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -36,7 +36,7 @@ package = "joplin"
 [[tool]]
 id = "logseq"
 name = "Logseq"
-description = "Logseq"
+description = "Privacy-first, open-source platform for knowledge sharing and management"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -46,7 +46,7 @@ package = "logseq"
 [[tool]]
 id = "typora"
 name = "Typora"
-description = "Typora"
+description = "Configurable document editor that supports Markdown"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -88,7 +88,7 @@ unverified = true
 [[tool]]
 id = "omnigraffle"
 name = "OmniGraffle"
-description = "Paid"
+description = "Visual communication software"
 category = "reporting"
 license = "paid"
 [tool.macos]
@@ -98,7 +98,7 @@ package = "omnigraffle"
 [[tool]]
 id = "figma"
 name = "Figma"
-description = "Figma"
+description = "Collaborative team software"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -118,7 +118,7 @@ package = "microsoft-office"
 [[tool]]
 id = "libreoffice"
 name = "LibreOffice"
-description = "LibreOffice"
+description = "Free cross-platform office suite, fresh version"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -172,7 +172,7 @@ unverified = true
 [[tool]]
 id = "shottr"
 name = "Shottr"
-description = "cask, free"
+description = "Screenshot measurement and annotation tool"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -182,7 +182,7 @@ package = "shottr"
 [[tool]]
 id = "kap"
 name = "Kap"
-description = "cask"
+description = "Open-source screen recorder built with web technology"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -192,7 +192,7 @@ package = "kap"
 [[tool]]
 id = "obs"
 name = "OBS"
-description = "cask"
+description = "Open-source software for live streaming and screen recording"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -202,7 +202,7 @@ package = "obs"
 [[tool]]
 id = "licecap"
 name = "LICEcap"
-description = "cask"
+description = "Animated screen capture application"
 category = "reporting"
 license = "free"
 [tool.macos]
@@ -212,7 +212,7 @@ package = "licecap"
 [[tool]]
 id = "loom"
 name = "Loom"
-description = "cask"
+description = "Screen and video recording software"
 category = "reporting"
 license = "free"
 [tool.macos]

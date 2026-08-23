@@ -162,7 +162,7 @@ unverified = true
 [[tool]]
 id = "amass"
 name = "amass"
-description = "amass"
+description = "In-depth attack surface mapping and asset discovery"
 category = "sec-recon"
 license = "free"
 [tool.macos]
@@ -237,7 +237,7 @@ unverified = true
 [[tool]]
 id = "feroxbuster"
 name = "feroxbuster"
-description = "feroxbuster"
+description = "Fast, simple, recursive content discovery tool written in Rust"
 category = "sec-recon"
 license = "free"
 [tool.macos]
@@ -247,13 +247,12 @@ package = "feroxbuster"
 [[tool]]
 id = "dirsearch"
 name = "dirsearch"
-description = "dirsearch"
+description = "Advanced web path scanner"
 category = "sec-recon"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "dirsearch"
-unverified = true
 
 [[tool]]
 id = "whatweb"
@@ -269,13 +268,12 @@ unverified = true
 [[tool]]
 id = "spiderfoot"
 name = "SpiderFoot"
-description = "SpiderFoot"
+description = "Reserved name placeholder. No functionality"
 category = "sec-recon"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "spiderfoot"
-unverified = true
 
 [[tool]]
 id = "recon-ng"
@@ -291,7 +289,7 @@ unverified = true
 [[tool]]
 id = "maltego"
 name = "Maltego"
-description = "Maltego"
+description = "Open source intelligence and graphical link analysis tool"
 category = "sec-recon"
 license = "free"
 [tool.macos]
@@ -303,51 +301,47 @@ quarantine_strip = true
 [[tool]]
 id = "sherlock"
 name = "sherlock"
-description = "sherlock"
+description = "Distributed inter-process locks with a choice of backend"
 category = "sec-recon"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "sherlock"
-unverified = true
 
 [[tool]]
 id = "holehe"
 name = "holehe"
-description = "holehe"
+description = "holehe allows you to check if the mail is used on different sites like twitter, instagram , snapchat and will retrieve information on sites with the forgotten password function"
 category = "sec-recon"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "holehe"
-unverified = true
 
 [[tool]]
 id = "maigret"
 name = "maigret"
-description = "maigret"
+description = "🕵️‍♂️ Collect a dossier on a person by username from thousands of sites"
 category = "sec-recon"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "maigret"
-unverified = true
 
 [[tool]]
 id = "dnsrecon"
 name = "dnsrecon"
-description = "dnsrecon"
+description = "Installable version of dnsrecon: DNS Enumeration Script"
 category = "sec-recon"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "dnsrecon"
-unverified = true
 
 [[tool]]
 id = "massdns"
 name = "massdns"
-description = "massdns"
+description = "High-performance DNS stub resolver"
 category = "sec-recon"
 license = "free"
 [tool.macos]
@@ -412,13 +406,12 @@ unverified = true
 [[tool]]
 id = "bbot"
 name = "BBOT"
-description = "BBOT"
+description = "OSINT automation for hackers"
 category = "sec-recon"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "bbot"
-unverified = true
 
 [[tool]]
 id = "eyewitness"
@@ -429,7 +422,6 @@ license = "free"
 [tool.macos]
 backend = "pipx"
 package = "eyewitness"
-unverified = true
 
 [[tool]]
 id = "gowitness"

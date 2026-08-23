@@ -36,7 +36,7 @@ package = "scrcpy"
 [[tool]]
 id = "apktool"
 name = "apktool"
-description = "apktool"
+description = "Tool for reverse engineering 3rd party, closed, binary Android apps"
 category = "sec-mobile"
 license = "free"
 [tool.macos]
@@ -46,7 +46,7 @@ package = "apktool"
 [[tool]]
 id = "jadx"
 name = "jadx"
-description = "jadx"
+description = "Dex to Java decompiler"
 category = "sec-mobile"
 license = "free"
 [tool.macos]
@@ -56,7 +56,7 @@ package = "jadx"
 [[tool]]
 id = "dex2jar"
 name = "dex2jar"
-description = "dex2jar"
+description = "Tools to work with Android .dex and Java .class files"
 category = "sec-mobile"
 license = "free"
 [tool.macos]
@@ -66,24 +66,22 @@ package = "dex2jar"
 [[tool]]
 id = "frida"
 name = "frida / frida-tools"
-description = "frida / frida-tools"
+description = "Dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers"
 category = "sec-mobile"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "frida"
-unverified = true
 
 [[tool]]
 id = "objection"
 name = "objection"
-description = "objection"
+description = "Instrumented Mobile Pentest Framework"
 category = "sec-mobile"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "objection"
-unverified = true
 
 [[tool]]
 id = "mobsf"
@@ -109,7 +107,7 @@ package = "libimobiledevice"
 [[tool]]
 id = "ideviceinstaller"
 name = "ideviceinstaller"
-description = "ideviceinstaller"
+description = "Tool for managing apps on iOS devices"
 category = "sec-mobile"
 license = "free"
 [tool.macos]
@@ -119,7 +117,7 @@ package = "ideviceinstaller"
 [[tool]]
 id = "ios-deploy"
 name = "ios-deploy"
-description = "ios-deploy"
+description = "Install and debug iPhone apps from the command-line"
 category = "sec-mobile"
 license = "free"
 [tool.macos]
@@ -153,10 +151,9 @@ unverified = true
 [[tool]]
 id = "apkleaks"
 name = "apkleaks"
-description = "apkleaks"
+description = "Scanning APK file for URIs, endpoints & secrets"
 category = "sec-mobile"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "apkleaks"
-unverified = true

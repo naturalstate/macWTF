@@ -6,46 +6,42 @@
 [[tool]]
 id = "scoutsuite"
 name = "scoutsuite"
-description = "pipx"
+description = "Scout Suite, a multi-cloud security auditing tool"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "scoutsuite"
-unverified = true
 
 [[tool]]
 id = "prowler"
 name = "prowler"
-description = "pipx"
+description = "Prowler is an Open Source security tool to perform AWS, GCP and Azure security best practices assessments, audits, incident response, continuous monitoring, hardening and forensics readiness. It contains hundreds of controls covering CIS, NIST 800, NIST CSF, CISA, RBI, FedRAMP, PCI-DSS, GDPR, HIPAA, FFIEC, SOC2, GXP, AWS Well-Architected Framework Security Pillar, AWS Foundational Technical Review (FTR), ENS (Spanish National Security Scheme) and your custom security frameworks"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "prowler"
-unverified = true
 
 [[tool]]
 id = "pacu"
 name = "pacu"
-description = "pipx"
+description = "The AWS exploitation framework, designed for testing the security of Amazon Web Services environments"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "pacu"
-unverified = true
 
 [[tool]]
 id = "cloudsplaining"
 name = "cloudsplaining"
-description = "pipx"
+description = "AWS IAM Security Assessment tool that identifies violations of least privilege and generates a risk-prioritized HTML report"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "cloudsplaining"
-unverified = true
 
 [[tool]]
 id = "cloudfox"
@@ -61,13 +57,12 @@ unverified = true
 [[tool]]
 id = "roadrecon"
 name = "ROADrecon"
-description = "pipx, Azure"
+description = "Entra ID (Azure AD) recon for red and blue"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "roadrecon"
-unverified = true
 
 [[tool]]
 id = "azurehound"
@@ -89,12 +84,11 @@ license = "free"
 [tool.macos]
 backend = "pipx"
 package = "gcpbucketbrute"
-unverified = true
 
 [[tool]]
 id = "trivy"
 name = "trivy"
-description = "brew"
+description = "Vulnerability scanner for container images, file systems, and Git repos"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
@@ -104,7 +98,7 @@ package = "trivy"
 [[tool]]
 id = "grype"
 name = "grype"
-description = "brew"
+description = "Vulnerability scanner for container images and filesystems"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
@@ -114,7 +108,7 @@ package = "grype"
 [[tool]]
 id = "syft"
 name = "syft"
-description = "brew"
+description = "CLI for generating a Software Bill of Materials from container images"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
@@ -124,18 +118,17 @@ package = "syft"
 [[tool]]
 id = "checkov"
 name = "checkov"
-description = "pipx"
+description = "Infrastructure as code static analysis"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "checkov"
-unverified = true
 
 [[tool]]
 id = "tfsec"
 name = "tfsec"
-description = "brew"
+description = "Static analysis security scanner for your terraform code"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
@@ -145,7 +138,7 @@ package = "tfsec"
 [[tool]]
 id = "kube-bench"
 name = "kube-bench"
-description = "brew"
+description = "Checks Kubernetes deployment against security best practices (CIS Benchmark)"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
@@ -155,7 +148,7 @@ package = "kube-bench"
 [[tool]]
 id = "kubescape"
 name = "kubescape"
-description = "brew"
+description = "Kubernetes testing according to Hardening Guidance by NSA and CISA"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
@@ -165,7 +158,7 @@ package = "kubescape"
 [[tool]]
 id = "steampipe"
 name = "steampipe"
-description = "brew"
+description = "Use SQL to instantly query your cloud services"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
@@ -175,7 +168,7 @@ package = "steampipe"
 [[tool]]
 id = "dive"
 name = "dive"
-description = "brew"
+description = "Tool for exploring each layer in a docker image"
 category = "sec-cloud"
 license = "free"
 [tool.macos]
@@ -185,7 +178,7 @@ package = "dive"
 [[tool]]
 id = "hadolint"
 name = "hadolint"
-description = "brew"
+description = "Smarter Dockerfile linter to validate best practices"
 category = "sec-cloud"
 license = "free"
 [tool.macos]

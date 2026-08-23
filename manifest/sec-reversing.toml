@@ -62,7 +62,7 @@ package = "WerWolv.ImHex"
 [[tool]]
 id = "radare2"
 name = "radare2"
-description = "radare2"
+description = "Reverse engineering framework"
 category = "sec-reversing"
 license = "free"
 [tool.macos]
@@ -72,7 +72,7 @@ package = "radare2"
 [[tool]]
 id = "rizin"
 name = "rizin"
-description = "rizin"
+description = "UNIX-like reverse engineering framework and command-line toolset"
 category = "sec-reversing"
 license = "free"
 [tool.macos]
@@ -114,7 +114,7 @@ unverified = true
 [[tool]]
 id = "binwalk"
 name = "binwalk"
-description = "binwalk"
+description = "Searches a binary image for embedded files and executable code"
 category = "sec-reversing"
 license = "free"
 [tool.macos]
@@ -124,7 +124,7 @@ package = "binwalk"
 [[tool]]
 id = "yara"
 name = "yara"
-description = "yara"
+description = "Malware identification and classification tool"
 category = "sec-reversing"
 license = "free"
 [tool.macos]
@@ -134,24 +134,22 @@ package = "yara"
 [[tool]]
 id = "capa"
 name = "capa"
-description = "capa"
+description = "Librairie Capa"
 category = "sec-reversing"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "capa"
-unverified = true
 
 [[tool]]
 id = "floss"
 name = "floss"
-description = "floss"
+description = "FLOSS: Fault Localization with Spectrum-based Scoring - A Python framework for Spectrum-Based Fault Localization (SBFL)"
 category = "sec-reversing"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "floss"
-unverified = true
 
 [[tool]]
 id = "detect-it-easy"
@@ -177,7 +175,7 @@ package = "hex-fiend"
 [[tool]]
 id = "010-editor"
 name = "010 Editor"
-description = "Paid"
+description = "Text editor"
 category = "sec-reversing"
 license = "paid"
 [tool.macos]
@@ -187,18 +185,17 @@ package = "010-editor"
 [[tool]]
 id = "volatility3"
 name = "volatility3"
-description = "volatility3"
+description = "Memory forensics framework"
 category = "sec-reversing"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "volatility3"
-unverified = true
 
 [[tool]]
 id = "sleuthkit"
 name = "sleuthkit"
-description = "sleuthkit"
+description = "Forensic toolkit"
 category = "sec-reversing"
 license = "free"
 [tool.macos]
@@ -219,7 +216,7 @@ unverified = true
 [[tool]]
 id = "foremost"
 name = "foremost / testdisk / photorec"
-description = "foremost / testdisk / photorec"
+description = "Console program to recover files based on their headers and footers"
 category = "sec-reversing"
 license = "free"
 [tool.macos]

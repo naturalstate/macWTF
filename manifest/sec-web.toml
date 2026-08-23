@@ -167,46 +167,42 @@ unverified = true
 [[tool]]
 id = "commix"
 name = "commix"
-description = "commix"
+description = "Automated All-in-One OS Command Injection Exploitation Tool"
 category = "sec-web"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "commix"
-unverified = true
 
 [[tool]]
 id = "xsstrike"
 name = "XSStrike"
-description = "XSStrike"
+description = "XSStrike is a Cross Site Scripting detection suite equipped with four hand written parsers, an intelligent payload generator, a powerful fuzzing engine and an incredibly fast crawler. Instead of injecting payloads and checking it works like all the other tools do, XSStrike analyses the response with multiple parsers and then crafts payloads that are guaranteed to work by context analysis integrated with a fuzzing engine"
 category = "sec-web"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "xsstrike"
-unverified = true
 
 [[tool]]
 id = "arjun"
 name = "arjun"
-description = "arjun"
+description = "HTTP parameter discovery suite"
 category = "sec-web"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "arjun"
-unverified = true
 
 [[tool]]
 id = "paramspider"
 name = "ParamSpider"
-description = "ParamSpider"
+description = "Reserved name placeholder. No functionality"
 category = "sec-web"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "paramspider"
-unverified = true
 
 [[tool]]
 id = "jwt-tool"
@@ -233,7 +229,7 @@ unverified = true
 [[tool]]
 id = "nikto"
 name = "nikto"
-description = "nikto"
+description = "Web server scanner"
 category = "sec-web"
 license = "free"
 [tool.macos]
@@ -254,7 +250,7 @@ unverified = true
 [[tool]]
 id = "sslscan"
 name = "sslscan"
-description = "sslscan"
+description = "Test SSL/TLS enabled services to discover supported cipher suites"
 category = "sec-web"
 license = "free"
 [tool.macos]
@@ -292,7 +288,6 @@ license = "free"
 [tool.macos]
 backend = "pipx"
 package = "graphql-cop"
-unverified = true
 
 [[tool]]
 id = "wappalyzer-cli"
@@ -303,4 +298,3 @@ license = "free"
 [tool.macos]
 backend = "npm"
 package = "wappalyzer-cli"
-unverified = true

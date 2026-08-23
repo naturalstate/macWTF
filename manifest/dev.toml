@@ -6,7 +6,7 @@
 [[tool]]
 id = "visual-studio-code"
 name = "Visual Studio Code"
-description = "Visual Studio Code"
+description = "Open-source code editor"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -26,7 +26,7 @@ package = "vscodium"
 [[tool]]
 id = "cursor"
 name = "Cursor"
-description = "Cursor"
+description = "Write, edit, and chat about your code with AI"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -36,7 +36,7 @@ package = "cursor"
 [[tool]]
 id = "zed"
 name = "Zed"
-description = "Zed"
+description = "Multiplayer code editor"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -46,7 +46,7 @@ package = "zed"
 [[tool]]
 id = "sublime-text"
 name = "Sublime Text"
-description = "Sublime Text"
+description = "Text editor for code, markup and prose"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -98,7 +98,7 @@ package = "orbstack"
 [[tool]]
 id = "docker-desktop"
 name = "Docker Desktop"
-description = "Docker Desktop"
+description = "App to build and share containerised applications and microservices"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -128,7 +128,7 @@ package = "lima"
 [[tool]]
 id = "podman-desktop"
 name = "Podman Desktop"
-description = "Podman Desktop"
+description = "Browse, manage, inspect containers and images"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -181,7 +181,7 @@ unverified = true
 [[tool]]
 id = "vagrant"
 name = "Vagrant"
-description = "Vagrant"
+description = "Development environment"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -191,7 +191,7 @@ package = "vagrant"
 [[tool]]
 id = "qemu"
 name = "qemu"
-description = "qemu"
+description = "Generic machine emulator and virtualizer"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -201,7 +201,7 @@ package = "qemu"
 [[tool]]
 id = "python-3-13"
 name = "python@3.13"
-description = "python@3.13"
+description = "Interpreted, interactive, object-oriented programming language"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -211,7 +211,7 @@ package = "python@3.13"
 [[tool]]
 id = "pyenv"
 name = "pyenv"
-description = "pyenv"
+description = "Python version management"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -221,7 +221,7 @@ package = "pyenv"
 [[tool]]
 id = "go"
 name = "go"
-description = "go"
+description = "Open source programming language to build simple/reliable/efficient software"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -231,18 +231,17 @@ package = "go"
 [[tool]]
 id = "rustup"
 name = "rustup-init"
-description = "rustup-init"
+description = "Rust toolchain installer"
 category = "dev"
 license = "free"
 [tool.macos]
 backend = "brew"
 package = "rustup"
-unverified = true
 
 [[tool]]
 id = "node"
 name = "node"
-description = "node"
+description = "Open-source, cross-platform JavaScript runtime environment"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -252,7 +251,7 @@ package = "node"
 [[tool]]
 id = "fnm"
 name = "fnm"
-description = "fnm"
+description = "Fast and simple Node.js version manager"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -262,7 +261,7 @@ package = "fnm"
 [[tool]]
 id = "bun"
 name = "bun"
-description = "bun"
+description = "Incredibly fast JavaScript runtime, bundler, test runner, and package manager"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -272,7 +271,7 @@ package = "bun"
 [[tool]]
 id = "deno"
 name = "deno"
-description = "deno"
+description = "Secure runtime for JavaScript and TypeScript"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -282,7 +281,7 @@ package = "deno"
 [[tool]]
 id = "ruby"
 name = "ruby"
-description = "ruby"
+description = "Powerful, clean, object-oriented scripting language"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -292,7 +291,7 @@ package = "ruby"
 [[tool]]
 id = "rbenv"
 name = "rbenv"
-description = "rbenv"
+description = "Ruby version manager"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -302,7 +301,7 @@ package = "rbenv"
 [[tool]]
 id = "temurin"
 name = "temurin"
-description = "cask"
+description = "JDK from the Eclipse Foundation (Adoptium)"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -312,7 +311,7 @@ package = "temurin"
 [[tool]]
 id = "dotnet-sdk"
 name = "dotnet-sdk"
-description = "cask"
+description = "Developer platform"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -322,7 +321,7 @@ package = "dotnet-sdk"
 [[tool]]
 id = "php"
 name = "php"
-description = "php"
+description = "General-purpose scripting language"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -332,7 +331,7 @@ package = "php"
 [[tool]]
 id = "perl"
 name = "perl"
-description = "perl"
+description = "Highly capable, feature-rich programming language"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -342,7 +341,7 @@ package = "perl"
 [[tool]]
 id = "lua"
 name = "lua"
-description = "lua"
+description = "Powerful, lightweight programming language"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -363,7 +362,7 @@ unverified = true
 [[tool]]
 id = "opentofu"
 name = "opentofu"
-description = "opentofu"
+description = "Drop-in replacement for Terraform. Infrastructure as Code Tool"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -373,7 +372,7 @@ package = "opentofu"
 [[tool]]
 id = "ansible"
 name = "ansible"
-description = "ansible"
+description = "Automate deployment, configuration, and upgrading"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -383,7 +382,7 @@ package = "ansible"
 [[tool]]
 id = "pulumi"
 name = "pulumi"
-description = "pulumi"
+description = "Cloud native development platform"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -404,7 +403,7 @@ unverified = true
 [[tool]]
 id = "k9s"
 name = "k9s"
-description = "k9s"
+description = "Kubernetes CLI To Manage Your Clusters In Style!"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -414,7 +413,7 @@ package = "k9s"
 [[tool]]
 id = "helm"
 name = "helm"
-description = "helm"
+description = "Kubernetes package manager"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -424,7 +423,7 @@ package = "helm"
 [[tool]]
 id = "kubectx"
 name = "kubectx"
-description = "kubectx"
+description = "Tool that can switch between kubectl contexts easily and create aliases"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -434,7 +433,7 @@ package = "kubectx"
 [[tool]]
 id = "stern"
 name = "stern"
-description = "stern"
+description = "Tail multiple Kubernetes pods & their containers"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -444,7 +443,7 @@ package = "stern"
 [[tool]]
 id = "awscli"
 name = "awscli"
-description = "awscli"
+description = "Official Amazon AWS command-line interface"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -454,7 +453,7 @@ package = "awscli"
 [[tool]]
 id = "azure-cli"
 name = "azure-cli"
-description = "azure-cli"
+description = "Microsoft Azure CLI 2.0"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -475,7 +474,7 @@ unverified = true
 [[tool]]
 id = "doctl"
 name = "doctl"
-description = "doctl"
+description = "Command-line tool for DigitalOcean"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -485,7 +484,7 @@ package = "doctl"
 [[tool]]
 id = "flyctl"
 name = "flyctl"
-description = "flyctl"
+description = "Command-line tools for fly.io services"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -517,7 +516,7 @@ unverified = true
 [[tool]]
 id = "consul"
 name = "consul"
-description = "consul"
+description = "Tool for service discovery, monitoring and configuration"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -527,7 +526,7 @@ package = "consul"
 [[tool]]
 id = "postman"
 name = "Postman"
-description = "Postman"
+description = "Collaboration platform for API development"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -537,7 +536,7 @@ package = "postman"
 [[tool]]
 id = "insomnia"
 name = "Insomnia"
-description = "Insomnia"
+description = "HTTP and GraphQL Client"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -557,7 +556,7 @@ package = "bruno"
 [[tool]]
 id = "hoppscotch"
 name = "Hoppscotch"
-description = "Hoppscotch"
+description = "Open source API development ecosystem"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -567,7 +566,7 @@ package = "hoppscotch"
 [[tool]]
 id = "tableplus"
 name = "TablePlus"
-description = "TablePlus"
+description = "Native GUI tool for relational databases"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -577,7 +576,7 @@ package = "tableplus"
 [[tool]]
 id = "dbeaver-community"
 name = "DBeaver Community"
-description = "DBeaver Community"
+description = "Universal database tool and SQL client"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -587,7 +586,7 @@ package = "dbeaver-community"
 [[tool]]
 id = "beekeeper-studio"
 name = "Beekeeper Studio"
-description = "Beekeeper Studio"
+description = "Cross platform SQL editor and database management app"
 category = "dev"
 license = "free"
 [tool.macos]
@@ -597,18 +596,17 @@ package = "beekeeper-studio"
 [[tool]]
 id = "pgcli"
 name = "pgcli / mycli"
-description = "pgcli / mycli"
+description = "CLI for Postgres Database. With auto-completion and syntax highlighting"
 category = "dev"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "pgcli"
-unverified = true
 
 [[tool]]
 id = "redis-insight"
 name = "Redis Insight"
-description = "Redis Insight"
+description = "GUI for streamlined Redis application development"
 category = "dev"
 license = "free"
 [tool.macos]

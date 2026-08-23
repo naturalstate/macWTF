@@ -40,6 +40,28 @@ for path, rows in by_file.items():
             new = re.sub(r"^unverified = true\n", "", b, flags=re.M)
             if new != b:
                 stats["verified"] += 1
+
+            # Fill in the upstream description where ours is a placeholder.
+            # The importer used the draft's terse note, or the tool's own name
+            # when there was nothing, and neither describes anything. A
+            # hand-written description always wins: those were considered,
+            # whereas the registry one-liner is merely accurate.
+            desc = (r.get("description") or "").strip().rstrip(".")
+            if desc:
+                m = re.search(r'^description = "([^"]*)"$', new, re.M)
+                if m:
+                    current = m.group(1)
+                    name_m = re.search(r'^name = "([^"]*)"$', new, re.M)
+                    name = name_m.group(1) if name_m else ""
+                    placeholder = (
+                        current == "" or current == name
+                        or current.lower() == name.lower()
+                        or len(current) < 12
+                    )
+                    if placeholder:
+                        esc = desc.replace("\\", "\\\\").replace('"', '\\"')
+                        new = new[:m.start()] + f'description = "{esc}"' + new[m.end():]
+                        stats["described"] += 1
             blocks[i] = new
 
         elif v == "wrong-type":

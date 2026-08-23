@@ -107,7 +107,7 @@ package = "suspicious-package"
 [[tool]]
 id = "kextviewr"
 name = "KextViewr / What's Your Sign"
-description = "KextViewr / What's Your Sign"
+description = "Display all currently loaded kexts"
 category = "sec-macos"
 license = "free"
 [tool.macos]

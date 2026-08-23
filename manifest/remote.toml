@@ -28,7 +28,7 @@ unverified = true
 [[tool]]
 id = "anydesk"
 name = "AnyDesk"
-description = "AnyDesk"
+description = "Allows connection to a computer remotely"
 category = "remote"
 license = "free"
 [tool.macos]
@@ -38,7 +38,7 @@ package = "anydesk"
 [[tool]]
 id = "teamviewer"
 name = "TeamViewer"
-description = "TeamViewer"
+description = "Remote access and connectivity software focused on security"
 category = "remote"
 license = "free"
 [tool.macos]
@@ -102,7 +102,7 @@ unverified = true
 [[tool]]
 id = "moonlight"
 name = "Moonlight"
-description = "Moonlight"
+description = "GameStream client"
 category = "remote"
 license = "free"
 [tool.macos]

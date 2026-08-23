@@ -17,7 +17,7 @@ unverified = true
 [[tool]]
 id = "gqrx"
 name = "gqrx"
-description = "gqrx"
+description = "Software-defined radio receiver powered by GNU Radio and Qt"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -40,7 +40,7 @@ unverified = true
 [[tool]]
 id = "cubicsdr"
 name = "CubicSDR"
-description = "CubicSDR"
+description = "Cross-platform software-defined radio application"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -72,7 +72,7 @@ unverified = true
 [[tool]]
 id = "hackrf"
 name = "hackrf"
-description = "hackrf"
+description = "Low cost software radio platform"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -92,7 +92,7 @@ package = "airspy"
 [[tool]]
 id = "limesuite"
 name = "limesuite"
-description = "limesuite"
+description = "Device drivers utilities, and interface layers for LimeSDR"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -157,7 +157,7 @@ unverified = true
 [[tool]]
 id = "inspectrum"
 name = "inspectrum"
-description = "inspectrum"
+description = "Offline radio signal analyser"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -202,7 +202,7 @@ unverified = true
 [[tool]]
 id = "qflipper"
 name = "qFlipper"
-description = "qFlipper"
+description = "Companion app for Flipper Zero devices"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -222,29 +222,27 @@ package = "mfoc"
 [[tool]]
 id = "esptool"
 name = "esptool"
-description = "esptool"
+description = "A serial utility for flashing, provisioning, and interacting with Espressif SoCs"
 category = "sdr"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "esptool"
-unverified = true
 
 [[tool]]
 id = "esphome"
 name = "esphome"
-description = "esphome"
+description = "ESPHome is a system to configure your microcontrollers by simple yet powerful configuration files and control them remotely through Home Automation systems"
 category = "sdr"
 license = "free"
 [tool.macos]
 backend = "pipx"
 package = "esphome"
-unverified = true
 
 [[tool]]
 id = "arduino-cli"
 name = "arduino-cli"
-description = "arduino-cli"
+description = "Arduino command-line interface"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -254,7 +252,7 @@ package = "arduino-cli"
 [[tool]]
 id = "arduino-ide"
 name = "Arduino IDE"
-description = "Arduino IDE"
+description = "Electronics prototyping platform"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -275,7 +273,7 @@ unverified = true
 [[tool]]
 id = "thonny"
 name = "Thonny"
-description = "MicroPython"
+description = "Python IDE for beginners"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -285,7 +283,7 @@ package = "thonny"
 [[tool]]
 id = "minicom"
 name = "minicom / picocom"
-description = "Serial"
+description = "Menu-driven communications program"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -337,7 +335,7 @@ unverified = true
 [[tool]]
 id = "kicad"
 name = "KiCad"
-description = "KiCad"
+description = "Electronics design automation suite"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -368,7 +366,7 @@ package = "openscad"
 [[tool]]
 id = "orcaslicer"
 name = "OrcaSlicer / PrusaSlicer / Bambu Studio"
-description = "3D printing"
+description = "G-code generator for 3D printers"
 category = "sdr"
 license = "free"
 [tool.macos]
@@ -378,7 +376,7 @@ package = "orcaslicer"
 [[tool]]
 id = "avrdude"
 name = "avrdude"
-description = "avrdude"
+description = "Atmel AVR MCU programmer"
 category = "sdr"
 license = "free"
 [tool.macos]

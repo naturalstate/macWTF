@@ -63,7 +63,7 @@ unverified = true
 [[tool]]
 id = "raycast"
 name = "Raycast"
-description = "cask"
+description = "Control your tools with a few keystrokes"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -73,7 +73,7 @@ package = "raycast"
 [[tool]]
 id = "alfred"
 name = "Alfred"
-description = "cask"
+description = "Application launcher and productivity software"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -83,7 +83,7 @@ package = "alfred"
 [[tool]]
 id = "hammerspoon"
 name = "Hammerspoon"
-description = "cask"
+description = "Desktop automation application"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -94,7 +94,7 @@ tcc_permissions = ["accessibility"]
 [[tool]]
 id = "karabiner-elements"
 name = "Karabiner-Elements"
-description = "cask"
+description = "Keyboard customiser"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -105,7 +105,7 @@ tcc_permissions = ["accessibility"]
 [[tool]]
 id = "bettertouchtool"
 name = "BetterTouchTool"
-description = "cask"
+description = "Tool to customise input devices and automate computer systems"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -147,7 +147,7 @@ unverified = true
 [[tool]]
 id = "monitorcontrol"
 name = "MonitorControl"
-description = "cask"
+description = "Tool to control external monitor brightness & volume"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -167,7 +167,7 @@ package = "mos"
 [[tool]]
 id = "itsycal"
 name = "Itsycal"
-description = "cask"
+description = "Menu bar calendar"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -188,7 +188,7 @@ unverified = true
 [[tool]]
 id = "keka"
 name = "Keka"
-description = "cask"
+description = "File archiver"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -198,7 +198,7 @@ package = "keka"
 [[tool]]
 id = "cyberduck"
 name = "Cyberduck"
-description = "cask"
+description = "Server and cloud storage browser"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -208,7 +208,7 @@ package = "cyberduck"
 [[tool]]
 id = "forklift"
 name = "ForkLift"
-description = "cask"
+description = "Finder replacement and FTP, SFTP, WebDAV and Amazon s3 client"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -218,7 +218,7 @@ package = "forklift"
 [[tool]]
 id = "transmit"
 name = "Transmit"
-description = "cask"
+description = "File transfer application"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -228,7 +228,7 @@ package = "transmit"
 [[tool]]
 id = "syncthing"
 name = "Syncthing"
-description = "brew"
+description = "Open source continuous file synchronization application"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -238,7 +238,7 @@ package = "syncthing"
 [[tool]]
 id = "rclone"
 name = "rclone"
-description = "brew"
+description = "Rsync for cloud storage"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -248,7 +248,7 @@ package = "rclone"
 [[tool]]
 id = "localsend"
 name = "LocalSend"
-description = "cask"
+description = "Open-source cross-platform alternative to AirDrop"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -258,7 +258,7 @@ package = "localsend"
 [[tool]]
 id = "daisydisk"
 name = "DaisyDisk"
-description = "cask"
+description = "Disk space visualiser"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -278,7 +278,7 @@ package = "pearcleaner"
 [[tool]]
 id = "appcleaner"
 name = "AppCleaner"
-description = "cask"
+description = "Application uninstaller"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -288,7 +288,7 @@ package = "appcleaner"
 [[tool]]
 id = "onyx"
 name = "OnyX"
-description = "cask"
+description = "Verify system files structure, run miscellaneous maintenance and more"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -298,7 +298,7 @@ package = "onyx"
 [[tool]]
 id = "iina"
 name = "IINA"
-description = "cask"
+description = "Free and open-source media player"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -308,7 +308,7 @@ package = "iina"
 [[tool]]
 id = "vlc"
 name = "VLC"
-description = "cask"
+description = "Multimedia player"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -318,7 +318,7 @@ package = "vlc"
 [[tool]]
 id = "handbrake"
 name = "HandBrake"
-description = "cask"
+description = "Open-source video transcoder available for Linux, Mac, and Windows"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -328,7 +328,7 @@ package = "handbrake"
 [[tool]]
 id = "imageoptim"
 name = "ImageOptim"
-description = "cask"
+description = "Tool to optimise images to a smaller size"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -338,7 +338,7 @@ package = "imageoptim"
 [[tool]]
 id = "yt-dlp"
 name = "yt-dlp"
-description = "brew"
+description = "Feature-rich command-line audio/video downloader"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -348,7 +348,7 @@ package = "yt-dlp"
 [[tool]]
 id = "audacity"
 name = "Audacity"
-description = "cask"
+description = "Multi-track audio editor and recorder"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -358,7 +358,7 @@ package = "audacity"
 [[tool]]
 id = "1password"
 name = "1Password"
-description = "cask"
+description = "Password manager that keeps all passwords secure behind one password"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -368,7 +368,7 @@ package = "1password"
 [[tool]]
 id = "bitwarden"
 name = "Bitwarden"
-description = "cask"
+description = "Desktop password and login vault"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -378,7 +378,7 @@ package = "bitwarden"
 [[tool]]
 id = "keepassxc"
 name = "KeePassXC"
-description = "cask"
+description = "Password manager app"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -388,7 +388,7 @@ package = "keepassxc"
 [[tool]]
 id = "proton-pass"
 name = "Proton Pass"
-description = "cask"
+description = "Desktop client for Proton Pass"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -398,7 +398,7 @@ package = "proton-pass"
 [[tool]]
 id = "yubico-authenticator"
 name = "Yubico Authenticator"
-description = "cask"
+description = "Full-featured companion app to the YubiKey"
 category = "utilities"
 license = "free"
 [tool.macos]
@@ -408,7 +408,7 @@ package = "yubico-authenticator"
 [[tool]]
 id = "ykman"
 name = "ykman"
-description = "brew"
+description = "Tool for managing your YubiKey configuration"
 category = "utilities"
 license = "free"
 [tool.macos]

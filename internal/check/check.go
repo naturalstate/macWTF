@@ -96,6 +96,11 @@ type Result struct {
 
 	// Suggestion is the manifest change that would fix it, when known.
 	Suggestion string
+
+	// Description is the upstream one-liner, when the registry offers it.
+	// Collected here because the request has already been made: fetching
+	// it separately would double the traffic for no reason.
+	Description string
 }
 
 // Report is a whole run.
@@ -181,8 +186,13 @@ func Run(ctx context.Context, cat *manifest.Catalogue, opts Options) (*Report, e
 
 	client := &http.Client{Timeout: opts.Timeout}
 	checkers := map[manifest.Backend]Checker{
-		manifest.BackendBrew: &brewChecker{client: client, cask: false},
-		manifest.BackendCask: &brewChecker{client: client, cask: true},
+		manifest.BackendBrew:  &brewChecker{client: client, cask: false},
+		manifest.BackendCask:  &brewChecker{client: client, cask: true},
+		manifest.BackendPipx:  &pypiChecker{client: client},
+		manifest.BackendGo:    &goChecker{client: client},
+		manifest.BackendCargo: &cratesChecker{client: client},
+		manifest.BackendNPM:   &npmChecker{client: client},
+		manifest.BackendGit:   &gitChecker{client: client},
 	}
 
 	rep := &Report{Results: make([]Result, len(cat.Tools))}
@@ -245,6 +255,7 @@ const apiBase = "https://formulae.brew.sh/api"
 // casks return it as an array, so a single struct cannot decode both, and
 // nothing here needs it. Existence is answered by the status code.
 type brewInfo struct {
+	Desc              string `json:"desc"`
 	Deprecated        bool   `json:"deprecated"`
 	DeprecationReason string `json:"deprecation_reason"`
 	Disabled          bool   `json:"disabled"`
@@ -294,7 +305,8 @@ func (c *brewChecker) Check(ctx context.Context, t *manifest.Tool) Result {
 			Detail: "deprecated upstream: " + fallback(info.DeprecationReason, "no reason given")}
 	}
 
-	return Result{Tool: t, Verdict: VerdictOK, Detail: kind + " " + t.Package}
+	return Result{Tool: t, Verdict: VerdictOK,
+		Detail: kind + " " + t.Package, Description: info.Desc}
 }
 
 func (c *brewChecker) fetch(ctx context.Context, kind, name string) (*brewInfo, int, error) {
