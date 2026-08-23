@@ -1,0 +1,145 @@
+# Payload and enumeration collections.
+#
+# These are cloned rather than installed, and mostly do not run on macOS at all
+# — LinPEAS is a Linux enumeration script. That is the point: they are things
+# you carry to a target, not things you execute on the machine doing the
+# carrying. Having them staged locally is the whole value.
+
+[[tool]]
+id = "peass-ng"
+name = "PEASS-ng"
+description = "Privilege escalation enumeration scripts for Linux, macOS and Windows"
+category = "payloads"
+license = "free"
+homepage = "https://github.com/peass-ng/PEASS-ng"
+notes = "LinPEAS, WinPEAS and MacPEAS. Transferred to a target and run there, not run locally."
+[tool.macos]
+backend = "git"
+package = "https://github.com/peass-ng/PEASS-ng.git"
+dest = "peass-ng"
+
+[[tool]]
+id = "pcredz"
+name = "PCredz"
+description = "Extract credentials from a pcap or live interface"
+category = "payloads"
+license = "free"
+homepage = "https://github.com/lgandx/PCredz"
+[tool.macos]
+backend = "git"
+package = "https://github.com/lgandx/PCredz.git"
+dest = "pcredz"
+manual_steps = [
+  "Needs Cython and python-libpcap: pip3 install --user Cython python-libpcap",
+]
+
+[[tool]]
+id = "smbcrunch"
+name = "SMBCrunch"
+description = "Find and grab interesting files across reachable SMB shares"
+category = "payloads"
+license = "free"
+homepage = "https://github.com/Raikia/SMBCrunch"
+[tool.macos]
+backend = "git"
+package = "https://github.com/Raikia/SMBCrunch.git"
+dest = "smbcrunch"
+
+[[tool]]
+id = "smbspray"
+name = "smbspray"
+description = "Password spraying against SMB"
+category = "payloads"
+license = "free"
+homepage = "https://github.com/absolomb/smbspray"
+[tool.macos]
+backend = "git"
+package = "https://github.com/absolomb/smbspray.git"
+dest = "smbspray"
+
+[[tool]]
+id = "gnmap-parser"
+name = "gnmap-parser"
+description = "Turn nmap greppable output into sorted host and port lists"
+category = "payloads"
+license = "free"
+homepage = "https://github.com/jasonjfrank/gnmap-parser"
+[tool.macos]
+backend = "git"
+package = "https://github.com/jasonjfrank/gnmap-parser.git"
+dest = "gnmap-parser"
+
+[[tool]]
+id = "onedrive-user-enum"
+name = "OneDrive User Enum"
+description = "Enumerate valid Microsoft 365 users through OneDrive"
+category = "payloads"
+license = "free"
+homepage = "https://github.com/nyxgeek/onedrive_user_enum"
+[tool.macos]
+backend = "git"
+package = "https://github.com/nyxgeek/onedrive_user_enum.git"
+dest = "onedrive-user-enum"
+
+[[tool]]
+id = "dehashed-api-tool"
+name = "DeHashed API Tool"
+description = "Query the DeHashed breach database from the command line"
+category = "payloads"
+license = "freemium"
+homepage = "https://github.com/hmaverickadams/DeHashed-API-Tool"
+notes = "Needs a DeHashed subscription and API key."
+[tool.macos]
+backend = "git"
+package = "https://github.com/hmaverickadams/DeHashed-API-Tool.git"
+dest = "dehashed-api-tool"
+
+[[tool]]
+id = "hashcat-utils"
+name = "hashcat-utils"
+description = "Small helper programs for preparing and manipulating hashcat input"
+category = "payloads"
+license = "free"
+homepage = "https://github.com/hashcat/hashcat-utils"
+notes = "Not packaged by Homebrew. Sources only; run make in src to build them."
+[tool.macos]
+backend = "git"
+package = "https://github.com/hashcat/hashcat-utils.git"
+dest = "hashcat-utils"
+
+[[tool]]
+id = "certipy"
+name = "Certipy"
+description = "Enumerate and abuse Active Directory Certificate Services"
+category = "payloads"
+license = "free"
+homepage = "https://github.com/ly4k/Certipy"
+[tool.macos]
+backend = "pipx"
+package = "certipy-ad"
+binary = "certipy-ad"
+verify_cmd = "command -v certipy"
+
+[[tool]]
+id = "petitpotam"
+name = "PetitPotam"
+description = "Coerce Windows hosts to authenticate to an arbitrary target"
+category = "payloads"
+license = "free"
+homepage = "https://github.com/topotam/PetitPotam"
+[tool.macos]
+backend = "git"
+package = "https://github.com/topotam/PetitPotam.git"
+dest = "petitpotam"
+
+[[tool]]
+id = "pkinittools"
+name = "PKINITtools"
+description = "Request and use Kerberos tickets via PKINIT"
+category = "payloads"
+license = "free"
+homepage = "https://github.com/dirkjanm/PKINITtools"
+[tool.macos]
+backend = "git"
+package = "https://github.com/dirkjanm/PKINITtools.git"
+dest = "pkinittools"

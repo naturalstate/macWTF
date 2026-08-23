@@ -404,3 +404,15 @@ notes = "Not in the macOS catalogue: script backend not implemented."
 [tool.kali]
 backend = "apt"
 package = "wigle-upload-helper"
+
+[[tool]]
+id = "gpsd"
+name = "gpsd"
+description = "GPS daemon, for feeding location to wardriving and SDR tools"
+category = "sdr"
+license = "free"
+homepage = "https://gpsd.io"
+[tool.macos]
+backend = "brew"
+package = "gpsd"
+verify_cmd = "command -v gpsd"

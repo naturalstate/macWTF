@@ -435,3 +435,13 @@ license = "free"
 backend = "brew"
 package = "gnupg-+-pinentry-mac"
 unverified = true
+
+[[tool]]
+id = "dropbox"
+name = "Dropbox"
+description = "Cloud storage client"
+category = "utilities"
+license = "freemium"
+[tool.macos]
+backend = "cask"
+package = "dropbox"

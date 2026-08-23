@@ -972,3 +972,37 @@ license = "free"
 [tool.macos]
 backend = "brew"
 package = "exiftool"
+
+[[tool]]
+id = "wdiff"
+name = "wdiff"
+description = "Word-level diff, more readable than line diffs for prose"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "wdiff"
+verify_cmd = "command -v wdiff"
+
+[[tool]]
+id = "lnav"
+name = "lnav"
+description = "Log file navigator with syntax highlighting and SQL queries"
+category = "cli"
+license = "free"
+homepage = "https://lnav.org"
+[tool.macos]
+backend = "brew"
+package = "lnav"
+verify_cmd = "command -v lnav"
+
+[[tool]]
+id = "pstree"
+name = "pstree"
+description = "Show the process list as a tree"
+category = "cli"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "pstree"
+verify_cmd = "command -v pstree"

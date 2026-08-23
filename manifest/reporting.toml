@@ -218,3 +218,27 @@ license = "free"
 [tool.macos]
 backend = "cask"
 package = "loom"
+
+[[tool]]
+id = "asciinema"
+name = "asciinema"
+description = "Record and replay terminal sessions as text, not video"
+category = "reporting"
+license = "free"
+homepage = "https://asciinema.org"
+[tool.macos]
+backend = "brew"
+package = "asciinema"
+verify_cmd = "command -v asciinema"
+notes = "Recordings stay copy-pasteable, which a screen capture does not."
+
+[[tool]]
+id = "thunderbird"
+name = "Thunderbird"
+description = "Email client"
+category = "reporting"
+license = "free"
+[tool.macos]
+backend = "cask"
+package = "thunderbird"
+notes = "The maintained cross-platform build. Icedove is Debian's rebrand and does not apply here."

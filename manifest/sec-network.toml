@@ -181,17 +181,6 @@ backend = "pipx"
 package = "ldapdomaindump"
 
 [[tool]]
-id = "kerbrute"
-name = "kerbrute"
-description = "kerbrute"
-category = "sec-network"
-license = "free"
-[tool.macos]
-backend = "go"
-package = "kerbrute"
-unverified = true
-
-[[tool]]
 id = "evil-winrm"
 name = "evil-winrm"
 description = "evil-winrm"
@@ -319,3 +308,82 @@ license = "free"
 backend = "mas"
 package = "lanscan"
 unverified = true
+
+[[tool]]
+id = "neo4j"
+name = "Neo4j"
+description = "Graph database that BloodHound stores and queries its collected data in"
+category = "sec-network"
+license = "free"
+homepage = "https://neo4j.com"
+[tool.macos]
+backend = "brew"
+package = "neo4j"
+verify_cmd = "command -v neo4j"
+manual_steps = [
+  "Start it with: brew services start neo4j, then set the initial password at http://localhost:7474 (default login neo4j/neo4j).",
+]
+notes = "BloodHound is useless without this; it is where the graph lives."
+
+[[tool]]
+id = "bloodhound-py"
+name = "BloodHound.py"
+description = "Python collector that feeds BloodHound from a Linux or macOS host"
+category = "sec-network"
+license = "free"
+homepage = "https://github.com/fox-it/BloodHound.py"
+requires = ["neo4j"]
+[tool.macos]
+backend = "pipx"
+package = "bloodhound"
+binary = "bloodhound"
+verify_cmd = "command -v bloodhound-python"
+notes = "The collector, not the interface. SharpHound is the Windows equivalent."
+
+[[tool]]
+id = "donpapi"
+name = "DonPAPI"
+description = "Dump DPAPI secrets from compromised Windows hosts"
+category = "sec-network"
+license = "free"
+homepage = "https://github.com/login-securite/DonPAPI"
+[tool.macos]
+backend = "pipx"
+package = "donpapi"
+verify_cmd = "command -v donpapi"
+
+[[tool]]
+id = "manspider"
+name = "MANSPIDER"
+description = "Crawl SMB shares hunting for files matching a pattern"
+category = "sec-network"
+license = "free"
+homepage = "https://github.com/blacklanternsecurity/MANSPIDER"
+[tool.macos]
+backend = "pipx"
+package = "manspider"
+verify_cmd = "command -v manspider"
+
+[[tool]]
+id = "mitm6"
+name = "mitm6"
+description = "Hijack IPv6 DNS to relay Windows authentication"
+category = "sec-network"
+license = "free"
+homepage = "https://github.com/dirkjanm/mitm6"
+[tool.macos]
+backend = "pipx"
+package = "mitm6"
+verify_cmd = "command -v mitm6"
+
+[[tool]]
+id = "kerbrute"
+name = "Kerbrute"
+description = "Brute force and enumerate Active Directory accounts over Kerberos"
+category = "sec-network"
+license = "free"
+homepage = "https://github.com/ropnop/kerbrute"
+[tool.macos]
+backend = "go"
+package = "github.com/ropnop/kerbrute"
+verify_cmd = "command -v kerbrute"

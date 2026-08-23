@@ -628,3 +628,108 @@ notes = "Provides rustc and cargo directly. rustup-init only installs the toolch
 [tool.kali]
 backend = "apt"
 package = "rustc"
+
+[[tool]]
+id = "gcc"
+name = "GCC"
+description = "The GNU compiler collection"
+category = "dev"
+license = "free"
+homepage = "https://gcc.gnu.org"
+[tool.macos]
+backend = "brew"
+package = "gcc"
+verify_cmd = "command -v gcc-14"
+notes = "macOS ships clang as cc and gcc. This installs the real GCC alongside it, versioned as gcc-14."
+
+[[tool]]
+id = "mingw-w64"
+name = "MinGW-w64"
+description = "GCC cross-compilers targeting Windows"
+category = "dev"
+license = "free"
+homepage = "https://www.mingw-w64.org"
+[tool.macos]
+backend = "brew"
+package = "mingw-w64"
+verify_cmd = "command -v x86_64-w64-mingw32-gcc"
+notes = "For building Windows payloads and binaries from macOS."
+
+[[tool]]
+id = "docker-compose"
+name = "Docker Compose"
+description = "Define and run multi-container applications"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "docker-compose"
+verify_cmd = "command -v docker-compose"
+notes = "The plugin, not Docker itself. Pair with OrbStack or Docker Desktop."
+
+[[tool]]
+id = "llvm"
+name = "LLVM"
+description = "Compiler infrastructure, including clang tools and lldb"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "brew"
+package = "llvm"
+verify_cmd = "test -d $(brew --prefix)/opt/llvm"
+notes = "Newer than the toolchain Xcode ships, and keg-only so it does not shadow it."
+
+[[tool]]
+id = "powershell"
+name = "PowerShell"
+description = "Microsoft's shell, for running Windows tooling on macOS"
+category = "dev"
+license = "free"
+homepage = "https://github.com/PowerShell/PowerShell"
+[tool.macos]
+backend = "brew"
+package = "powershell"
+verify_cmd = "command -v pwsh"
+
+[[tool]]
+id = "pycharm"
+name = "PyCharm"
+description = "JetBrains IDE for Python"
+category = "dev"
+license = "freemium"
+[tool.macos]
+backend = "cask"
+package = "pycharm"
+
+[[tool]]
+id = "gitkraken"
+name = "GitKraken"
+description = "Git client with a visual history graph"
+category = "dev"
+license = "freemium"
+[tool.macos]
+backend = "cask"
+package = "gitkraken"
+
+[[tool]]
+id = "poetry"
+name = "Poetry"
+description = "Python dependency management and packaging"
+category = "dev"
+license = "free"
+homepage = "https://python-poetry.org"
+[tool.macos]
+backend = "pipx"
+package = "poetry"
+verify_cmd = "command -v poetry"
+
+[[tool]]
+id = "pipenv"
+name = "Pipenv"
+description = "Python virtualenv and dependency workflow"
+category = "dev"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "pipenv"
+verify_cmd = "command -v pipenv"

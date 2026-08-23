@@ -258,17 +258,6 @@ backend = "brew"
 package = "sslscan"
 
 [[tool]]
-id = "hakrawler"
-name = "hakrawler"
-description = "hakrawler"
-category = "sec-web"
-license = "free"
-[tool.macos]
-backend = "go"
-package = "hakrawler"
-unverified = true
-
-[[tool]]
 id = "kiterunner"
 name = "kiterunner"
 description = "kiterunner"
@@ -298,3 +287,56 @@ license = "free"
 [tool.macos]
 backend = "npm"
 package = "wappalyzer-cli"
+
+[[tool]]
+id = "metasploit"
+name = "Metasploit Framework"
+description = "Exploitation framework with a large module library"
+category = "sec-web"
+license = "free"
+homepage = "https://www.metasploit.com"
+[tool.macos]
+backend = "cask"
+package = "metasploit"
+app_path = "/opt/homebrew/Caskroom/metasploit"
+verify_cmd = "command -v msfconsole"
+quarantine_strip = true
+notes = "Homebrew has deprecated this cask with the reason fails_gatekeeper_check: the payload is not notarised. It installs, and stripping quarantine is what lets it run."
+
+[[tool]]
+id = "nessus"
+name = "Nessus"
+description = "Vulnerability scanner"
+category = "sec-web"
+license = "freemium"
+homepage = "https://www.tenable.com/products/nessus"
+[tool.macos]
+backend = "cask"
+package = "nessus"
+manual_steps = [
+  "Nessus runs as a service on https://localhost:8834 and needs an activation code, free for Nessus Essentials.",
+]
+
+[[tool]]
+id = "droopescan"
+name = "droopescan"
+description = "Scanner for Drupal, SilverStripe and other CMS platforms"
+category = "sec-web"
+license = "free"
+homepage = "https://github.com/SamJoan/droopescan"
+[tool.macos]
+backend = "pipx"
+package = "droopescan"
+verify_cmd = "command -v droopescan"
+
+[[tool]]
+id = "gophish"
+name = "Gophish"
+description = "Phishing campaign framework with a web interface"
+category = "sec-web"
+license = "free"
+homepage = "https://getgophish.com"
+[tool.macos]
+backend = "go"
+package = "github.com/gophish/gophish"
+verify_cmd = "command -v gophish"

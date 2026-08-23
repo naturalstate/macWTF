@@ -170,17 +170,6 @@ backend = "brew"
 package = "amass"
 
 [[tool]]
-id = "assetfinder"
-name = "assetfinder"
-description = "assetfinder"
-category = "sec-recon"
-license = "free"
-[tool.macos]
-backend = "go"
-package = "assetfinder"
-unverified = true
-
-[[tool]]
 id = "dnsx"
 name = "dnsx"
 description = "dnsx"
@@ -444,3 +433,74 @@ license = "free"
 backend = "builtin"
 package = "whois"
 unverified = true
+
+[[tool]]
+id = "shodan"
+name = "Shodan CLI"
+description = "Query Shodan from the command line"
+category = "sec-recon"
+license = "freemium"
+homepage = "https://cli.shodan.io"
+[tool.macos]
+backend = "pipx"
+package = "shodan"
+verify_cmd = "command -v shodan"
+manual_steps = [
+  "Authenticate once with: shodan init <your API key>",
+]
+
+[[tool]]
+id = "dirhunt"
+name = "dirhunt"
+description = "Find web directories by analysing responses rather than brute force"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "pipx"
+package = "dirhunt"
+verify_cmd = "command -v dirhunt"
+
+[[tool]]
+id = "sublist3r"
+name = "Sublist3r"
+description = "Subdomain enumeration across public sources"
+category = "sec-recon"
+license = "free"
+homepage = "https://github.com/aboul3la/Sublist3r"
+[tool.macos]
+backend = "pipx"
+package = "sublist3r"
+verify_cmd = "command -v sublist3r"
+
+[[tool]]
+id = "assetfinder"
+name = "assetfinder"
+description = "Find domains and subdomains related to a target"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "github.com/tomnomnom/assetfinder"
+verify_cmd = "command -v assetfinder"
+
+[[tool]]
+id = "hakrawler"
+name = "hakrawler"
+description = "Fast web crawler for gathering URLs and endpoints"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "github.com/hakluke/hakrawler"
+verify_cmd = "command -v hakrawler"
+
+[[tool]]
+id = "subjack"
+name = "subjack"
+description = "Check subdomains for takeover vulnerabilities"
+category = "sec-recon"
+license = "free"
+[tool.macos]
+backend = "go"
+package = "github.com/haccer/subjack"
+verify_cmd = "command -v subjack"
