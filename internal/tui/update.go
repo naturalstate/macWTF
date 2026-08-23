@@ -69,6 +69,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.verbose = !m.verbose
 			}
 			return m, nil
+		case screenStatus:
+			return m.updateStatus(msg)
 		case screenDone:
 			return m.updateDone(msg)
 		}
@@ -97,6 +99,28 @@ func (m Model) updateConfirm(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 			return m, primeSudo()
 		}
 		return m, m.startInstall()
+	}
+	return m, nil
+}
+
+func (m Model) updateStatus(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
+	switch msg.String() {
+	case "esc", "q", "s":
+		m.screen = screenProfile
+		m.notice = ""
+	case "up", "k":
+		if m.statusScroll > 0 {
+			m.statusScroll--
+		}
+	case "down", "j":
+		m.statusScroll++
+	case "r":
+		// Reset is destructive, so it is handed to the command that
+		// owns the safety rules rather than reimplemented here.
+		if m.removeMode {
+			m.notice = "Run `macwtf reset` to uninstall everything macWTF installed. " +
+				"It confirms first and reports what it cannot undo."
+		}
 	}
 	return m, nil
 }
@@ -139,6 +163,11 @@ func (m Model) updateProfile(msg tea.KeyMsg) (tea.Model, tea.Cmd) {
 		m.applyProfile(m.profiles[m.profCursor])
 		m.screen = screenTree
 		m.cursor, m.scroll = 0, 0
+
+	case "s":
+		m.loadStatus()
+		m.screen = screenStatus
+		return m, nil
 
 	case "c":
 		// Start from an empty selection instead of a profile.

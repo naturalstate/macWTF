@@ -54,11 +54,17 @@ func (c *Cask) InstallPlan(t *manifest.Tool, ctx *Ctx) ([]Step, error) {
 	return commonSteps(steps, t, ctx), nil
 }
 
+// RemovePlan forces the uninstall.
+//
+// A cask interrupted partway through leaves a populated Caskroom directory,
+// and a plain uninstall then refuses with "there is already an App at ...",
+// making the mess unrepairable by the tool that made it. --force is the
+// documented way through, and on a removal the intent is unambiguous.
 func (c *Cask) RemovePlan(t *manifest.Tool, ctx *Ctx) ([]Step, error) {
 	return []Step{{
 		Desc: "uninstall cask " + t.Package,
 		Name: "brew",
-		Args: []string{"uninstall", "--cask", t.Package},
+		Args: []string{"uninstall", "--cask", "--force", t.Package},
 		Kind: KindRemove,
 	}}, nil
 }

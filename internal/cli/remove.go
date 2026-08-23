@@ -168,8 +168,23 @@ func runRemove(args []string) error {
 	plan.Render(&out, *dryRun)
 	fmt.Print(out.String())
 
+	// Clear records for anything already gone, even when there is nothing
+	// to run. Otherwise the stale entries persist and every later run
+	// reports the same phantom failures.
+	if !*dryRun && len(plan.AlreadyGone) > 0 {
+		for _, t := range plan.AlreadyGone {
+			st.Remove(t.ID)
+		}
+		if err := st.Save(); err != nil {
+			return err
+		}
+	}
+
 	todo, _ := plan.Counts()
 	if *dryRun || todo == 0 {
+		if len(plan.AlreadyGone) > 0 {
+			fmt.Printf("\nCleared %d stale record(s).\n", len(plan.AlreadyGone))
+		}
 		return nil
 	}
 

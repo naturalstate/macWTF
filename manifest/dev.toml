@@ -229,14 +229,14 @@ backend = "brew"
 package = "go"
 
 [[tool]]
-id = "rustup-init"
+id = "rustup"
 name = "rustup-init"
 description = "rustup-init"
 category = "dev"
 license = "free"
 [tool.macos]
 backend = "brew"
-package = "rustup-init"
+package = "rustup"
 unverified = true
 
 [[tool]]

@@ -21,6 +21,12 @@ type RemovePlan struct {
 	Tools   []ToolPlan
 	Skipped []RemoveSkip
 
+	// AlreadyGone is tools that are not installed. Recorded so their state
+	// entries can still be cleared: an interrupted removal leaves records
+	// for things that are no longer there, and leaving them behind makes
+	// every later run report phantom failures.
+	AlreadyGone []*manifest.Tool
+
 	BackendErrs map[manifest.Backend]error
 }
 
@@ -69,6 +75,7 @@ func BuildRemovePlan(
 			p.Skipped = append(p.Skipped, RemoveSkip{t, err.Error()})
 			continue
 		}
+
 		if !preflighted[t.Backend] && !ctx.AssumeBackendsReady {
 			preflighted[t.Backend] = true
 			if err := impl.Preflight(ctx); err != nil {
@@ -77,6 +84,18 @@ func BuildRemovePlan(
 		}
 		if err, dead := p.BackendErrs[t.Backend]; dead {
 			p.Skipped = append(p.Skipped, RemoveSkip{t, err.Error()})
+			continue
+		}
+
+		// Removing something already gone is success, not failure: the
+		// wanted end state is that it is absent. Without this an
+		// interrupted removal is unrepeatable — the second attempt
+		// reports every tool the first one removed as an error, which
+		// is exactly what happened when a password prompt stopped a
+		// reset partway through.
+		present, err := backend.IsInstalled(impl, t, ctx)
+		if err == nil && !present {
+			p.AlreadyGone = append(p.AlreadyGone, t)
 			continue
 		}
 
@@ -107,6 +126,15 @@ func (p *RemovePlan) Render(w *strings.Builder, dryRun bool) {
 		for _, s := range tp.Steps {
 			fmt.Fprintf(w, "      %s\n", s.String())
 		}
+	}
+
+	if len(p.AlreadyGone) > 0 {
+		fmt.Fprintf(w, "\nalready gone (%d) — nothing to do, records cleared\n", len(p.AlreadyGone))
+		var ids []string
+		for _, t := range p.AlreadyGone {
+			ids = append(ids, t.ID)
+		}
+		fmt.Fprintf(w, "  %s\n", strings.Join(ids, " "))
 	}
 
 	if len(p.Skipped) > 0 {

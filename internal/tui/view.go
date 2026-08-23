@@ -25,6 +25,8 @@ func (m Model) View() string {
 		return m.viewConfirm()
 	case screenProgress:
 		return m.viewProgress()
+	case screenStatus:
+		return m.viewStatus()
 	case screenDone:
 		return m.viewDone()
 	}
@@ -155,7 +157,8 @@ func (m Model) viewProfile() string {
 		"the tooling macOS leaves out",
 		m.statusRight(),
 		"\n"+body+"\n",
-		help("↑/↓", "move", "enter", "choose", "c", "start empty", "q", "quit"),
+		help("↑/↓", "move", "enter", "choose", "c", "start empty",
+			"s", "what's installed", "q", "quit"),
 	)
 }
 
@@ -826,4 +829,45 @@ func chipSep(chips string) string {
 		return ""
 	}
 	return " " + chips
+}
+
+// ----------------------------------------------------------------- status
+
+func (m Model) viewStatus() string {
+	w := m.width
+	if w < 60 {
+		w = 60
+	}
+	height := m.height - frameHeight - 4
+	if height < 4 {
+		height = 4
+	}
+
+	lines := m.statusLines
+	scroll := m.statusScroll
+	if scroll > len(lines)-1 {
+		scroll = len(lines) - 1
+	}
+	if scroll < 0 {
+		scroll = 0
+	}
+	end := scroll + height
+	if end > len(lines) {
+		end = len(lines)
+	}
+
+	var b strings.Builder
+	for i := scroll; i < end; i++ {
+		b.WriteString(truncate(lines[i], w-4) + "\n")
+	}
+	if len(lines) > height {
+		b.WriteString(itemDimStyle.Render(fmt.Sprintf("  … %d–%d of %d",
+			scroll+1, end, len(lines))) + "\n")
+	}
+	if m.notice != "" {
+		b.WriteString("\n  " + warnStyle.Render(wrap(m.notice, w-6)) + "\n")
+	}
+
+	return m.frame("what is installed", m.statusRight(), "\n"+b.String(),
+		help("↑/↓", "scroll", "r", "how to reset", "esc", "back"))
 }

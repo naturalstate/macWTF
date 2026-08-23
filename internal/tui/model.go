@@ -12,6 +12,7 @@ package tui
 import (
 	"context"
 	"errors"
+	"fmt"
 	"sort"
 	"strings"
 	"time"
@@ -22,6 +23,7 @@ import (
 	"github.com/naturalstate/macWTF/internal/install"
 	"github.com/naturalstate/macWTF/internal/manifest"
 	"github.com/naturalstate/macWTF/internal/resolve"
+	"github.com/naturalstate/macWTF/internal/state"
 )
 
 type screen int
@@ -33,6 +35,7 @@ const (
 	screenConfirm
 	screenProgress
 	screenDone
+	screenStatus
 )
 
 // rowKind distinguishes a category header from a tool within it, so one flat
@@ -81,6 +84,11 @@ type Model struct {
 
 	// pending is how many tools a run would install, cached from the plan.
 	pending int
+
+	// Status screen.
+	statusLines  []string
+	statusScroll int
+	removeMode   bool
 
 	// Tree screen.
 	rows      []row
@@ -429,4 +437,74 @@ func (m *Model) rebuildKeepingCursor(was row) {
 	if m.cursor < 0 {
 		m.cursor = 0
 	}
+}
+
+// loadStatus reads what macWTF has installed, for the status screen.
+func (m *Model) loadStatus() {
+	st, err := state.Load("")
+	if err != nil {
+		m.statusLines = []string{"", "  could not read state: " + err.Error()}
+		return
+	}
+
+	var mine, prior, failed []string
+	for _, r := range st.Installed {
+		label := r.ID
+		if t, ok := m.cat.Tool(r.ID); ok {
+			label = fmt.Sprintf("%-22s %-7s %s", r.ID, r.Backend, t.Name)
+		}
+		switch {
+		case r.Failed:
+			failed = append(failed, label)
+		case r.Preexisting:
+			prior = append(prior, label)
+		default:
+			mine = append(mine, label)
+		}
+	}
+	sort.Strings(mine)
+	sort.Strings(prior)
+	sort.Strings(failed)
+
+	var out []string
+	add := func(f string, a ...any) { out = append(out, fmt.Sprintf(f, a...)) }
+
+	if len(st.Installed) == 0 {
+		add("")
+		add("  macWTF has not installed anything on this machine.")
+		add("")
+		add("  %s", itemMuted.Render(st.Path()))
+		m.statusLines = out
+		m.removeMode = false
+		return
+	}
+
+	if len(mine) > 0 {
+		add("")
+		add("  %s", okStyle.Render(fmt.Sprintf("installed by macWTF (%d)", len(mine))))
+		for _, l := range mine {
+			add("    %s", l)
+		}
+	}
+	if len(prior) > 0 {
+		add("")
+		add("  %s", itemMuted.Render(fmt.Sprintf(
+			"already present before macWTF ran (%d) — never removed", len(prior))))
+		for _, l := range prior {
+			add("    %s", itemDimStyle.Render(l))
+		}
+	}
+	if len(failed) > 0 {
+		add("")
+		add("  %s", dangerStyle.Render(fmt.Sprintf("failed (%d)", len(failed))))
+		for _, l := range failed {
+			add("    %s", itemDimStyle.Render(l))
+		}
+	}
+	add("")
+	add("  %s", itemMuted.Render(st.Path()))
+
+	m.statusLines = out
+	m.removeMode = len(mine) > 0
+	m.statusScroll = 0
 }
