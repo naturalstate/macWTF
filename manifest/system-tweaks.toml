@@ -1,0 +1,139 @@
+# macOS system tweaks.
+#
+# Not packages: these change how the machine behaves. Every entry declares how
+# to undo itself, and validation rejects one that does not — a tweak nobody can
+# reverse is a trap, and "reinstall macOS" is not a revert.
+
+[[tool]]
+id = "finder-show-hidden"
+name = "Show hidden files in Finder"
+description = "Reveal dotfiles and other hidden entries in Finder windows"
+category = "system-tweaks"
+license = "free"
+[tool.macos]
+backend = "defaults"
+package = "com.apple.finder"
+key = "AppleShowAllFiles"
+value = "true"
+value_type = "bool"
+revert = "false"
+post_install = ["killall Finder || true"]
+notes = "Finder is restarted so the change takes effect immediately."
+
+[[tool]]
+id = "finder-show-extensions"
+name = "Show all file extensions"
+description = "Stop Finder hiding extensions, which is how a .pdf.app gets opened by mistake"
+category = "system-tweaks"
+license = "free"
+[tool.macos]
+backend = "defaults"
+package = "NSGlobalDomain"
+key = "AppleShowAllExtensions"
+value = "true"
+value_type = "bool"
+revert = "false"
+post_install = ["killall Finder || true"]
+
+[[tool]]
+id = "finder-path-bar"
+name = "Show the path bar in Finder"
+description = "Display the full path to the current folder at the bottom of Finder windows"
+category = "system-tweaks"
+license = "free"
+[tool.macos]
+backend = "defaults"
+package = "com.apple.finder"
+key = "ShowPathbar"
+value = "true"
+value_type = "bool"
+revert = "false"
+post_install = ["killall Finder || true"]
+
+[[tool]]
+id = "no-dsstore-network"
+name = "Stop writing .DS_Store on network volumes"
+description = "Prevents Finder littering shared drives with metadata files"
+category = "system-tweaks"
+license = "free"
+[tool.macos]
+backend = "defaults"
+package = "com.apple.desktopservices"
+key = "DSDontWriteNetworkStores"
+value = "true"
+value_type = "bool"
+revert = "false"
+
+[[tool]]
+id = "fast-key-repeat"
+name = "Faster key repeat"
+description = "Shorten the delay before a held key repeats, and speed up the repeat"
+category = "system-tweaks"
+license = "free"
+[tool.macos]
+backend = "defaults"
+package = "NSGlobalDomain"
+key = "KeyRepeat"
+value = "2"
+value_type = "int"
+revert = "6"
+notes = "Takes effect after logging out and back in."
+
+[[tool]]
+id = "no-press-and-hold"
+name = "Disable press-and-hold for accents"
+description = "Restores key repeat when holding a key, which vim and games need"
+category = "system-tweaks"
+license = "free"
+[tool.macos]
+backend = "defaults"
+package = "NSGlobalDomain"
+key = "ApplePressAndHoldEnabled"
+value = "false"
+value_type = "bool"
+revert = "true"
+notes = "You lose the accented-character popup in exchange for key repeat."
+
+[[tool]]
+id = "no-smart-quotes"
+name = "Disable smart quotes and dashes"
+description = "Stop macOS rewriting quotes and hyphens, which corrupts pasted code"
+category = "system-tweaks"
+license = "free"
+[tool.macos]
+backend = "defaults"
+package = "NSGlobalDomain"
+key = "NSAutomaticQuoteSubstitutionEnabled"
+value = "false"
+value_type = "bool"
+revert = "true"
+
+[[tool]]
+id = "dock-autohide-fast"
+name = "Dock hides instantly"
+description = "Remove the delay and animation when the Dock auto-hides"
+category = "system-tweaks"
+license = "free"
+[tool.macos]
+backend = "defaults"
+package = "com.apple.dock"
+key = "autohide-delay"
+value = "0"
+value_type = "float"
+revert = "delete"
+post_install = ["killall Dock || true"]
+notes = "Reverting deletes the key so the system default delay returns."
+
+[[tool]]
+id = "expand-save-dialogs"
+name = "Expand save dialogs by default"
+description = "Always show the full file browser rather than the collapsed sheet"
+category = "system-tweaks"
+license = "free"
+[tool.macos]
+backend = "defaults"
+package = "NSGlobalDomain"
+key = "NSNavPanelExpandedStateForSaveMode"
+value = "true"
+value_type = "bool"
+revert = "false"

@@ -234,6 +234,14 @@ func flatten(e *entry, spec *PlatformSpec, sourceFile string) *Tool {
 		AppPath:         spec.AppPath,
 		Unverified:      spec.Unverified,
 
+		Binary: spec.Binary,
+		Dest:   spec.Dest,
+
+		Key:       spec.Key,
+		Value:     spec.Value,
+		ValueType: spec.ValueType,
+		Revert:    spec.Revert,
+
 		TCCPermissions: spec.TCCPermissions,
 		ManualSteps:    spec.ManualSteps,
 

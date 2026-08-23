@@ -1,6 +1,7 @@
 package backend
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/naturalstate/macWTF/internal/manifest"
@@ -72,15 +73,90 @@ func TestPipxAndCargoCommands(t *testing.T) {
 	}
 }
 
-// Every registered backend must answer InstalledKey, or the idempotency check
-// silently compares the wrong things.
-func TestEveryBackendHasInstalledKey(t *testing.T) {
+// Every registered backend must be able to answer "is this already there",
+// either by key against a snapshot or by deciding for itself. A backend that
+// can do neither silently reinstalls on every run.
+func TestEveryBackendCanDetectExistingState(t *testing.T) {
 	for id, impl := range NewRegistry() {
 		if impl.ID() != id {
 			t.Errorf("registry key %q does not match backend ID %q", id, impl.ID())
 		}
-		if impl.InstalledKey(tool("x", "pkg")) == "" {
-			t.Errorf("backend %q returned an empty InstalledKey", id)
+
+		_, selfChecking := impl.(interface {
+			IsApplied(*manifest.Tool) bool
+		})
+		if selfChecking {
+			// A preference is never absent, only set to some value,
+			// so there is nothing to key a snapshot on.
+			continue
 		}
+		if impl.InstalledKey(tool("x", "pkg")) == "" {
+			t.Errorf("backend %q has no InstalledKey and does not self-check", id)
+		}
+	}
+}
+
+// A defaults entry must be reversible, and the revert must be expressed as data
+// so it can be checked rather than trusted.
+func TestDefaultsRevert(t *testing.T) {
+	d := &Defaults{}
+	ctx := NewTestCtx()
+
+	tl := &manifest.Tool{
+		ID: "finder-hidden", Package: "com.apple.finder",
+		Key: "AppleShowAllFiles", Value: "true", ValueType: "bool", Revert: "false",
+	}
+	steps, err := d.InstallPlan(tl, ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := steps[0].String(); got != "defaults write com.apple.finder AppleShowAllFiles -bool true" {
+		t.Fatalf("unexpected write: %q", got)
+	}
+
+	rev, err := d.RemovePlan(tl, ctx)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got := rev[0].String(); got != "defaults write com.apple.finder AppleShowAllFiles -bool false" {
+		t.Fatalf("unexpected revert: %q", got)
+	}
+
+	// "delete" restores whatever the system default is.
+	tl.Revert = "delete"
+	rev, _ = d.RemovePlan(tl, ctx)
+	if got := rev[0].String(); got != "defaults delete com.apple.finder AppleShowAllFiles" {
+		t.Fatalf("unexpected delete revert: %q", got)
+	}
+}
+
+// The curl backend has to handle the several shapes a release asset arrives in.
+func TestCurlHandlesArchiveShapes(t *testing.T) {
+	c := &Curl{}
+	ctx := NewTestCtx()
+
+	for _, tc := range []struct{ url, want string }{
+		{"https://example.com/tool-v1.tar.gz", "tar xf"},
+		{"https://example.com/tool.zip", "unzip"},
+		{"https://example.com/tool", "chmod +x"},
+	} {
+		tl := &manifest.Tool{ID: "tool", Name: "tool", Package: tc.url, Binary: "tool"}
+		steps, err := c.InstallPlan(tl, ctx)
+		if err != nil {
+			t.Fatalf("%s: %v", tc.url, err)
+		}
+		var all string
+		for _, s := range steps {
+			all += s.String() + "\n"
+		}
+		if !strings.Contains(all, tc.want) {
+			t.Errorf("%s: expected %q in plan:\n%s", tc.url, tc.want, all)
+		}
+	}
+
+	// A disk image needs to know what to copy out of it.
+	tl := &manifest.Tool{ID: "x", Name: "x", Package: "https://example.com/x.dmg"}
+	if _, err := c.InstallPlan(tl, ctx); err == nil {
+		t.Error("a .dmg without app_path should be rejected, not guessed at")
 	}
 }

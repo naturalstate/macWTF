@@ -1,0 +1,36 @@
+# Wordlists and payload collections.
+#
+# Data rather than software, so they are cloned rather than installed, and they
+# live under ~/.local/share/macwtf — /opt is a Linux convention that clutters
+# macOS and needs root for no reason.
+
+[[tool]]
+id = "seclists"
+name = "SecLists"
+description = "The standard collection of wordlists for discovery, fuzzing and password attacks"
+category = "wordlists"
+license = "free"
+homepage = "https://github.com/danielmiessler/SecLists"
+[tool.macos]
+backend = "git"
+package = "https://github.com/danielmiessler/SecLists.git"
+dest = "seclists"
+manual_steps = [
+  "Point tools at it by exporting SECLISTS: echo 'export SECLISTS=$HOME/.local/share/macwtf/seclists' >> ~/.zprofile",
+]
+notes = "Around 1GB. Cloned shallow, so history is not downloaded."
+[tool.kali]
+backend = "apt"
+package = "seclists"
+
+[[tool]]
+id = "payloadsallthethings"
+name = "PayloadsAllTheThings"
+description = "Payloads and bypass techniques organised by vulnerability class"
+category = "wordlists"
+license = "free"
+homepage = "https://github.com/swisskyrepo/PayloadsAllTheThings"
+[tool.macos]
+backend = "git"
+package = "https://github.com/swisskyrepo/PayloadsAllTheThings.git"
+dest = "payloadsallthethings"

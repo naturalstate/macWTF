@@ -91,16 +91,28 @@ func BuildPlan(res *resolve.Result, reg backend.Registry, ctx *backend.Ctx) (*Pl
 			continue
 		}
 
-		installed, err := ctx.InstalledFor(impl)
-		if err != nil {
-			tp.PlanErr = fmt.Errorf("query installed packages: %w", err)
-			p.Tools = append(p.Tools, tp)
-			continue
-		}
-		if installed[impl.InstalledKey(t)] {
-			tp.AlreadyInstalled = true
-			p.Tools = append(p.Tools, tp)
-			continue
+		// A preference has no "installed" state to snapshot — it always
+		// holds some value — so that backend answers for itself.
+		if applied, ok := impl.(interface {
+			IsApplied(*manifest.Tool) bool
+		}); ok {
+			if applied.IsApplied(t) {
+				tp.AlreadyInstalled = true
+				p.Tools = append(p.Tools, tp)
+				continue
+			}
+		} else {
+			installed, err := ctx.InstalledFor(impl)
+			if err != nil {
+				tp.PlanErr = fmt.Errorf("query installed packages: %w", err)
+				p.Tools = append(p.Tools, tp)
+				continue
+			}
+			if installed[impl.InstalledKey(t)] {
+				tp.AlreadyInstalled = true
+				p.Tools = append(p.Tools, tp)
+				continue
+			}
 		}
 
 		steps, err := impl.InstallPlan(t, ctx)

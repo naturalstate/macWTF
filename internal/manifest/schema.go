@@ -207,6 +207,27 @@ type PlatformSpec struct {
 	// Notes adds platform-specific detail to the shared description.
 	Notes string `toml:"notes"`
 
+	// Binary is the executable name a download or clone produces, when it
+	// cannot be derived from the package. Used to place a downloaded
+	// binary and to check whether one is already present.
+	Binary string `toml:"binary"`
+
+	// Dest overrides where a git backend clones to, relative to the macWTF
+	// data directory. Defaults to the tool id.
+	Dest string `toml:"dest"`
+
+	// Key, Value and ValueType configure a `defaults write`. Kept as
+	// separate fields rather than a command string so the write can be
+	// verified by reading the value back, and so Revert is expressible.
+	Key       string `toml:"key"`
+	Value     string `toml:"value"`
+	ValueType string `toml:"value_type"`
+
+	// Revert restores a defaults key. Either a literal value or "delete"
+	// to remove the key and fall back to the system default. Required for
+	// every defaults entry: a system tweak nobody can undo is a trap.
+	Revert string `toml:"revert"`
+
 	// Unverified marks a package name that has not been confirmed to
 	// resolve upstream. Such tools are listed and searchable but never
 	// installed by a profile or by --category, because a bulk import
@@ -282,6 +303,14 @@ type Tool struct {
 
 	QuarantineStrip bool
 	AppPath         string
+
+	Binary string
+	Dest   string
+
+	Key       string
+	Value     string
+	ValueType string
+	Revert    string
 
 	TCCPermissions []TCC
 	ManualSteps    []string

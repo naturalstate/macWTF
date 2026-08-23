@@ -140,6 +140,11 @@ func NewRegistry() Registry {
 		manifest.BackendGo:    &Golang{},
 		manifest.BackendCargo: &Cargo{},
 		manifest.BackendNPM:   &NPM{},
+
+		manifest.BackendCurl:     &Curl{},
+		manifest.BackendGit:      &Git{},
+		manifest.BackendMAS:      &MAS{},
+		manifest.BackendDefaults: &Defaults{},
 	}
 }
 

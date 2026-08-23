@@ -140,6 +140,25 @@ func (c *Catalogue) validateTools() Problems {
 			bad("unknown license %q", t.License)
 		}
 
+		// A defaults entry changes how the machine behaves, so it must
+		// say how to change it back. "Reinstall macOS" is not a revert.
+		if t.Backend == BackendDefaults {
+			if t.Key == "" {
+				bad("defaults entries need a key")
+			}
+			if t.Value == "" {
+				bad("defaults entries need a value")
+			}
+			if t.Revert == "" {
+				bad("defaults entries need revert: either the previous value, or \"delete\" to restore the system default")
+			}
+			switch t.ValueType {
+			case "", "bool", "int", "float", "string", "array", "dict":
+			default:
+				bad("unknown value_type %q", t.ValueType)
+			}
+		}
+
 		// Quarantine stripping needs a concrete target, otherwise the
 		// post-install step has nothing to act on.
 		if t.QuarantineStrip && t.AppPath == "" {
