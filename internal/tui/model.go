@@ -79,6 +79,9 @@ type Model struct {
 	// fresh one right up until the plan turns out to be empty.
 	installed map[string]bool
 
+	// pending is how many tools a run would install, cached from the plan.
+	pending int
+
 	// Tree screen.
 	rows      []row
 	cursor    int
@@ -192,6 +195,7 @@ func (m *Model) buildRows() {
 	if m.cursor < 0 {
 		m.cursor = 0
 	}
+	m.recountPending()
 }
 
 // applyProfile pre-checks everything a profile resolves to. Selections stay
@@ -264,15 +268,28 @@ func (m *Model) buildPlan() {
 	m.planScroll = 0
 }
 
-// pendingCount is how many of the current selection are not already installed.
-func (m *Model) pendingCount() int {
-	n := 0
-	for _, id := range m.selectedIDs() {
-		if !m.installed[id] {
-			n++
-		}
+// pendingCount is how many tools a run would actually install.
+//
+// Taken from the plan rather than counted alongside it. Counting the selection
+// separately undercounts, because the plan also pulls in dependencies the user
+// never picked — so the header promised 39 and the plan produced 40. Cached and
+// recomputed whenever the selection changes, since the underlying probe results
+// are memoised and the resolve itself is pure.
+func (m *Model) pendingCount() int { return m.pending }
+
+// recountPending rebuilds the cached figure from a real plan.
+func (m *Model) recountPending() {
+	if len(m.selected) == 0 {
+		m.pending = 0
+		return
 	}
-	return n
+	p, err := m.resolvePlan()
+	if err != nil {
+		m.pending = 0
+		return
+	}
+	todo, _, _ := p.Counts()
+	m.pending = todo
 }
 
 // countSelected reports how many tools in a category are selected.
@@ -336,11 +353,13 @@ func detectInstalled(cat *manifest.Catalogue, ctx *backend.Ctx) map[string]bool 
 		if err != nil {
 			continue
 		}
-		set, err := ctx.InstalledFor(impl)
+		// The same check the planner uses. Asking differently here is
+		// how the header came to disagree with the plan.
+		present, err := backend.IsInstalled(impl, t, ctx)
 		if err != nil {
 			continue
 		}
-		if set[t.Package] {
+		if present {
 			out[t.ID] = true
 		}
 	}

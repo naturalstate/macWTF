@@ -157,6 +157,29 @@ func (r Registry) Get(b manifest.Backend) (Backend, error) {
 	return impl, nil
 }
 
+// IsInstalled reports whether a tool is already present.
+//
+// The single answer to that question. It used to be asked in two places with
+// two different keys — the interface looked up the package name while the
+// planner looked up the backend's own key — so a Go tool showed as pending in
+// the header and as already installed in the plan, and the counts disagreed.
+// Anything needing to know must call this.
+func IsInstalled(impl Backend, t *manifest.Tool, ctx *Ctx) (bool, error) {
+	// A preference is never absent, only set to some value, so that
+	// backend decides for itself rather than being looked up in a set.
+	if self, ok := impl.(interface {
+		IsApplied(*manifest.Tool) bool
+	}); ok {
+		return self.IsApplied(t), nil
+	}
+
+	set, err := ctx.InstalledFor(impl)
+	if err != nil {
+		return false, err
+	}
+	return set[impl.InstalledKey(t)], nil
+}
+
 // commonSteps appends the post_install and verify steps shared by every
 // backend, plus the quarantine strip when one is called for. Keeping this in
 // one place means a new backend cannot forget to honour a manifest field.

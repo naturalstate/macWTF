@@ -376,3 +376,29 @@ func TestConfirmSuspendsForTheSudoPrompt(t *testing.T) {
 		t.Fatal("authorisation must not be requested before the user confirms")
 	}
 }
+
+// The count in the header and the plan must agree. They are derived
+// separately — one from the detected installed set, one from the planner — and
+// when they asked the question differently a Go tool counted as pending in the
+// header and as already installed in the plan, so "2 to install" led to
+// "nothing to install".
+func TestHeaderCountMatchesThePlan(t *testing.T) {
+	for _, id := range []string{"baseline", "recon", "web", "pentest"} {
+		m := selectProfile(t, newModel(t), id)
+		mm := m.(Model)
+
+		want := mm.pendingCount()
+
+		m = press(m, "enter") // build the plan
+		mm = m.(Model)
+		if mm.plan == nil {
+			mm.plan, _ = mm.resolvePlan()
+		}
+		todo, _, _ := mm.plan.Counts()
+
+		if todo != want {
+			t.Errorf("profile %q: header says %d to install, plan says %d",
+				id, want, todo)
+		}
+	}
+}

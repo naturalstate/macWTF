@@ -26,6 +26,9 @@ commands:
   check       verify every package name still resolves upstream (needs network)
   list        list tools, categories and profiles
   install     install a profile, a category, or individual tools
+  status      what macWTF has installed on this machine
+  remove      uninstall tools macWTF installed
+  reset       uninstall everything macWTF installed and forget it (development)
   version     print the version
 
 global flags:
@@ -56,6 +59,12 @@ func Run(args []string, version string) error {
 		return runTUI(rest)
 	case "doctor":
 		return runDoctor(rest)
+	case "status":
+		return runStatus(rest)
+	case "remove", "uninstall":
+		return runRemove(rest)
+	case "reset":
+		return runReset(rest)
 	case "bootstrap":
 		return runBootstrap(rest)
 	case "version", "--version", "-v":
