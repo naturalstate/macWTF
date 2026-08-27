@@ -113,3 +113,27 @@ license = "free"
 [tool.macos]
 backend = "cask"
 package = "kextviewr"
+
+[[tool]]
+id = "procexp"
+name = "Process Explorer"
+description = "Jonathan Levin's process explorer, the closest macOS equivalent to Sysinternals Process Explorer"
+category = "sec-macos"
+license = "free"
+homepage = "https://newosxbook.com/tools/procexp.html"
+[tool.macos]
+backend = "cask"
+package = "procexp"
+notes = "From the author of *OS Internals. Shows entitlements, code signing status and open handles per process."
+
+[[tool]]
+id = "micro-snitch"
+name = "Micro Snitch"
+description = "Alerts whenever the microphone or camera is activated"
+category = "sec-macos"
+license = "paid"
+homepage = "https://obdev.at/products/microsnitch/"
+[tool.macos]
+backend = "cask"
+package = "micro-snitch"
+notes = "From the same developer as Little Snitch. Paid, with a trial."

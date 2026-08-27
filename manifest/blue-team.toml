@@ -1,0 +1,368 @@
+# Blue team: network security monitoring, endpoint telemetry, log pipelines
+# and the Windows-artefact analysis you run from a Mac.
+#
+# The offensive network tooling lives in sec-network. This file is deliberately
+# separate: mixing an IDS in beside Responder and NetExec makes both harder to
+# browse, and the two sets are almost never installed together.
+
+# ------------------------------------------------------------------ NSM / IDS
+
+[[tool]]
+id = "zeek"
+name = "Zeek"
+description = "Network security monitor that turns traffic into rich connection and protocol logs"
+category = "blue-team"
+license = "free"
+homepage = "https://zeek.org"
+notes = "Logs rather than alerts: the output is the evidence trail most NSM workflows are built on."
+[tool.macos]
+backend = "brew"
+package = "zeek"
+verify_cmd = "command -v zeek"
+manual_steps = [
+  "Live capture needs root and an interface: sudo zeek -i en0. Reading a pcap does not.",
+]
+[tool.kali]
+backend = "apt"
+package = "zeek"
+[tool.windows]
+backend = "winget"
+package = "Zeek.Zeek"
+
+[[tool]]
+id = "suricata"
+name = "Suricata"
+description = "Signature-based IDS, IPS and network security monitoring engine"
+category = "blue-team"
+license = "free"
+homepage = "https://suricata.io"
+[tool.macos]
+backend = "brew"
+package = "suricata"
+verify_cmd = "command -v suricata"
+manual_steps = [
+  "Fetch a ruleset before first run: suricata-update, then point suricata.yaml at it.",
+]
+[tool.kali]
+backend = "apt"
+package = "suricata"
+
+[[tool]]
+id = "snort"
+name = "Snort"
+description = "Flexible network intrusion detection system"
+category = "blue-team"
+license = "free"
+homepage = "https://www.snort.org"
+[tool.macos]
+backend = "brew"
+package = "snort"
+verify_cmd = "command -v snort"
+notes = "Homebrew ships the 2.9 series. Snort 3 is a separate lineage and is not in core."
+[tool.kali]
+backend = "apt"
+package = "snort"
+
+[[tool]]
+id = "ntopng"
+name = "ntopng"
+description = "Web interface showing live traffic, top talkers and flows"
+category = "blue-team"
+license = "freemium"
+homepage = "https://www.ntop.org/products/traffic-analysis/ntop/"
+[tool.macos]
+backend = "brew"
+package = "ntopng"
+verify_cmd = "command -v ntopng"
+manual_steps = [
+  "Starts a web UI on http://localhost:3000, default login admin/admin. Change it immediately.",
+  "Capturing from an interface needs root.",
+]
+[tool.kali]
+backend = "apt"
+package = "ntopng"
+
+[[tool]]
+id = "nfdump"
+name = "nfdump"
+description = "Collect and query NetFlow, sFlow and IPFIX data from the command line"
+category = "blue-team"
+license = "free"
+homepage = "https://github.com/phaag/nfdump"
+[tool.macos]
+backend = "brew"
+package = "nfdump"
+verify_cmd = "command -v nfdump"
+notes = "nfcapd collects, nfdump queries. NetFlow is a protocol, not a product; this is the tooling for it."
+[tool.kali]
+backend = "apt"
+package = "nfdump"
+
+# ----------------------------------------------------- endpoint and telemetry
+
+[[tool]]
+id = "osquery"
+name = "osquery"
+description = "Exposes the operating system as a SQL database you can query live"
+category = "blue-team"
+license = "free"
+homepage = "https://osquery.io"
+[tool.macos]
+backend = "cask"
+package = "osquery"
+verify_cmd = "command -v osqueryi"
+tcc_permissions = ["full-disk"]
+manual_steps = [
+  "osqueryd needs Full Disk Access to read protected paths. osqueryi works interactively without it, with gaps.",
+]
+notes = "Excellent on macOS: process, socket, launchd and persistence visibility in one query language."
+[tool.kali]
+backend = "apt"
+package = "osquery"
+[tool.windows]
+backend = "winget"
+package = "osquery.osquery"
+
+[[tool]]
+id = "velociraptor"
+name = "Velociraptor"
+description = "Endpoint DFIR and hunting, collecting forensic artefacts with its VQL query language"
+category = "blue-team"
+license = "free"
+homepage = "https://docs.velociraptor.app"
+[tool.macos]
+backend = "curl"
+package = "https://github.com/Velocidex/velociraptor/releases/download/v0.77.2/velociraptor-v0.77.2-darwin-arm64"
+binary = "velociraptor"
+verify_cmd = "command -v velociraptor"
+tcc_permissions = ["full-disk"]
+manual_steps = [
+  "Grant Full Disk Access before collecting, or artefact collection silently returns partial results.",
+  "Standalone triage needs no server: velociraptor artifacts collect <name>.",
+]
+notes = "Version-pinned download. `macwtf check` is what catches the pin going stale."
+
+[[tool]]
+id = "wazuh-agent"
+name = "Wazuh agent"
+description = "Ships file integrity, log and rootkit telemetry to a Wazuh server"
+category = "blue-team"
+license = "free"
+homepage = "https://wazuh.com"
+[tool.macos]
+backend = "curl"
+package = "https://packages.wazuh.com/4.x/macos/wazuh-agent-4.14.0-1.arm64.pkg"
+verify_cmd = "test -d /Library/Ossec"
+manual_steps = [
+  "Set the manager address before starting: edit /Library/Ossec/etc/ossec.conf, then sudo /Library/Ossec/bin/wazuh-control start.",
+  "The agent is useless without a Wazuh server to report to, and the server is Linux only.",
+]
+notes = "Agent only. Installs to /Library/Ossec via a signed .pkg, so it needs admin rights."
+
+# ------------------------------------- Windows artefact analysis, run on a Mac
+
+[[tool]]
+id = "chainsaw"
+name = "Chainsaw"
+description = "Fast search and hunting across Windows forensic artefacts, with Sigma rule support"
+category = "blue-team"
+license = "free"
+homepage = "https://github.com/WithSecureLabs/chainsaw"
+[tool.macos]
+backend = "brew"
+package = "chainsaw"
+verify_cmd = "command -v chainsaw"
+notes = "Analyses Windows evidence from a macOS workstation; nothing here needs a Windows host."
+
+[[tool]]
+id = "hayabusa"
+name = "Hayabusa"
+description = "Builds attack timelines from Windows EVTX event logs"
+category = "blue-team"
+license = "free"
+homepage = "https://github.com/Yamato-Security/hayabusa"
+[tool.macos]
+backend = "curl"
+package = "https://github.com/Yamato-Security/hayabusa/releases/download/v4.0.0/hayabusa-4.0.0-mac-aarch64.zip"
+binary = "hayabusa"
+unverified = true
+notes = """
+Unverified for one specific reason: the release zip is believed to contain the \
+binary under a versioned name such as hayabusa-4.0.0-mac-aarch64 rather than \
+plain `hayabusa`, and placeArtifact matches the binary name exactly. Confirm \
+the archive layout on the VM and set `binary` to whatever is actually inside, \
+then clear this flag."""
+
+[[tool]]
+id = "evtx"
+name = "evtx"
+description = "Parses Windows XML Event Log files to XML or JSON"
+category = "blue-team"
+license = "free"
+homepage = "https://github.com/omerbenamram/evtx"
+[tool.macos]
+backend = "brew"
+package = "evtx"
+notes = "Plumbing under the other Windows log tooling. The CLI it installs is evtx_dump, not evtx."
+
+[[tool]]
+id = "sigma-cli"
+name = "Sigma CLI"
+description = "Converts vendor-neutral Sigma detection rules into a SIEM's native query dialect"
+category = "blue-team"
+license = "free"
+homepage = "https://github.com/SigmaHQ/sigma-cli"
+[tool.macos]
+backend = "brew"
+package = "sigma-cli"
+notes = "Installs the `sigma` command. Rule packs come from the SigmaHQ repository separately."
+
+# ------------------------------------------------------------ logs and metrics
+
+[[tool]]
+id = "prometheus"
+name = "Prometheus"
+description = "Time-series metrics database that scrapes targets and drives alerting"
+category = "blue-team"
+license = "free"
+homepage = "https://prometheus.io"
+[tool.macos]
+backend = "brew"
+package = "prometheus"
+verify_cmd = "command -v prometheus"
+manual_steps = ["Run as a background service with: brew services start prometheus"]
+notes = "A metrics system, not a SIEM, despite how it is often listed."
+[tool.kali]
+backend = "apt"
+package = "prometheus"
+
+[[tool]]
+id = "grafana"
+name = "Grafana"
+description = "Dashboards over Prometheus, Loki and most other data sources"
+category = "blue-team"
+license = "freemium"
+homepage = "https://grafana.com"
+[tool.macos]
+backend = "brew"
+package = "grafana"
+verify_cmd = "command -v grafana"
+manual_steps = [
+  "brew services start grafana, then open http://localhost:3000 (admin/admin on first login).",
+]
+[tool.kali]
+backend = "apt"
+package = "grafana"
+
+[[tool]]
+id = "loki"
+name = "Loki"
+description = "Horizontally scalable log aggregation, indexed by label rather than full text"
+category = "blue-team"
+license = "free"
+homepage = "https://grafana.com/oss/loki/"
+[tool.macos]
+backend = "brew"
+package = "loki"
+verify_cmd = "command -v loki"
+notes = "Far lighter than Elasticsearch for local use, and pairs directly with Grafana."
+
+[[tool]]
+id = "promtail"
+name = "Promtail"
+description = "Agent that tails log files and ships them into Loki"
+category = "blue-team"
+license = "free"
+homepage = "https://grafana.com/docs/loki/latest/send-data/promtail/"
+requires = ["loki"]
+[tool.macos]
+backend = "brew"
+package = "promtail"
+verify_cmd = "command -v promtail"
+
+[[tool]]
+id = "fluent-bit"
+name = "Fluent Bit"
+description = "Lightweight, vendor-neutral log and metrics forwarder"
+category = "blue-team"
+license = "free"
+homepage = "https://fluentbit.io"
+[tool.macos]
+backend = "brew"
+package = "fluent-bit"
+verify_cmd = "command -v fluent-bit"
+
+[[tool]]
+id = "zabbix"
+name = "Zabbix"
+description = "Infrastructure monitoring and alerting for hosts, services and network gear"
+category = "blue-team"
+license = "free"
+homepage = "https://www.zabbix.com"
+[tool.macos]
+backend = "brew"
+package = "zabbix"
+notes = "The formula carries the server and agent components."
+[tool.kali]
+backend = "apt"
+package = "zabbix-agent"
+
+# The Elastic shippers below only earn their place if you actually run an
+# Elastic stack. Elasticsearch itself is deliberately absent from the macOS
+# catalogue: SSPL licensing, a semi-abandoned Homebrew tap, and a footprint
+# that belongs in Docker rather than on a laptop. Loki plus Grafana covers the
+# same ground more cleanly if you have no existing Elastic investment.
+
+[[tool]]
+id = "filebeat"
+name = "Filebeat"
+description = "Elastic's log file shipper"
+category = "blue-team"
+license = "free"
+homepage = "https://www.elastic.co/beats/filebeat"
+[tool.macos]
+backend = "brew"
+package = "filebeat"
+verify_cmd = "command -v filebeat"
+
+[[tool]]
+id = "auditbeat"
+name = "Auditbeat"
+description = "Elastic's audit and file integrity shipper"
+category = "blue-team"
+license = "free"
+homepage = "https://www.elastic.co/beats/auditbeat"
+[tool.macos]
+backend = "brew"
+package = "auditbeat"
+verify_cmd = "command -v auditbeat"
+tcc_permissions = ["full-disk"]
+manual_steps = [
+  "File integrity monitoring of protected paths needs Full Disk Access.",
+]
+
+[[tool]]
+id = "packetbeat"
+name = "Packetbeat"
+description = "Elastic's network traffic shipper"
+category = "blue-team"
+license = "free"
+homepage = "https://www.elastic.co/beats/packetbeat"
+[tool.macos]
+backend = "brew"
+package = "packetbeat"
+verify_cmd = "command -v packetbeat"
+manual_steps = ["Packet capture needs root."]
+
+[[tool]]
+id = "logstash"
+name = "Logstash"
+description = "Elastic's ingest, parse and transform pipeline"
+category = "blue-team"
+license = "free"
+homepage = "https://www.elastic.co/logstash"
+[tool.macos]
+backend = "brew"
+package = "logstash"
+verify_cmd = "command -v logstash"
+notes = "JVM based and heavy. Fluent Bit is the lighter option for simple forwarding."
