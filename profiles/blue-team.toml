@@ -1,7 +1,7 @@
 [profile]
 id = "blue-team"
 name = "Blue Team"
-description = "Defensive tooling: monitoring, endpoint telemetry, forensics and traffic analysis"
+description = "Defensive tooling: detection, endpoint telemetry, forensics and traffic analysis"
 includes = ["baseline"]
-categories = ["blue-team", "sec-reversing"]
+categories = ["detection", "sec-reversing"]
 tools = ["wireshark"]

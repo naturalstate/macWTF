@@ -1,0 +1,149 @@
+# Monitoring and observability: metrics, dashboards and log pipelines.
+#
+# Not security tooling. These arrived on a blue-team list because a SOC runs
+# them, but Prometheus is a metrics database and Grafana draws graphs — neither
+# detects anything on its own. They sit here so that browsing "detection"
+# returns tools that actually detect, and so nobody installs a JVM log pipeline
+# expecting an IDS.
+
+[[tool]]
+id = "prometheus"
+name = "Prometheus"
+description = "Time-series metrics database that scrapes targets and drives alerting"
+category = "monitoring"
+license = "free"
+homepage = "https://prometheus.io"
+[tool.macos]
+backend = "brew"
+package = "prometheus"
+verify_cmd = "command -v prometheus"
+manual_steps = ["Run as a background service with: brew services start prometheus"]
+notes = "A metrics system, not a SIEM, despite how it is often listed."
+[tool.kali]
+backend = "apt"
+package = "prometheus"
+
+[[tool]]
+id = "grafana"
+name = "Grafana"
+description = "Dashboards over Prometheus, Loki and most other data sources"
+category = "monitoring"
+license = "freemium"
+homepage = "https://grafana.com"
+[tool.macos]
+backend = "brew"
+package = "grafana"
+verify_cmd = "command -v grafana"
+manual_steps = [
+  "brew services start grafana, then open http://localhost:3000 (admin/admin on first login).",
+]
+[tool.kali]
+backend = "apt"
+package = "grafana"
+
+[[tool]]
+id = "loki"
+name = "Loki"
+description = "Horizontally scalable log aggregation, indexed by label rather than full text"
+category = "monitoring"
+license = "free"
+homepage = "https://grafana.com/oss/loki/"
+[tool.macos]
+backend = "brew"
+package = "loki"
+verify_cmd = "command -v loki"
+notes = "Far lighter than Elasticsearch for local use, and pairs directly with Grafana."
+
+[[tool]]
+id = "promtail"
+name = "Promtail"
+description = "Agent that tails log files and ships them into Loki"
+category = "monitoring"
+license = "free"
+homepage = "https://grafana.com/docs/loki/latest/send-data/promtail/"
+requires = ["loki"]
+[tool.macos]
+backend = "brew"
+package = "promtail"
+verify_cmd = "command -v promtail"
+
+[[tool]]
+id = "fluent-bit"
+name = "Fluent Bit"
+description = "Lightweight, vendor-neutral log and metrics forwarder"
+category = "monitoring"
+license = "free"
+homepage = "https://fluentbit.io"
+[tool.macos]
+backend = "brew"
+package = "fluent-bit"
+verify_cmd = "command -v fluent-bit"
+
+[[tool]]
+id = "zabbix"
+name = "Zabbix"
+description = "Infrastructure monitoring and alerting for hosts, services and network gear"
+category = "monitoring"
+license = "free"
+homepage = "https://www.zabbix.com"
+[tool.macos]
+backend = "brew"
+package = "zabbix"
+notes = "The formula carries the server and agent components."
+[tool.kali]
+backend = "apt"
+package = "zabbix-agent"
+
+[[tool]]
+id = "filebeat"
+name = "Filebeat"
+description = "Elastic's log file shipper"
+category = "monitoring"
+license = "free"
+homepage = "https://www.elastic.co/beats/filebeat"
+[tool.macos]
+backend = "brew"
+package = "filebeat"
+verify_cmd = "command -v filebeat"
+
+[[tool]]
+id = "auditbeat"
+name = "Auditbeat"
+description = "Elastic's audit and file integrity shipper"
+category = "monitoring"
+license = "free"
+homepage = "https://www.elastic.co/beats/auditbeat"
+[tool.macos]
+backend = "brew"
+package = "auditbeat"
+verify_cmd = "command -v auditbeat"
+tcc_permissions = ["full-disk"]
+manual_steps = [
+  "File integrity monitoring of protected paths needs Full Disk Access.",
+]
+
+[[tool]]
+id = "packetbeat"
+name = "Packetbeat"
+description = "Elastic's network traffic shipper"
+category = "monitoring"
+license = "free"
+homepage = "https://www.elastic.co/beats/packetbeat"
+[tool.macos]
+backend = "brew"
+package = "packetbeat"
+verify_cmd = "command -v packetbeat"
+manual_steps = ["Packet capture needs root."]
+
+[[tool]]
+id = "logstash"
+name = "Logstash"
+description = "Elastic's ingest, parse and transform pipeline"
+category = "monitoring"
+license = "free"
+homepage = "https://www.elastic.co/logstash"
+[tool.macos]
+backend = "brew"
+package = "logstash"
+verify_cmd = "command -v logstash"
+notes = "JVM based and heavy. Fluent Bit is the lighter option for simple forwarding."

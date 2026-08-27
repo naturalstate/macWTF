@@ -1,0 +1,6 @@
+[profile]
+id = "monitoring"
+name = "Monitoring"
+description = "Metrics, dashboards and log pipelines: Prometheus, Grafana, Loki and the shippers"
+includes = ["baseline"]
+categories = ["monitoring"]
